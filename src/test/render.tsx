@@ -1,9 +1,24 @@
 import { ConfigProvider } from 'antd'
-import type { PropsWithChildren } from 'react'
+import {
+  render as testingLibraryRender,
+  type RenderOptions,
+} from '@testing-library/react'
+import type { PropsWithChildren, ReactElement } from 'react'
 import { createThemeTokens } from '../styles/theme'
 
-export function TestProviders({ children }: PropsWithChildren) {
-  const tokens = createThemeTokens()
+const themeTokens = createThemeTokens()
 
-  return <ConfigProvider theme={{ token: tokens }}>{children}</ConfigProvider>
+export function TestProviders({ children }: PropsWithChildren) {
+  return (
+    <ConfigProvider theme={{ token: themeTokens }}>{children}</ConfigProvider>
+  )
 }
+
+export function render(ui: ReactElement, options?: Omit<RenderOptions, 'wrapper'>) {
+  return testingLibraryRender(ui, {
+    wrapper: TestProviders,
+    ...options,
+  })
+}
+
+export * from '@testing-library/react'

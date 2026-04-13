@@ -1,14 +1,9 @@
-import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { TestProviders } from './render'
+import { render, screen } from './render'
 
-describe('TestProviders', () => {
-  it('renders children', () => {
-    render(
-      <TestProviders>
-        <span>hello</span>
-      </TestProviders>,
-    )
+describe('render', () => {
+  it('renders children with shared providers', () => {
+    render(<span>hello</span>)
 
     expect(screen.getByText('hello')).toBeInTheDocument()
   })
