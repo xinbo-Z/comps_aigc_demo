@@ -24,4 +24,16 @@ describe('Button', () => {
     expect(button).toBeDisabled()
     expect(screen.getByTestId('button-loading-indicator')).toBeInTheDocument()
   })
+
+  test('merges a consumer className with the button variant and size classes', () => {
+    render(
+      <Button className="consumer-class" variant="danger" size="lg">
+        Delete
+      </Button>,
+    )
+
+    const button = screen.getByRole('button', { name: 'Delete' })
+
+    expect(button).toHaveClass('consumer-class')
+  })
 })

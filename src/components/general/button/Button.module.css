@@ -72,9 +72,9 @@
 }
 
 .danger {
-  background-color: var(--button-danger-bg);
-  border-color: var(--button-danger-border);
-  color: var(--button-danger-text);
+  background-color: var(--danger);
+  border-color: var(--danger);
+  color: var(--bg);
 }
 
 .ghost {

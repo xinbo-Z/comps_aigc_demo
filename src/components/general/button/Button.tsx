@@ -1,16 +1,9 @@
 import React, { type CSSProperties, type ReactElement, type ReactNode } from 'react'
-import { defaultThemeTokens } from '../../../styles/tokens'
 import styles from './Button.module.css'
 import type { ButtonProps } from './types'
 
 function getClassName(parts: Array<string | false | undefined>) {
   return parts.filter(Boolean).join(' ')
-}
-
-type ButtonStyle = CSSProperties & {
-  '--button-danger-bg'?: string
-  '--button-danger-border'?: string
-  '--button-danger-text'?: string
 }
 
 function renderDecorativeIcon(icon: ReactNode) {
@@ -33,32 +26,19 @@ export function Button({
   icon,
   type = 'button',
   style,
+  className,
   ...restProps
 }: ButtonProps) {
   const isDisabled = disabled || loading
-
-  const dangerStyle: ButtonStyle | undefined =
-    variant === 'danger'
-      ? {
-          '--button-danger-bg': defaultThemeTokens.colorDanger,
-          '--button-danger-border': defaultThemeTokens.colorDanger,
-          '--button-danger-text': defaultThemeTokens.colorBgContainer,
-        }
-      : undefined
-
-  const mergedStyle: ButtonStyle = {
-    ...dangerStyle,
-    ...(style as ButtonStyle | undefined),
-  }
 
   return (
     <button
       {...restProps}
       type={type}
-      className={getClassName([styles.button, styles[variant], styles[size]])}
+      className={getClassName([styles.button, styles[variant], styles[size], className])}
       disabled={isDisabled}
       aria-busy={loading || undefined}
-      style={mergedStyle}
+      style={style as CSSProperties | undefined}
     >
       {loading ? (
         <span
