@@ -10,8 +10,11 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+.turbo
 .worktrees/
 *.local
+apps/sci-comp-documention/doc_build
+apps/sci-comp-documention/docs/.rspress
 
 # Editor directories and files
 .vscode/*

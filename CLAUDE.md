@@ -3,28 +3,17 @@
 ## 技术栈
 
 - React 19 + TypeScript 5.x
-- Ant Design 6.x（参考基准）
-- Vite（构建工具）
-- Vitest + React Testing Library（测试）
-- Storybook 8（组件文档）
+- Ant Design 6.x（组件封装基准）
+- pnpm workspace + turborepo
+- Vitest + React Testing Library（组件测试）
+- Rspress（组件文档）
 
 ## 项目结构
 
-src/
-├── components/ # 组件源码
-│ ├── general/ # 通用基础组件
-│ │ ├── button/
-│ │ ├── table/
-│ │ └── form/
-│ └── instrument/ # 科学仪器专用组件
-│ ├── waveform-chart/
-│ ├── instrument-panel/
-│ └── param-config/
-├── hooks/ # 通用 Hooks
-├── utils/ # 工具函数
-├── styles/ # 全局样式 & 主题
-├── types/ # 全局类型定义
-└── **tests**/ # 测试文件
+- `packages/sci-comp-core/`：通用组件库 package，承载组件源码、样式、类型与对外导出
+- `apps/sci-comp-test/`：组件测试工作区
+- `apps/sci-comp-documention/`：组件文档工作区
+- 根目录：统一维护 workspace、turbo、lint、format、typecheck、commit hooks 等工程配置
 
 ## 编码规范
 
@@ -33,8 +22,10 @@ src/
 - Props 接口以组件名 + "Props" 命名（如 ButtonProps）
 - 组件文件使用 PascalCase 命名
 - 样式使用 CSS Modules 或 Ant Design 的 CSS-in-JS
-- 每个组件必须有对应的单元测试和 Storybook 文档
 - 遵循 Ant Design v6 的 API 设计风格和交互模式
+- 通用基础组件必须基于 Ant Design v6 官方组件进行封装开发，不允许仅参考其视觉风格而使用原生 HTML 或完全自定义实现替代
+- Button / Input / Table / Form 当前必须满足该封装约束，后续 Modal / Tabs 也必须遵循同样原则
+- 组件文档放在 `apps/sci-comp-documention/`，组件测试放在 `apps/sci-comp-test/`
 
 ## 禁止事项
 

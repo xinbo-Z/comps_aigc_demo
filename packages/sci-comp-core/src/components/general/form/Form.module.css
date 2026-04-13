@@ -1,0 +1,37 @@
+.schemaSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.listItem {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+}
+
+.listItemHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.listItemTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text-h);
+}
+
+.listItemFields {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.listActions {
+  display: flex;
+  justify-content: flex-start;
+}

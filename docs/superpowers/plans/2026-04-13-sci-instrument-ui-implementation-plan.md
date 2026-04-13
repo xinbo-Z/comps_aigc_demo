@@ -10,6 +10,8 @@
 
 ---
 
+> **状态说明：** 该计划基于仓库迁移前的单包结构编写，涉及 `src/`、`.storybook/`、根级 `vite.config.ts` / `vitest.config.ts` / `tsconfig.app.json` / `package-lock.json` 等路径。当前仓库已切换为 `pnpm workspace + turborepo` monorepo，这些路径多数已不存在。若继续推进相关能力，请先将任务映射到 `packages/sci-comp-core/`、`apps/sci-comp-test/` 与 `apps/sci-comp-documention/` 后再实施。
+
 ## File Structure
 
 **Create / reorganize these areas before feature work:**

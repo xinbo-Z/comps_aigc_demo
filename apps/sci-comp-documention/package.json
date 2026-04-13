@@ -1,0 +1,26 @@
+{
+  "name": "sci-comp-documention",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "rspress dev docs",
+    "build": "rspress build docs",
+    "preview": "rspress preview docs",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@sci-comp/core": "workspace:*",
+    "antd": "^6.0.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "rspress": "^1.47.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.12.2",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "~6.0.2"
+  }
+}

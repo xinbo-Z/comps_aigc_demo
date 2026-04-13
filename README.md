@@ -1,73 +1,34 @@
-# React + TypeScript + Vite
+# hik-comps Monorepo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+该仓库已迁移为基于 `pnpm workspace + turborepo` 的多包结构，用于维护通用组件库、文档站和测试工程。
 
-Currently, two official plugins are available:
+## 工作区结构
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- `packages/sci-comp-core`：纯组件库 package，承载通用组件源码、样式、类型与构建配置
+- `apps/sci-comp-test`：Vitest + React Testing Library 测试工程
+- `apps/sci-comp-documention`：Rspress 文档站
 
-## React Compiler
+## 常用命令
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+在仓库根目录执行：
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+pnpm install
+pnpm build
+pnpm test
+pnpm lint
+pnpm typecheck
+pnpm docs:dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 组件约束
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- 通用基础组件必须基于 Ant Design v6 官方组件进行封装开发
+- 当前 Button / Input / Table / Form 已按该约束迁移到 `@sci-comp/core`
+- 后续 Modal / Tabs 也必须继续沿用同样的 wrapper 模式
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 提交流程
+
+- 提交前会通过 Husky + lint-staged 执行暂存文件校验
+- 提交信息通过 commitlint 校验
+- 可以使用 `pnpm commit` 启动 cz-git 引导式提交流程

@@ -1,7 +1,8 @@
 {
   "files": [],
   "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
+    { "path": "./packages/sci-comp-core" },
+    { "path": "./apps/sci-comp-test" },
+    { "path": "./apps/sci-comp-documention" }
   ]
 }
