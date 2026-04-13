@@ -31,4 +31,8 @@ export type {
   FormSchemaSelectField,
   FormSchemaTextareaField,
 } from './components/general/form'
+export { Modal } from './components/general/modal'
+export type { ModalProps } from './components/general/modal'
+export { Tabs } from './components/general/tabs'
+export type { TabsItem, TabsProps } from './components/general/tabs'
 export * from './styles'

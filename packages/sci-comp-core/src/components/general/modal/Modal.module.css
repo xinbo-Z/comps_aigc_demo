@@ -1,0 +1,27 @@
+.modal {
+  color: var(--text-h);
+}
+
+.fullscreenWrap {
+  padding: 0;
+}
+
+.fullscreenWrap :global(.ant-modal) {
+  top: 0;
+  max-width: none;
+  width: 100vw !important;
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.fullscreenWrap :global(.ant-modal-content) {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  border-radius: 0;
+}
+
+.fullscreenWrap :global(.ant-modal-body) {
+  flex: 1;
+  overflow: auto;
+}

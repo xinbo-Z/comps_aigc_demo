@@ -24,6 +24,8 @@ export default defineConfig({
             { text: 'Input', link: '/components/input' },
             { text: 'Table', link: '/components/table' },
             { text: 'Form', link: '/components/form' },
+            { text: 'Modal', link: '/components/modal' },
+            { text: 'Tabs', link: '/components/tabs' },
           ],
         },
       ],
