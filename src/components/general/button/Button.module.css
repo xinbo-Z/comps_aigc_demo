@@ -1,0 +1,118 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.content,
+.loadingIndicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  gap: 0.5rem;
+}
+
+.loadingIndicator {
+  flex-shrink: 0;
+}
+
+.button > :not(:last-child) {
+  margin-right: 0.5rem;
+}
+
+.loadingIndicator {
+  width: 1em;
+  height: 1em;
+}
+
+.loadingIndicator::after {
+  content: '';
+  width: 0.75em;
+  height: 0.75em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.primary {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-bg);
+}
+
+.secondary {
+  background-color: var(--code-bg);
+  border-color: var(--border);
+  color: var(--text-h);
+}
+
+.danger {
+  background-color: var(--button-danger-bg);
+  border-color: var(--button-danger-border);
+  color: var(--button-danger-text);
+}
+
+.ghost {
+  background-color: transparent;
+  border-color: var(--border);
+  color: var(--text-h);
+}
+
+.text {
+  background-color: transparent;
+  border-color: transparent;
+  color: var(--accent);
+}
+
+.sm {
+  min-height: 28px;
+  padding: 0 0.75rem;
+  font-size: 0.875rem;
+}
+
+.md {
+  min-height: 36px;
+  padding: 0 1rem;
+  font-size: 1rem;
+}
+
+.lg {
+  min-height: 44px;
+  padding: 0 1.25rem;
+  font-size: 1.125rem;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
