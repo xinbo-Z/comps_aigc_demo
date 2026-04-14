@@ -17,7 +17,12 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json && vite build",
+    "build": "pnpm build:types && pnpm build:bundle",
+    "build:types": "tsc -p tsconfig.json",
+    "build:bundle": "vite build",
+    "dev": "sh -c 'pnpm dev:types & pnpm dev:bundle & wait'",
+    "dev:types": "tsc -p tsconfig.json --watch --preserveWatchOutput",
+    "dev:bundle": "vite build --watch",
     "lint": "eslint src",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },

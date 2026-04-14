@@ -1,0 +1,31 @@
+import PreviewBlock from '../../doc-components/PreviewBlock'
+import { FormDocDemo } from '../../doc-components/demos'
+
+# Form
+
+`Form` 是基于 Ant Design Form 的通用封装组件，支持 schema 驱动方式构建表单。
+
+## 实时预览
+
+<PreviewBlock
+  title="Schema 表单"
+  description="通过最小 schema 场景展示 input 与 select 两种字段配置，便于理解 schema 驱动的使用方式。"
+>
+  <FormDocDemo />
+</PreviewBlock>
+
+## 使用示例
+
+```tsx
+import { Form } from '@sci-comp/core'
+
+export function Example() {
+  return (
+    <Form
+      schema={[
+        { key: 'name', name: 'name', type: 'input', label: '名称' },
+      ]}
+    />
+  )
+}
+```

@@ -1,0 +1,25 @@
+import PreviewBlock from '../../doc-components/PreviewBlock'
+import { InputDocDemo } from '../../doc-components/demos'
+
+# Input
+
+`Input` 是基于 Ant Design Input 的通用封装组件，保留 `label`、`helperText` 与 `invalid` 等增强能力。
+
+## 实时预览
+
+<PreviewBlock
+  title="输入框状态"
+  description="预览同时展示基础输入与错误态输入，便于快速查看标签、提示文案与校验反馈。"
+>
+  <InputDocDemo />
+</PreviewBlock>
+
+## 使用示例
+
+```tsx
+import { Input } from '@sci-comp/core'
+
+export function Example() {
+  return <Input label="名称" helperText="请输入组件名称" />
+}
+```

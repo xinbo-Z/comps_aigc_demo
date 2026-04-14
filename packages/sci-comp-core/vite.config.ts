@@ -12,7 +12,15 @@ export default defineConfig({
       fileName: (format) => (format === 'es' ? 'index.js' : 'index.cjs'),
     },
     rollupOptions: {
-      external: ['react', 'react-dom', 'antd'],
+      external: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        'react/jsx-dev-runtime',
+        'react/jsx-runtime.js',
+        'react/jsx-dev-runtime.js',
+        'antd',
+      ],
       output: {
         preserveModules: true,
         preserveModulesRoot: 'src',

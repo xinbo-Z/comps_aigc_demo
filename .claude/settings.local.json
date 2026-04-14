@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run:*)",
+      "Bash(git -C \"/Users/zhangxinbo/ai_verify_pro/comps_aigc_demo/.worktrees/phase-1-foundation\" status --short)",
+      "Bash(git -C \"/Users/zhangxinbo/ai_verify_pro/comps_aigc_demo/.worktrees/phase-1-foundation\" diff -- package.json vite.config.ts tsconfig.json tsconfig.app.json src/index.ts src/components/.gitkeep src/styles/.gitkeep)",
+      "Bash(git -C \"/Users/zhangxinbo/ai_verify_pro/comps_aigc_demo/.worktrees/phase-1-foundation\" log --oneline -5)",
+      "Bash(npm install:*)",
+      "Bash(npm view:*)",
+      "Bash(python3 -)",
+      "Bash(npm ls:*)",
+      "Bash(git -C \"/Users/zhangxinbo/ai_verify_pro/comps_aigc_demo/.worktrees/phase-1-foundation\" log --oneline -3)",
+      "Bash(npx vitest:*)",
+      "Bash(npm test:*)",
+      "Bash(git -C \"/Users/zhangxinbo/ai_verify_pro/comps_aigc_demo/.worktrees/phase-1-foundation\" diff -- src/styles)",
+      "Bash(git -C \"/Users/zhangxinbo/ai_verify_pro/comps_aigc_demo/.worktrees/phase-1-foundation\" log -5 --oneline)",
+      "Bash(git -C \"/Users/zhangxinbo/ai_verify_pro/comps_aigc_demo/.worktrees/phase-1-foundation\" rev-parse HEAD)",
+      "Bash(openspec status:*)",
+      "Bash(openspec instructions:*)",
+      "Bash(pnpm --dir \"/Users/zhangxinbo/ai_verify_pro/comps_aigc_demo/packages/sci-comp-core\" build)",
+      "Bash(pnpm --dir \"/Users/zhangxinbo/ai_verify_pro/comps_aigc_demo/packages/sci-comp-core\" dev)"
+    ]
+  }
+}

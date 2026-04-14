@@ -2,7 +2,18 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.tsbuildinfo",
-    "ignoreDeprecations": "6.0"
+    "ignoreDeprecations": "5.0",
+    "noEmit": true,
+    "paths": {
+      "@sci-comp/core": ["../../packages/sci-comp-core/src/index.ts"]
+    }
   },
-  "include": ["rspress.config.ts"]
+  "include": [
+    "rspress.config.ts",
+    "docs/**/*.ts",
+    "docs/**/*.tsx",
+    "doc-components/**/*.ts",
+    "doc-components/**/*.tsx",
+    "../../packages/sci-comp-core/src/**/*.d.ts"
+  ]
 }
