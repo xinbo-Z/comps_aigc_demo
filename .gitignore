@@ -12,6 +12,7 @@ dist
 dist-ssr
 .turbo
 .worktrees/
+.claude/worktrees/
 *.local
 apps/sci-comp-documention/doc_build
 apps/sci-comp-documention/docs/.rspress
