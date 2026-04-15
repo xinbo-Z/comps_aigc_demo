@@ -24,6 +24,7 @@ export default defineConfig({
             { text: 'Input', link: '/components/input' },
             { text: 'Table', link: '/components/table' },
             { text: 'Form', link: '/components/form' },
+            { text: 'SchemaForm', link: '/components/schema-form' },
             { text: 'Modal', link: '/components/modal' },
             { text: 'Tabs', link: '/components/tabs' },
             { text: 'Progress', link: '/components/progress' },

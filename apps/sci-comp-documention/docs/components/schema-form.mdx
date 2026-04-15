@@ -1,0 +1,36 @@
+import PreviewBlock from '../../doc-components/PreviewBlock'
+import { SchemaFormDocDemo } from '../../doc-components/demos'
+
+# SchemaForm
+
+`SchemaForm` 是构建在基础 `Form` 之上的高阶表单组件，用于承载 schema 驱动字段渲染、动态显示规则和列表编排等能力。
+
+## 实时预览
+
+<PreviewBlock
+  title="Schema 驱动表单"
+  description="高阶 SchemaForm 适合字段结构由配置描述、需要动态渲染规则或列表编排的场景。"
+>
+  <SchemaFormDocDemo />
+</PreviewBlock>
+
+## 使用示例
+
+```tsx
+import { SchemaForm } from '@sci-comp/core'
+
+export function Example() {
+  return (
+    <SchemaForm
+      schema={[
+        {
+          key: 'name',
+          name: 'name',
+          type: 'input',
+          label: '名称',
+        },
+      ]}
+    />
+  )
+}
+```

@@ -1,411 +1,100 @@
 import { describe, expect, expectTypeOf, test, vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { screen, waitFor } from '@testing-library/react'
-import { Form, type FormSchemaDefinition, type FormSchemaField } from '@sci-comp/core'
-import type { FormSchemaDefinition as PublicFormSchemaDefinition } from '@sci-comp/core'
+import { Form, type FormProps } from '@sci-comp/core'
+import type { FormProps as PublicFormProps } from '@sci-comp/core'
 import { render } from '../../../support/render'
 
 describe('Form', () => {
-  test('re-exports FormSchemaDefinition from the public package entrypoint', () => {
-    expectTypeOf<PublicFormSchemaDefinition>().toEqualTypeOf<FormSchemaDefinition>()
+  test('re-exports FormProps from the public package entrypoint', () => {
+    expectTypeOf<PublicFormProps>().toEqualTypeOf<FormProps>()
   })
 
-  test('renders schema fields and preserves manual composition children', () => {
-    const schema = [
-      {
-        key: 'name',
-        name: 'name',
-        type: 'input',
-        label: 'Name',
-      },
-    ] satisfies FormSchemaField[]
-
+  test('renders children within the wrapped antd form', () => {
     render(
-      <Form schema={schema}>
-        <button type="submit">Save</button>
+      <Form>
+        <Form.Item label="名称" name="name">
+          <input aria-label="名称" />
+        </Form.Item>
       </Form>,
     )
 
-    expect(screen.getByRole('textbox', { name: /name/i })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
+    expect(screen.getByRole('textbox', { name: '名称' })).toBeInTheDocument()
   })
 
-  test('accepts schema definitions with fields and component-based entries', () => {
-    render(
-      <Form
-        schema={{
-          fields: [
-            {
-              name: 'temperature',
-              label: 'Temperature',
-              component: 'input',
-            },
-          ],
-        }}
-      />,
+  test('uses vertical layout defaults from the wrapper', () => {
+    const { container } = render(
+      <Form>
+        <Form.Item label="名称" name="name">
+          <input aria-label="名称" />
+        </Form.Item>
+      </Form>,
     )
 
-    expect(screen.getByLabelText('Temperature')).toBeInTheDocument()
+    expect(container.querySelector('.ant-form-vertical')).not.toBeNull()
   })
 
-  test('supports input, textarea, select, and number schema field types', async () => {
+  test('submits values through the wrapped antd form instance', async () => {
     const user = userEvent.setup()
     const onFinish = vi.fn()
 
     render(
-      <Form
-        onFinish={onFinish}
-        schema={[
-          {
-            key: 'title',
-            name: 'title',
-            type: 'input',
-            label: 'Title',
-          },
-          {
-            key: 'description',
-            name: 'description',
-            type: 'textarea',
-            label: 'Description',
-          },
-          {
-            key: 'mode',
-            name: 'mode',
-            type: 'select',
-            label: 'Mode',
-            options: [
-              { label: 'Auto', value: 'auto' },
-              { label: 'Manual', value: 'manual' },
-            ],
-          },
-          {
-            key: 'threshold',
-            name: 'threshold',
-            type: 'number',
-            label: 'Threshold',
-          },
-        ]}
-      >
-        <button type="submit">Submit</button>
+      <Form onFinish={onFinish} initialValues={{ name: 'Button' }}>
+        <Form.Item label="名称" name="name">
+          <input aria-label="名称" />
+        </Form.Item>
+        <button type="submit">提交</button>
       </Form>,
     )
 
-    await user.type(screen.getByRole('textbox', { name: /title/i }), 'Detector A')
-    await user.type(screen.getByRole('textbox', { name: /description/i }), 'Primary analyzer')
-    await user.click(screen.getByRole('combobox', { name: /mode/i }))
-    await user.click(await screen.findByText('Manual'))
-    await user.clear(screen.getByRole('spinbutton', { name: /threshold/i }))
-    await user.type(screen.getByRole('spinbutton', { name: /threshold/i }), '42')
-    await user.click(screen.getByRole('button', { name: 'Submit' }))
-
-    expect(onFinish).toHaveBeenCalledWith({
-      title: 'Detector A',
-      description: 'Primary analyzer',
-      mode: 'manual',
-      threshold: 42,
-    })
-  })
-
-  test('uses visibleWhen to drive dependent visibility in the schema path', async () => {
-    const user = userEvent.setup()
-
-    render(
-      <Form
-        schema={{
-          fields: [
-            {
-              key: 'advancedMode',
-              name: 'advancedMode',
-              component: 'select',
-              label: 'Advanced mode',
-              options: [
-                { label: 'Disabled', value: 'off' },
-                { label: 'Enabled', value: 'on' },
-              ],
-            },
-            {
-              key: 'advancedNote',
-              name: 'advancedNote',
-              component: 'textarea',
-              label: 'Advanced note',
-              visibleWhen: ({ getValue }) => getValue('advancedMode') === 'on',
-            },
-          ],
-        }}
-      />,
-    )
-
-    expect(screen.queryByRole('textbox', { name: /advanced note/i })).not.toBeInTheDocument()
-
-    await user.click(screen.getByRole('combobox', { name: /advanced mode/i }))
-    await user.click(await screen.findByText('Enabled'))
-
-    expect(await screen.findByRole('textbox', { name: /advanced note/i })).toBeInTheDocument()
-  })
-
-  test('uses itemPropsWhen to derive dynamic help and validation rules in the schema path', async () => {
-    const user = userEvent.setup()
-    const onFinish = vi.fn()
-
-    render(
-      <Form
-        onFinish={onFinish}
-        schema={{
-          fields: [
-            {
-              key: 'advancedMode',
-              name: 'advancedMode',
-              component: 'select',
-              label: 'Advanced mode',
-              options: [
-                { label: 'Disabled', value: 'off' },
-                { label: 'Enabled', value: 'on' },
-              ],
-            },
-            {
-              key: 'advancedNote',
-              name: 'advancedNote',
-              component: 'textarea',
-              label: 'Advanced note',
-              itemPropsWhen: ({ getValue }) => {
-                const advancedEnabled = getValue('advancedMode') === 'on'
-
-                return advancedEnabled
-                  ? {
-                      help: 'Required when advanced mode is enabled',
-                      required: true,
-                    }
-                  : {
-                      help: 'Optional while advanced mode is disabled',
-                    }
-              },
-            },
-          ],
-        }}
-      >
-        <button type="submit">Submit</button>
-      </Form>,
-    )
-
-    expect(screen.getByText('Optional while advanced mode is disabled')).toBeInTheDocument()
-
-    await user.click(screen.getByRole('combobox', { name: /advanced mode/i }))
-    await user.click(await screen.findByText('Enabled'))
-
-    expect(await screen.findByText('Required when advanced mode is enabled')).toBeInTheDocument()
-
-    const advancedNote = screen.getByRole('textbox', { name: /advanced note/i })
-    expect(advancedNote).toHaveAttribute('aria-required', 'true')
-
-    await user.click(screen.getByRole('button', { name: 'Submit' }))
-
-    expect(onFinish).not.toHaveBeenCalled()
-    expect(advancedNote).toHaveAttribute('aria-invalid', 'true')
-  })
-
-  test('supports dynamic list fields in the schema path', async () => {
-    const user = userEvent.setup()
-    const onFinish = vi.fn()
-
-    render(
-      <Form
-        onFinish={onFinish}
-        schema={[
-          {
-            key: 'channels',
-            type: 'list',
-            name: 'channels',
-            label: 'Channels',
-            addButtonText: 'Add channel',
-            itemLabel: 'Channel',
-            fields: [
-              {
-                key: 'name',
-                name: 'name',
-                component: 'input',
-                label: 'Channel name',
-                required: true,
-              },
-              {
-                key: 'gain',
-                name: 'gain',
-                component: 'number',
-                label: 'Gain',
-              },
-            ],
-          },
-        ]}
-      >
-        <button type="submit">Save config</button>
-      </Form>,
-    )
-
-    await user.click(screen.getByRole('button', { name: 'Add channel' }))
-    await user.type(screen.getByRole('textbox', { name: /channel name/i }), 'Channel A')
-    await user.clear(screen.getByRole('spinbutton', { name: /gain/i }))
-    await user.type(screen.getByRole('spinbutton', { name: /gain/i }), '7')
-    await user.click(screen.getByRole('button', { name: 'Save config' }))
-
-    expect(onFinish).toHaveBeenCalledWith({
-      channels: [
-        {
-          name: 'Channel A',
-          gain: 7,
-        },
-      ],
-    })
-  })
-
-  test('uses nested item initialValue defaults when adding a new list row', async () => {
-    const user = userEvent.setup()
-    const onFinish = vi.fn()
-
-    render(
-      <Form
-        onFinish={onFinish}
-        schema={[
-          {
-            key: 'channels',
-            type: 'list',
-            name: 'channels',
-            label: 'Channels',
-            addButtonText: 'Add channel',
-            itemLabel: 'Channel',
-            fields: [
-              {
-                key: 'name',
-                name: 'name',
-                component: 'input',
-                label: 'Channel name',
-                initialValue: 'Default channel',
-              },
-              {
-                key: 'gain',
-                name: 'gain',
-                component: 'number',
-                label: 'Gain',
-                initialValue: 5,
-              },
-            ],
-          },
-        ]}
-      >
-        <button type="submit">Save config</button>
-      </Form>,
-    )
-
-    await user.click(screen.getByRole('button', { name: 'Add channel' }))
-    await user.click(screen.getByRole('button', { name: 'Save config' }))
-
-    expect(onFinish).toHaveBeenCalledWith({
-      channels: [
-        {
-          name: 'Default channel',
-          gain: 5,
-        },
-      ],
-    })
-  })
-
-  test('supports async validator rules in schema fields', async () => {
-    const user = userEvent.setup()
-    const onFinish = vi.fn()
-
-    render(
-      <Form
-        onFinish={onFinish}
-        schema={[
-          {
-            key: 'name',
-            name: 'name',
-            type: 'input',
-            label: 'Name',
-            rules: [
-              {
-                async validator(_, value) {
-                  if (value === 'duplicate') {
-                    throw new Error('Name already exists')
-                  }
-                },
-              },
-            ],
-          },
-        ]}
-      >
-        <button type="submit">Submit</button>
-      </Form>,
-    )
-
-    await user.type(screen.getByRole('textbox', { name: /name/i }), 'duplicate')
-    await user.click(screen.getByRole('button', { name: 'Submit' }))
-
-    expect(await screen.findByText('Name already exists')).toBeInTheDocument()
-    expect(onFinish).not.toHaveBeenCalled()
-
-    await user.clear(screen.getByRole('textbox', { name: /name/i }))
-    await user.type(screen.getByRole('textbox', { name: /name/i }), 'unique')
-    await user.click(screen.getByRole('button', { name: 'Submit' }))
+    const input = screen.getByRole('textbox', { name: '名称' })
+    await user.clear(input)
+    await user.type(input, 'Progress')
+    await user.click(screen.getByRole('button', { name: '提交' }))
 
     await waitFor(() => {
-      expect(onFinish).toHaveBeenCalledWith({ name: 'unique' })
+      expect(onFinish).toHaveBeenCalledWith({ name: 'Progress' })
     })
   })
 
-  test('disables add and remove actions when list min/max boundaries are reached', async () => {
+  test('supports composition with Form.List', async () => {
     const user = userEvent.setup()
+    const onFinish = vi.fn()
 
     render(
       <Form
-        schema={[
-          {
-            key: 'channels',
-            type: 'list',
-            name: 'channels',
-            label: 'Channels',
-            addButtonText: 'Add channel',
-            removeButtonText: 'Remove channel',
-            minItems: 1,
-            maxItems: 1,
-            initialValue: [{ name: 'Channel A' }],
-            fields: [
-              {
-                key: 'name',
-                name: 'name',
-                component: 'input',
-                label: 'Channel name',
-              },
-            ],
-          },
-        ]}
-      />,
-    )
-
-    expect(screen.getByRole('button', { name: 'Add channel' })).toBeDisabled()
-    expect(screen.getByRole('button', { name: 'Remove channel' })).toBeDisabled()
-
-    await user.click(screen.getByRole('button', { name: 'Add channel' }))
-
-    expect(screen.getAllByRole('textbox', { name: /channel name/i })).toHaveLength(1)
-  })
-
-  test('can render schema only without children passthrough', () => {
-    render(
-      <Form
-        schemaOnly
-        schema={[
-          {
-            key: 'operator',
-            name: 'operator',
-            type: 'input',
-            label: 'Operator',
-          },
-        ]}
+        onFinish={onFinish}
+        initialValues={{ channels: [{ name: '默认通道' }] }}
       >
-        <button type="submit">Hidden action</button>
+        <Form.List name="channels">
+          {(fields, { add }) => (
+            <>
+              {fields.map((field) => (
+                <Form.Item
+                  key={field.key}
+                  label="通道名称"
+                  name={[field.name, 'name']}
+                >
+                  <input aria-label={`通道名称-${field.key}`} />
+                </Form.Item>
+              ))}
+              <button type="button" onClick={() => add({ name: '新增通道' })}>
+                添加通道
+              </button>
+            </>
+          )}
+        </Form.List>
+        <button type="submit">保存</button>
       </Form>,
     )
 
-    expect(screen.getByRole('textbox', { name: /operator/i })).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'Hidden action' })).not.toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: '添加通道' }))
+    await user.click(screen.getByRole('button', { name: '保存' }))
+
+    await waitFor(() => {
+      expect(onFinish).toHaveBeenCalledWith({
+        channels: [{ name: '默认通道' }, { name: '新增通道' }],
+      })
+    })
   })
 })

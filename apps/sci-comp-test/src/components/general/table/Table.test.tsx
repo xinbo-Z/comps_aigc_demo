@@ -1,4 +1,12 @@
-import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from 'vitest'
+import {
+  afterAll,
+  afterEach,
+  beforeAll,
+  describe,
+  expect,
+  test,
+  vi,
+} from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { render, screen, waitFor, within } from '../../../support/render'
 import { Table, type TableColumnsType, type TableProps } from '@sci-comp/core'
@@ -105,7 +113,9 @@ describe('Table', () => {
     rerender(
       <Table<TestRow>
         columns={renderColumns}
-        dataSource={[{ id: '1', name: 'Alpha', status: 'Running', throughput: 24 }]}
+        dataSource={[
+          { id: '1', name: 'Alpha', status: 'Running', throughput: 24 },
+        ]}
         rowKey="id"
       />,
     )
@@ -276,5 +286,25 @@ describe('Table', () => {
     expect(tableRoot).toHaveAttribute('data-virtual', 'true')
     expect(tableRoot).toHaveAttribute('data-scroll-x', '720')
     expect(tableRoot).toHaveAttribute('data-scroll-y', '240')
+  })
+
+  test('keeps sorting and filtering driven by the wrapped antd table', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn<NonNullable<TableProps<TestRow>['onChange']>>()
+
+    render(
+      <Table<TestRow>
+        columns={columns}
+        dataSource={dataSource}
+        rowKey="id"
+        onChange={onChange}
+      />,
+    )
+
+    await user.click(screen.getByText('Throughput'))
+
+    await waitFor(() => {
+      expect(onChange).toHaveBeenCalled()
+    })
   })
 })

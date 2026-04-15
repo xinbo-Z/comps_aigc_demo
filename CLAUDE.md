@@ -25,6 +25,9 @@
 - 遵循 Ant Design v6 的 API 设计风格和交互模式
 - 通用基础组件必须基于 Ant Design v6 官方组件进行封装开发，不允许仅参考其视觉风格而使用原生 HTML 或完全自定义实现替代
 - Button / Input / Table / Form 当前必须满足该封装约束，后续 Modal / Tabs 也必须遵循同样原则
+- 基础 wrapper 允许的增强仅限于：antd props 透传、少量语义映射、样式收敛、a11y 增强、少量默认行为
+- 基础 wrapper 禁止承载：自定义 DSL、复杂运行时规则引擎、动态表单编排、业务流程逻辑、明显偏离 antd 心智模型的大量新增 API
+- 高阶能力必须以独立组件承载，不能继续堆积在基础 wrapper 中；例如 schema 驱动表单能力应放在独立的 SchemaForm 中，而不是基础 Form 中
 - 组件文档放在 `apps/sci-comp-documention/`，组件测试放在 `apps/sci-comp-test/`
 
 ## 禁止事项

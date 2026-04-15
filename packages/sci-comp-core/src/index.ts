@@ -16,9 +16,12 @@ export type {
   TableSelection,
   TableVirtualScrollConfig,
 } from './components/general/table'
-export { Form } from './components/general/form'
+export { Form, SchemaForm } from './components/general/form'
 export type {
+  FormComponentType,
   FormProps,
+  SchemaFormComponentType,
+  SchemaFormProps,
   FormSchemaBaseField,
   FormSchemaConditionContext,
   FormSchemaDefinition,

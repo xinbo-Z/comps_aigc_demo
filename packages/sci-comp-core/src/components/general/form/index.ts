@@ -1,6 +1,10 @@
-export { Form } from './Form'
+export { Form } from './FormRuntime'
+export { SchemaForm } from './SchemaForm'
 export type {
+  FormComponentType,
   FormProps,
+  SchemaFormComponentType,
+  SchemaFormProps,
   FormSchemaBaseField,
   FormSchemaConditionContext,
   FormSchemaDefinition,

@@ -39,13 +39,29 @@ describe('Input', () => {
   })
 
   test('forwards standard input props to the wrapped antd input', () => {
-    render(<Input aria-label="Voltage" placeholder="Enter voltage" value="220V" readOnly />)
+    render(
+      <Input
+        aria-label="Voltage"
+        placeholder="Enter voltage"
+        value="220V"
+        readOnly
+      />,
+    )
 
     const input = screen.getByRole('textbox', { name: 'Voltage' })
 
     expect(input).toHaveAttribute('placeholder', 'Enter voltage')
     expect(input).toHaveValue('220V')
     expect(input).toHaveAttribute('readonly')
+  })
+
+  test('keeps the wrapper scope focused on light a11y enhancements', () => {
+    render(<Input label="设备名称" helperText="请输入设备名称" />)
+
+    expect(
+      screen.getByRole('textbox', { name: '设备名称' }),
+    ).toBeInTheDocument()
+    expect(screen.getByText('请输入设备名称')).toBeInTheDocument()
   })
 
   test('merges external aria-describedby with generated helper text id', () => {

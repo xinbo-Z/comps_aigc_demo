@@ -5,6 +5,7 @@ import {
   Input,
   Modal,
   Progress,
+  SchemaForm,
   Table,
   Tabs,
   createThemeTokens,
@@ -91,7 +92,9 @@ const tabsItems: TabsItem[] = [
   {
     key: 'detail',
     label: '详情',
-    children: <div style={panelStyle}>这里展示更完整的使用说明与配置细节。</div>,
+    children: (
+      <div style={panelStyle}>这里展示更完整的使用说明与配置细节。</div>
+    ),
   },
 ]
 
@@ -123,7 +126,11 @@ export function ButtonDocDemo() {
 export function InputDocDemo() {
   return (
     <div style={{ ...stackStyle, maxWidth: '360px' }}>
-      <Input label="名称" helperText="请输入组件名称" placeholder="例如：Button" />
+      <Input
+        label="名称"
+        helperText="请输入组件名称"
+        placeholder="例如：Button"
+      />
       <Input
         label="组件编码"
         helperText="编码已存在，请重新输入"
@@ -135,12 +142,33 @@ export function InputDocDemo() {
 }
 
 export function TableDocDemo() {
-  return <Table rowKey="key" columns={tableColumns} dataSource={tableData} pagination={false} />
+  return (
+    <Table
+      rowKey="key"
+      columns={tableColumns}
+      dataSource={tableData}
+      pagination={false}
+    />
+  )
 }
 
 export function FormDocDemo() {
   return (
-    <Form
+    <Form style={{ maxWidth: '420px' }}>
+      <Form.Item label="组件名称" name="name">
+        <Input placeholder="请输入组件名称" />
+      </Form.Item>
+      <Form.Item label="组件描述" name="description">
+        <Input placeholder="请输入组件描述" />
+      </Form.Item>
+      <Button type="submit">提交</Button>
+    </Form>
+  )
+}
+
+export function SchemaFormDocDemo() {
+  return (
+    <SchemaForm
       schema={formSchema}
       initialValues={{ name: 'Button', type: 'basic' }}
       style={{ maxWidth: '420px' }}
@@ -186,7 +214,9 @@ export function FullscreenModalDocDemo() {
         footer={null}
         onCancel={() => setOpen(false)}
       >
-        <div style={{ ...panelStyle, minHeight: '180px' }}>这里可以承载更大体量的预览内容。</div>
+        <div style={{ ...panelStyle, minHeight: '180px' }}>
+          这里可以承载更大体量的预览内容。
+        </div>
       </Modal>
     </div>
   )
@@ -237,7 +267,9 @@ export function EditableTabsDocDemo() {
     }
 
     const removedKey = String(targetKey)
-    const removedIndex = items.findIndex((item) => String(item.key) === removedKey)
+    const removedIndex = items.findIndex(
+      (item) => String(item.key) === removedKey,
+    )
     const nextItems = items.filter((item) => String(item.key) !== removedKey)
 
     if (!nextItems.length) {

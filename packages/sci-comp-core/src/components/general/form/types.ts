@@ -10,7 +10,31 @@ import type {
 import type { NamePath } from 'antd/es/form/interface'
 import type { ReactNode, TextareaHTMLAttributes } from 'react'
 
-export type FormSchemaFieldComponent = 'input' | 'textarea' | 'select' | 'number' | 'list'
+export interface FormProps<
+  Values extends object = Record<string, unknown>,
+> extends Omit<AntFormProps<Values>, 'children'> {
+  children?: ReactNode
+}
+
+export interface FormComponentType {
+  <Values extends object = Record<string, unknown>>(
+    props: FormProps<Values>,
+  ): ReactNode
+  ErrorList: (typeof import('antd'))['Form']['ErrorList']
+  Item: (typeof import('antd'))['Form']['Item']
+  List: (typeof import('antd'))['Form']['List']
+  Provider: (typeof import('antd'))['Form']['Provider']
+  useForm: (typeof import('antd'))['Form']['useForm']
+  useFormInstance: (typeof import('antd'))['Form']['useFormInstance']
+  useWatch: (typeof import('antd'))['Form']['useWatch']
+}
+
+export type FormSchemaFieldComponent =
+  | 'input'
+  | 'textarea'
+  | 'select'
+  | 'number'
+  | 'list'
 export type FormSchemaFieldType = FormSchemaFieldComponent
 
 export interface FormSchemaOption {
@@ -57,8 +81,23 @@ export interface FormSchemaBaseField {
   preserve?: boolean
   dependencies?: NamePath[]
   visibleWhen?: (context: FormSchemaConditionContext) => boolean
-  itemPropsWhen?: (context: FormSchemaConditionContext) => FormSchemaDynamicItemProps
-  passthroughProps?: Omit<FormItemProps, 'children' | 'label' | 'name' | 'required' | 'rules' | 'tooltip' | 'extra' | 'help' | 'hidden' | 'dependencies' | 'initialValue'>
+  itemPropsWhen?: (
+    context: FormSchemaConditionContext,
+  ) => FormSchemaDynamicItemProps
+  passthroughProps?: Omit<
+    FormItemProps,
+    | 'children'
+    | 'label'
+    | 'name'
+    | 'required'
+    | 'rules'
+    | 'tooltip'
+    | 'extra'
+    | 'help'
+    | 'hidden'
+    | 'dependencies'
+    | 'initialValue'
+  >
 }
 
 export interface FormSchemaInputField extends FormSchemaBaseField {
@@ -100,7 +139,10 @@ export interface FormSchemaListRenderContext {
   operations: FormListOperation
 }
 
-export interface FormSchemaListField extends Omit<FormSchemaBaseField, 'dependencies'> {
+export interface FormSchemaListField extends Omit<
+  FormSchemaBaseField,
+  'dependencies'
+> {
   type?: 'list'
   component?: 'list'
   itemLabel?: ReactNode
@@ -124,9 +166,16 @@ export interface FormSchemaDefinition {
   fields: readonly FormSchemaField[]
 }
 
-export interface FormProps<Values extends object = Record<string, unknown>>
-  extends Omit<AntFormProps<Values>, 'children'> {
+export interface SchemaFormProps<
+  Values extends object = Record<string, unknown>,
+> extends Omit<AntFormProps<Values>, 'children'> {
   children?: ReactNode
   schema?: readonly FormSchemaField[] | FormSchemaDefinition
   schemaOnly?: boolean
 }
+
+export type SchemaFormComponentType = <
+  Values extends object = Record<string, unknown>,
+>(
+  props: SchemaFormProps<Values>,
+) => ReactNode
