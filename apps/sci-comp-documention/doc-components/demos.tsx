@@ -4,6 +4,7 @@ import {
   Form,
   Input,
   Modal,
+  Progress,
   Table,
   Tabs,
   createThemeTokens,
@@ -263,5 +264,33 @@ export function EditableTabsDocDemo() {
       hideAdd={false}
       lazy={false}
     />
+  )
+}
+
+export function ProgressDocDemo() {
+  return (
+    <div style={{ ...stackStyle, width: '100%', maxWidth: '420px' }}>
+      <Progress percent={60} />
+      <Progress percent={80} status="success" />
+      <Progress percent={45} status="active" />
+    </div>
+  )
+}
+
+export function CircleProgressDocDemo() {
+  return (
+    <div style={rowStyle}>
+      <Progress type="circle" percent={75} />
+      <Progress type="circle" percent={45} status="exception" />
+    </div>
+  )
+}
+
+export function DashboardProgressDocDemo() {
+  return (
+    <div style={rowStyle}>
+      <Progress type="dashboard" percent={70} />
+      <Progress type="dashboard" percent={55} status="active" />
+    </div>
   )
 }

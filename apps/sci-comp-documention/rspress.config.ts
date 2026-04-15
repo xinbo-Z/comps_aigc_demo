@@ -26,6 +26,7 @@ export default defineConfig({
             { text: 'Form', link: '/components/form' },
             { text: 'Modal', link: '/components/modal' },
             { text: 'Tabs', link: '/components/tabs' },
+            { text: 'Progress', link: '/components/progress' },
           ],
         },
       ],
