@@ -22,6 +22,9 @@ export default defineConfig([
     ],
     languageOptions: {
       ecmaVersion: 2023,
+      parserOptions: {
+        tsconfigRootDir: import.meta.dirname,
+      },
       globals: {
         ...globals.browser,
         ...globals.node,
@@ -29,7 +32,10 @@ export default defineConfig([
     },
   },
   {
-    files: ['packages/**/*.{ts,tsx}', 'apps/sci-comp-documention/**/*.{ts,tsx}'],
+    files: [
+      'packages/**/*.{ts,tsx}',
+      'apps/sci-comp-documention/**/*.{ts,tsx}',
+    ],
     extends: [reactRefresh.configs.vite],
   },
 ])
