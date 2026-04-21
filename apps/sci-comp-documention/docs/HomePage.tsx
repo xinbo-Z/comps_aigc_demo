@@ -5,19 +5,23 @@ const tokens = createThemeTokens()
 const capabilities = [
   {
     title: '基于 Ant Design v6 封装',
-    description: '通用组件不只参考视觉风格，而是直接基于 antd 官方组件做 wrapper，交互与生态能力可复用。',
+    description:
+      '通用组件不只参考视觉风格，而是直接基于 antd 官方组件做 wrapper，交互与生态能力可复用。',
   },
   {
     title: '类型完整，适配 React 19',
-    description: '所有组件围绕 TypeScript 类型约束设计，面向 React 19 + TypeScript 5/6 的工程环境。',
+    description:
+      '所有组件围绕 TypeScript 类型约束设计，面向 React 19 + TypeScript 5/6 的工程环境。',
   },
   {
     title: '文档、测试、组件库协同',
-    description: '通过 monorepo 统一维护组件源码、说明文档与测试用例，减少示例与实现脱节。',
+    description:
+      '通过 monorepo 统一维护组件源码、说明文档与测试用例，减少示例与实现脱节。',
   },
   {
     title: '统一 Token 与工程规范',
-    description: '主题 Token、lint、typecheck、测试与构建流程在工作区内统一执行，便于长期演进。',
+    description:
+      '主题 Token、lint、typecheck、测试与构建流程在工作区内统一执行，便于长期演进。',
   },
 ]
 
@@ -51,6 +55,11 @@ const components = [
     title: 'Tabs',
     href: '/components/tabs',
     description: '保留原生 tabs 能力，并通过 lazy 控制内容渲染策略。',
+  },
+  {
+    title: 'Progress',
+    href: '/components/progress',
+    description: '统一线性、环形与仪表盘进度反馈，适合展示完成率与阶段状态。',
   },
 ]
 
@@ -294,10 +303,12 @@ export function HomePage() {
 
           <h1 style={styles.heroTitle}>SCI Comp 通用组件库文档站</h1>
           <p style={styles.heroSubtitle}>
-            面向业务中台与复杂表单场景，基于 Ant Design v6 官方组件进行封装，统一组件语义、类型能力与文档说明。
+            面向业务中台与复杂表单场景，基于 Ant Design v6
+            官方组件进行封装，统一组件语义、类型能力与文档说明。
           </p>
           <p style={styles.heroDesc}>
-            这里集中展示组件能力、使用方式与约束边界。首页负责帮助你快速理解项目定位，具体示例与 API 则在各组件文档页中展开。
+            这里集中展示组件能力、使用方式与约束边界。首页负责帮助你快速理解项目定位，具体示例与
+            API 则在各组件文档页中展开。
           </p>
 
           <div style={styles.heroActions}>
@@ -320,7 +331,9 @@ export function HomePage() {
             <p style={styles.panelLabel}>Current Scope</p>
             <h2 style={styles.panelTitle}>已具备基础通用组件能力</h2>
             <p style={styles.panelDesc}>
-              当前文档覆盖 Button、Input、Table、Form、Modal、Tabs，所有实现都遵循“基于 antd 官方组件封装”的约束，而不是仅复刻视觉样式。
+              当前文档覆盖
+              Button、Input、Table、Form、Modal、Tabs，所有实现都遵循“基于 antd
+              官方组件封装”的约束，而不是仅复刻视觉样式。
             </p>
           </div>
 
@@ -329,7 +342,11 @@ export function HomePage() {
               <a
                 key={item.title}
                 href={item.href}
-                style={{ ...styles.pill, textDecoration: 'none', color: tokens.colorText }}
+                style={{
+                  ...styles.pill,
+                  textDecoration: 'none',
+                  color: tokens.colorText,
+                }}
               >
                 {item.title}
               </a>
@@ -351,7 +368,11 @@ export function HomePage() {
 
         <div style={styles.cardGrid}>
           {capabilities.map((item) => (
-            <InfoCard key={item.title} title={item.title} description={item.description} />
+            <InfoCard
+              key={item.title}
+              title={item.title}
+              description={item.description}
+            />
           ))}
         </div>
       </section>
