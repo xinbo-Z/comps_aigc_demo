@@ -12,10 +12,12 @@
 ## Capabilities
 
 ### New Capabilities
+
 - `progress-component`: 提供基于 Ant Design v6 Progress 组件封装的通用进度展示能力，覆盖组件导出、文档说明和测试验证
 
 ### Modified Capabilities
-- None
+
+- 无
 
 ## Impact
 

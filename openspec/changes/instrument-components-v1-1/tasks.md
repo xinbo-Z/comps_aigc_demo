@@ -1,40 +1,40 @@
-## 1. Professional Instrument Foundation
+## 1. 专业仪器基础能力
 
-- [ ] 1.1 Define shared advanced instrument types and extension contracts for streaming data, export modes, threshold rules, and layout state
-- [ ] 1.2 Establish the internal module structure for advanced charting, control-panel primitives, parameter templates, and streaming-table state
-- [ ] 1.3 Define how advanced instrument components are exported from the instrument layer without breaking MVP consumers
+- [ ] 1.1 定义流式数据、导出模式、阈值规则和布局状态所需的共享高级仪器类型与扩展契约
+- [ ] 1.2 建立高级图表、控制面板原语、参数模板和流式表格状态的内部模块结构
+- [ ] 1.3 定义如何在不破坏 MVP 使用方的前提下，从 instrument 层导出高级仪器组件
 
-## 2. Advanced Waveform and Spectrum Components
+## 2. 高级波形与谱图组件
 
-- [ ] 2.1 Implement Canvas-first rendering infrastructure for high-density `WaveformChart` datasets
-- [ ] 2.2 Add realtime stream update handling, zoom, pan, crosshair inspection, multi-channel overlays, and export behavior to `WaveformChart`
-- [ ] 2.3 Implement the new `SpectrumChart` component with support for multiple spectrum types and overlay comparison
-- [ ] 2.4 Add peak annotation, peak integration, peak picking, and baseline-correction interactions to `SpectrumChart`
-- [ ] 2.5 Add stories and automated tests covering dense-data, interaction, overlay, and export scenarios for advanced chart components
+- [ ] 2.1 为高密度 `WaveformChart` 数据集实现以 Canvas 为主的渲染基础设施
+- [ ] 2.2 为 `WaveformChart` 增加实时流更新处理、缩放、平移、十字准星检查、多通道叠加和导出行为
+- [ ] 2.3 实现新的 `SpectrumChart` 组件，支持多种谱图类型和叠加对比
+- [ ] 2.4 为 `SpectrumChart` 增加峰值标注、峰积分、峰值识别和基线校正交互
+- [ ] 2.5 为高级图表组件补充 stories 和自动化测试，覆盖高密度数据、交互、叠加和导出场景
 
-## 3. Instrument Control Panel
+## 3. 仪器控制面板
 
-- [ ] 3.1 Implement `InstrumentPanel` layout composition with drag-based rearrangement support
-- [ ] 3.2 Implement realtime status indicators and reusable knob and slider control primitives for the panel
-- [ ] 3.3 Implement alarm-threshold configuration flows and typed control-output contracts for `InstrumentPanel`
-- [ ] 3.4 Add stories and automated tests covering layout, status, control interaction, and threshold scenarios for `InstrumentPanel`
+- [ ] 3.1 实现支持拖拽重排的 `InstrumentPanel` 布局组合能力
+- [ ] 3.2 为面板实现实时状态指示，以及可复用的旋钮与滑块控制原语
+- [ ] 3.3 为 `InstrumentPanel` 实现报警阈值配置流程和类型化控制输出契约
+- [ ] 3.4 为 `InstrumentPanel` 补充 stories 和自动化测试，覆盖布局、状态、控件交互和阈值场景
 
-## 4. Advanced Parameter Configuration
+## 4. 高级参数配置
 
-- [ ] 4.1 Extend `ParamConfigForm` with grouped collapsible parameter sections
-- [ ] 4.2 Implement parameter linkage and constraint handling for dependent validation scenarios
-- [ ] 4.3 Implement parameter template application and configuration import/export in JSON and YAML formats
-- [ ] 4.4 Add stories and automated tests covering grouping, dependency rules, templates, and import/export scenarios for `ParamConfigForm`
+- [ ] 4.1 为 `ParamConfigForm` 扩展可折叠分组参数区域
+- [ ] 4.2 为依赖型校验场景实现参数联动与约束处理
+- [ ] 4.3 实现参数模板应用，以及 JSON 和 YAML 格式的配置导入/导出
+- [ ] 4.4 为 `ParamConfigForm` 补充 stories 和自动化测试，覆盖分组、依赖规则、模板和导入/导出场景
 
-## 5. Streaming Realtime Data Table
+## 5. 流式实时数据表格
 
-- [ ] 5.1 Extend `RealtimeDataTable` with append-oriented streaming update behavior and bounded buffering
-- [ ] 5.2 Implement threshold-based highlighting and pause/resume controls for visible streaming updates
-- [ ] 5.3 Add stories and automated tests covering append flow, buffering, highlighting, and pause/resume scenarios for `RealtimeDataTable`
+- [ ] 5.1 为 `RealtimeDataTable` 扩展追加式流更新行为和有界缓冲
+- [ ] 5.2 实现基于阈值的高亮和可见流更新的暂停/恢复控制
+- [ ] 5.3 为 `RealtimeDataTable` 补充 stories 和自动化测试，覆盖追加流程、缓冲、高亮和暂停/恢复场景
 
-## 6. Integration and Verification
+## 6. 集成与验证
 
-- [ ] 6.1 Verify the modified MVP instrument-display capability remains usable without requiring professional expansion behaviors
-- [ ] 6.2 Verify advanced instrument components preserve typed boundaries and do not own transport protocols or orchestration logic
-- [ ] 6.3 Validate Storybook coverage and test coverage for all v1.1 professional expansion components
-- [ ] 6.4 Run the full build and test verification flow for the v1.1 instrument component expansion
+- [ ] 6.1 验证已修改的 MVP instrument-display capability 在不启用专业扩展行为时仍可正常使用
+- [ ] 6.2 验证高级仪器组件保持清晰的类型边界，且不拥有传输协议或编排逻辑职责
+- [ ] 6.3 验证所有 v1.1 专业扩展组件都具备 Storybook 覆盖和测试覆盖
+- [ ] 6.4 运行完整的构建与测试验证流程，确认 v1.1 仪器组件扩展可用

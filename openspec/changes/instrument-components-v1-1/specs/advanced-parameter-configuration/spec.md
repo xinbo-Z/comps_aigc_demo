@@ -1,40 +1,51 @@
 ## ADDED Requirements
 
-### Requirement: Advanced parameter form extends foundational form behavior
-`ParamConfigForm` SHALL extend the library’s `Form` capability with professional parameter-configuration behaviors while preserving typed parameter definitions and values.
+### Requirement: 高级参数表单 SHALL 扩展基础表单行为
 
-#### Scenario: Page uses advanced parameter configuration
-- **WHEN** a consuming page renders `ParamConfigForm` for a professional configuration workflow
-- **THEN** the component MUST provide form-driven parameter editing behavior on top of the foundational form model
+`ParamConfigForm` 应在保持参数定义和值均为强类型的前提下，扩展组件库 `Form` 的能力，以支持专业级参数配置行为。
 
-### Requirement: Advanced parameter form supports grouped presentation
-`ParamConfigForm` SHALL support parameter grouping through collapsible panels or equivalent grouped presentation structures.
+#### Scenario: 页面使用高级参数配置
 
-#### Scenario: Parameters are organized into groups
-- **WHEN** a consuming page supplies grouped parameter definitions
-- **THEN** `ParamConfigForm` MUST render those parameters within collapsible or equivalently structured grouped sections
+- **WHEN** 消费页面在专业配置工作流中渲染 `ParamConfigForm`
+- **THEN** 该组件必须在基础表单模型之上提供面向表单的参数编辑行为
 
-### Requirement: Advanced parameter form supports parameter linkage and constraints
-`ParamConfigForm` SHALL support parameter linkage and validation constraints, including cases where one parameter’s allowed values depend on another parameter.
+### Requirement: 高级参数表单 SHALL 支持分组展示
 
-#### Scenario: Parameter constraint depends on another value
-- **WHEN** the valid range or allowed value of one parameter depends on another parameter such as minimum and maximum bounds
-- **THEN** the form MUST enforce and surface that constraint during editing and validation
+`ParamConfigForm` 应通过可折叠面板或等效的分组结构支持参数分组展示。
 
-### Requirement: Advanced parameter form supports structured import and export
-`ParamConfigForm` SHALL support configuration import and export in JSON and YAML formats.
+#### Scenario: 参数被组织成分组
 
-#### Scenario: User exports parameter configuration
-- **WHEN** a user exports the current parameter configuration
-- **THEN** the component MUST provide structured output in JSON or YAML according to the selected format
+- **WHEN** 消费页面提供分组参数定义
+- **THEN** `ParamConfigForm` 必须在可折叠或等效结构化的分组区域中渲染这些参数
 
-#### Scenario: User imports parameter configuration
-- **WHEN** a user imports a supported JSON or YAML configuration payload
-- **THEN** the component MUST apply the imported configuration to the parameter form state when the payload is valid
+### Requirement: 高级参数表单 SHALL 支持参数联动与约束
 
-### Requirement: Advanced parameter form supports reusable templates
-`ParamConfigForm` SHALL support parameter templates that can initialize or replace current configuration state.
+`ParamConfigForm` 应支持参数联动和校验约束，包括某个参数的允许值依赖另一个参数的情况。
 
-#### Scenario: User applies a parameter template
-- **WHEN** a user selects an available parameter template
-- **THEN** the form MUST update its parameter state to reflect the template-defined configuration
+#### Scenario: 参数约束依赖另一个值
+
+- **WHEN** 某个参数的有效范围或允许值依赖另一个参数，例如最小值和最大值边界
+- **THEN** 表单必须在编辑和校验期间强制执行并清晰展示该约束
+
+### Requirement: 高级参数表单 SHALL 支持结构化导入与导出
+
+`ParamConfigForm` 应支持 JSON 和 YAML 格式的配置导入与导出。
+
+#### Scenario: 用户导出参数配置
+
+- **WHEN** 用户导出当前参数配置
+- **THEN** 组件必须根据所选格式提供 JSON 或 YAML 的结构化输出
+
+#### Scenario: 用户导入参数配置
+
+- **WHEN** 用户导入受支持的 JSON 或 YAML 配置载荷
+- **THEN** 当载荷有效时，组件必须将导入配置应用到参数表单状态中
+
+### Requirement: 高级参数表单 SHALL 支持可复用模板
+
+`ParamConfigForm` 应支持参数模板，用于初始化或替换当前配置状态。
+
+#### Scenario: 用户应用参数模板
+
+- **WHEN** 用户选择一个可用的参数模板
+- **THEN** 表单必须更新其参数状态，以反映模板定义的配置

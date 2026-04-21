@@ -1,45 +1,57 @@
 ## ADDED Requirements
 
-### Requirement: Library packaging and exports
-The `hik-comps` MVP SHALL produce a consumable component library build that includes JavaScript modules, TypeScript declarations, and stable public exports for business frontend applications.
+### Requirement: 组件库打包与导出 SHALL 可用
 
-#### Scenario: Consumer imports from the main entry
-- **WHEN** a business frontend project installs the library and imports from the main package entry
-- **THEN** the project MUST be able to access the public MVP components and their exported types
+`hik-comps` MVP 应产出可供消费的组件库构建结果，其中包括 JavaScript 模块、TypeScript 声明以及面向业务前端应用的稳定公共导出。
 
-#### Scenario: Consumer imports from a subpath entry
-- **WHEN** a business frontend project imports an MVP component through a documented subpath entry
-- **THEN** the component and its public types MUST resolve without requiring import from unrelated components
+#### Scenario: 使用方从主入口导入
 
-### Requirement: Theme-driven styling
-The library SHALL support theme customization through a token-driven styling model aligned with Ant Design 6 concepts and SHALL NOT require hard-coded visual values in public components.
+- **WHEN** 业务前端项目安装组件库并从主包入口导入
+- **THEN** 项目必须能够访问公共 MVP 组件及其导出类型
 
-#### Scenario: Consumer customizes theme tokens
-- **WHEN** a consuming project overrides supported theme tokens
-- **THEN** MVP components MUST reflect the customized visual values consistently
+#### Scenario: 使用方从子路径入口导入
 
-#### Scenario: Component defines visual states
-- **WHEN** a component renders default, disabled, loading, or empty visual states
-- **THEN** those states MUST use token-derived styling rather than hard-coded color values
+- **WHEN** 业务前端项目通过文档规定的子路径入口导入某个 MVP 组件
+- **THEN** 组件及其公共类型必须能够被正确解析，而不需要从无关组件处导入
 
-### Requirement: Component documentation
-Every public MVP component SHALL have Storybook documentation that demonstrates representative usage and boundary states.
+### Requirement: 主题驱动样式 SHALL 生效
 
-#### Scenario: Developer browses component stories
-- **WHEN** a developer opens Storybook for an MVP component
-- **THEN** they MUST be able to view at least one representative usage example for that component
+组件库应通过与 Ant Design 6 概念对齐的 token 驱动样式模型来支持主题定制，并且公共组件不应依赖硬编码视觉值。
 
-#### Scenario: Developer inspects boundary states
-- **WHEN** a component supports disabled, loading, or empty states
-- **THEN** Storybook MUST include stories covering those supported states
+#### Scenario: 使用方自定义主题 token
 
-### Requirement: Component quality gates
-Every public MVP component SHALL include automated tests covering core rendering behavior and key user-visible boundary states.
+- **WHEN** 消费项目覆盖受支持的主题 token
+- **THEN** MVP 组件必须一致地体现这些定制后的视觉值
 
-#### Scenario: Test suite runs for a foundational component
-- **WHEN** automated tests run for a public foundational component
-- **THEN** the tests MUST verify baseline rendering and at least one key state or interaction
+#### Scenario: 组件定义视觉状态
 
-#### Scenario: Test suite runs for an instrument component
-- **WHEN** automated tests run for a public instrument component
-- **THEN** the tests MUST verify baseline rendering and at least one key data-driven boundary state
+- **WHEN** 组件渲染默认、禁用、加载或空状态等视觉状态
+- **THEN** 这些状态必须使用基于 token 的样式，而不是硬编码颜色值
+
+### Requirement: 组件文档 SHALL 可用
+
+每个公共 MVP 组件都应具备 Storybook 文档，用于展示具有代表性的使用方式和边界状态。
+
+#### Scenario: 开发者浏览组件 stories
+
+- **WHEN** 开发者打开某个 MVP 组件的 Storybook
+- **THEN** 他们必须能够看到该组件至少一个具有代表性的使用示例
+
+#### Scenario: 开发者查看边界状态
+
+- **WHEN** 某个组件支持禁用、加载或空状态
+- **THEN** Storybook 必须包含覆盖这些受支持状态的 stories
+
+### Requirement: 组件质量门禁 SHALL 生效
+
+每个公共 MVP 组件都应包含自动化测试，覆盖核心渲染行为和关键的用户可见边界状态。
+
+#### Scenario: 为基础组件运行测试套件
+
+- **WHEN** 为某个公共基础组件运行自动化测试
+- **THEN** 测试必须验证基础渲染以及至少一个关键状态或交互
+
+#### Scenario: 为仪器组件运行测试套件
+
+- **WHEN** 为某个公共仪器组件运行自动化测试
+- **THEN** 测试必须验证基础渲染以及至少一个关键的数据驱动边界状态

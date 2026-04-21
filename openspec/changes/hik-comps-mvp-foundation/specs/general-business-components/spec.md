@@ -1,41 +1,52 @@
 ## ADDED Requirements
 
-### Requirement: Foundational component set
-The library SHALL provide the foundational business-facing components `Button`, `Form`, `Table`, and `Modal` as part of the MVP public API.
+### Requirement: 基础组件集合 SHALL 可用
 
-#### Scenario: Developer consumes foundational components
-- **WHEN** a business frontend developer uses the MVP library
-- **THEN** the developer MUST be able to import and render `Button`, `Form`, `Table`, and `Modal`
+组件库应将 `Button`、`Form`、`Table` 和 `Modal` 作为 MVP 公共 API 的基础业务组件提供。
 
-### Requirement: Ant Design-aligned usage model
-Foundational components SHALL preserve a usage model familiar to Ant Design 6 users while allowing the library to define business-friendly defaults.
+#### Scenario: 开发者使用基础组件
 
-#### Scenario: Developer uses common button patterns
-- **WHEN** a developer configures common button variants and states
-- **THEN** the component behavior MUST remain understandable to a developer familiar with Ant Design button usage
+- **WHEN** 业务前端开发者使用 MVP 组件库
+- **THEN** 开发者必须能够导入并渲染 `Button`、`Form`、`Table` 和 `Modal`
 
-#### Scenario: Developer uses common form, table, and modal patterns
-- **WHEN** a developer configures standard form layout, data table display, or modal confirmation flows
-- **THEN** the API model MUST remain consistent with common Ant Design mental models
+### Requirement: 使用模型 SHALL 与 Ant Design 对齐
 
-### Requirement: Strongly typed public props
-Each foundational component SHALL expose complete TypeScript props definitions without relying on `any` in its public API.
+基础组件应保持对 Ant Design 6 用户来说熟悉的使用模型，同时允许组件库定义更适合业务场景的默认行为。
 
-#### Scenario: Developer consumes component props in TypeScript
-- **WHEN** a TypeScript project uses a foundational component
-- **THEN** the component props MUST provide explicit type information for supported public usage
+#### Scenario: 开发者使用常见按钮模式
 
-### Requirement: Business-friendly default states
-Each foundational component SHALL provide usable default behavior for common business scenarios and SHALL support relevant boundary states.
+- **WHEN** 开发者配置常见的按钮变体和状态
+- **THEN** 对熟悉 Ant Design 按钮用法的开发者而言，组件行为必须保持可理解
 
-#### Scenario: Developer renders a button in a loading or disabled state
-- **WHEN** a developer configures a `Button` as loading or disabled
-- **THEN** the visual and interaction behavior MUST clearly communicate that state
+#### Scenario: 开发者使用常见表单、表格和弹窗模式
 
-#### Scenario: Developer renders a table with no data
-- **WHEN** a developer renders `Table` without rows
-- **THEN** the component MUST present a clear empty state
+- **WHEN** 开发者配置标准表单布局、数据表格展示或弹窗确认流程
+- **THEN** API 模型必须与常见的 Ant Design 心智模型保持一致
 
-#### Scenario: Developer renders a modal for confirmation
-- **WHEN** a developer opens `Modal` for a business confirmation flow
-- **THEN** the component MUST present a consistent title, content, and action area structure
+### Requirement: 强类型公共 props SHALL 可用
+
+每个基础组件都应暴露完整的 TypeScript props 定义，且其公共 API 不得依赖 `any`。
+
+#### Scenario: 开发者在 TypeScript 中使用组件 props
+
+- **WHEN** TypeScript 项目使用某个基础组件
+- **THEN** 该组件的 props 必须为支持的公共用法提供明确的类型信息
+
+### Requirement: 面向业务场景的默认状态 SHALL 可用
+
+每个基础组件都应为常见业务场景提供可用的默认行为，并支持相关的边界状态。
+
+#### Scenario: 开发者渲染加载中或禁用状态的按钮
+
+- **WHEN** 开发者将 `Button` 配置为加载中或禁用状态
+- **THEN** 其视觉和交互行为必须清晰传达该状态
+
+#### Scenario: 开发者渲染无数据表格
+
+- **WHEN** 开发者在没有行数据时渲染 `Table`
+- **THEN** 组件必须展示清晰的空状态
+
+#### Scenario: 开发者渲染确认类弹窗
+
+- **WHEN** 开发者在业务确认流程中打开 `Modal`
+- **THEN** 组件必须提供一致的标题、内容和操作区结构

@@ -1,58 +1,74 @@
 ## ADDED Requirements
 
-### Requirement: Waveform chart supports high-density rendering
-`WaveformChart` SHALL support high-density waveform visualization using a Canvas-based rendering path suitable for professional instrument scenarios with very large datasets.
+### Requirement: 波形图 SHALL 支持高密度渲染
 
-#### Scenario: Million-point waveform dataset is rendered
-- **WHEN** `WaveformChart` receives a waveform dataset containing up to millions of data points
-- **THEN** the component MUST render through a Canvas-oriented path rather than requiring DOM-scale point rendering
+`WaveformChart` 应支持基于 Canvas 的高密度波形可视化渲染路径，以满足超大数据集的专业仪器场景。
 
-### Requirement: Waveform chart supports realtime stream integration
-`WaveformChart` SHALL support realtime waveform updates through typed stream-oriented input contracts compatible with WebSocket-driven applications, without requiring the component to own connection lifecycle management.
+#### Scenario: 渲染百万点波形数据集
 
-#### Scenario: Realtime waveform updates arrive from an external stream
-- **WHEN** a consuming application supplies incremental waveform updates sourced from a WebSocket-driven data flow
-- **THEN** `WaveformChart` MUST update the rendered waveform without requiring the component to establish or manage the WebSocket connection itself
+- **WHEN** `WaveformChart` 接收到最多可达百万级数据点的波形数据集
+- **THEN** 组件必须通过面向 Canvas 的渲染路径进行绘制，而不是依赖 DOM 规模的点渲染
 
-### Requirement: Waveform chart supports navigation and inspection interactions
-`WaveformChart` SHALL support zooming, panning, and crosshair-based inspection for professional waveform analysis workflows.
+### Requirement: 波形图 SHALL 支持实时流集成
 
-#### Scenario: User inspects waveform details
-- **WHEN** a user zooms, pans, or activates crosshair inspection on a rendered waveform
-- **THEN** the component MUST update the viewport or inspection state to support detailed review of the waveform
+`WaveformChart` 应通过面向流的强类型输入契约支持实时波形更新，并兼容 WebSocket 驱动的应用，但不要求组件自身管理连接生命周期。
 
-### Requirement: Waveform chart supports multi-channel overlays and export
-`WaveformChart` SHALL support multi-channel overlay display and SHALL allow waveform output export in PNG, SVG, and CSV formats.
+#### Scenario: 来自外部流的实时波形更新到达
 
-#### Scenario: Multiple channels are displayed together
-- **WHEN** a consuming page supplies multiple waveform channels for comparison
-- **THEN** `WaveformChart` MUST render those channels in an overlay visualization with distinguishable presentation
+- **WHEN** 消费应用提供来自 WebSocket 驱动数据流的增量波形更新
+- **THEN** `WaveformChart` 必须更新已渲染的波形，而不要求组件自己建立或管理 WebSocket 连接
 
-#### Scenario: User exports waveform output
-- **WHEN** a user triggers waveform export
-- **THEN** the component MUST provide export output in PNG, SVG, or CSV according to the selected export mode
+### Requirement: 波形图 SHALL 支持导航与检查交互
 
-### Requirement: Spectrum chart supports multiple spectrum workflows
-`SpectrumChart` SHALL support professional spectrum visualization for infrared, ultraviolet, mass spectrum, and similarly structured spectral data types.
+`WaveformChart` 应支持缩放、平移和基于十字准星的检查，以满足专业波形分析工作流。
 
-#### Scenario: Spectrum type changes by domain
-- **WHEN** a consuming page configures `SpectrumChart` for a supported spectrum type
-- **THEN** the component MUST render the supplied spectral data within a consistent interaction model
+#### Scenario: 用户检查波形细节
 
-### Requirement: Spectrum chart supports peak-oriented analysis interactions
-`SpectrumChart` SHALL support peak annotation, peak integration, and peak picking as user-facing spectrum analysis interactions.
+- **WHEN** 用户在已渲染波形上执行缩放、平移或启用十字准星检查
+- **THEN** 组件必须更新视口或检查状态，以支持对波形进行细致查看
 
-#### Scenario: User marks or analyzes peaks
-- **WHEN** a user performs a supported peak annotation, integration, or picking interaction
-- **THEN** the component MUST surface the resulting peak-oriented state within the chart interaction model
+### Requirement: 波形图 SHALL 支持多通道叠加与导出
 
-### Requirement: Spectrum chart supports overlays and baseline correction
-`SpectrumChart` SHALL support multi-spectrum overlay comparison and baseline-correction workflows suitable for professional analysis views.
+`WaveformChart` 应支持多通道叠加展示，并允许以 PNG、SVG 和 CSV 格式导出波形输出。
 
-#### Scenario: Multiple spectra are compared
-- **WHEN** a consuming page supplies multiple spectra for comparison
-- **THEN** `SpectrumChart` MUST render an overlay comparison view that preserves distinguishable series presentation
+#### Scenario: 同时显示多个通道
 
-#### Scenario: Baseline correction is applied
-- **WHEN** a user applies a supported baseline-correction action
-- **THEN** the component MUST update the spectrum presentation to reflect the corrected baseline state
+- **WHEN** 消费页面为对比场景提供多个波形通道
+- **THEN** `WaveformChart` 必须以具有区分度的叠加可视化方式渲染这些通道
+
+#### Scenario: 用户导出波形输出
+
+- **WHEN** 用户触发波形导出
+- **THEN** 组件必须根据所选导出模式提供 PNG、SVG 或 CSV 输出
+
+### Requirement: 谱图组件 SHALL 支持多种谱图工作流
+
+`SpectrumChart` 应支持红外、紫外、质谱以及类似结构的谱图数据类型的专业谱图可视化。
+
+#### Scenario: 谱图类型按领域切换
+
+- **WHEN** 消费页面将 `SpectrumChart` 配置为受支持的某种谱图类型
+- **THEN** 组件必须在一致的交互模型中渲染所提供的谱图数据
+
+### Requirement: 谱图组件 SHALL 支持面向峰值的分析交互
+
+`SpectrumChart` 应支持峰值标注、峰积分和峰值识别，作为用户可见的谱图分析交互。
+
+#### Scenario: 用户标记或分析峰值
+
+- **WHEN** 用户执行受支持的峰值标注、积分或识别交互
+- **THEN** 组件必须在图表交互模型中呈现由此产生的峰值相关状态
+
+### Requirement: 谱图组件 SHALL 支持叠加与基线校正
+
+`SpectrumChart` 应支持多谱图叠加对比，以及适用于专业分析视图的基线校正工作流。
+
+#### Scenario: 对比多个谱图
+
+- **WHEN** 消费页面提供多个谱图用于对比
+- **THEN** `SpectrumChart` 必须渲染叠加对比视图，并保持各序列展示可区分
+
+#### Scenario: 应用基线校正
+
+- **WHEN** 用户执行受支持的基线校正操作
+- **THEN** 组件必须更新谱图展示，以反映校正后的基线状态

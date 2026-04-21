@@ -1,101 +1,115 @@
 ## Context
 
-The existing `hik-comps` MVP establishes a display-first instrument component baseline centered on business frontend usability, typed APIs, and clean separation between UI components and backend/domain workflows. That baseline is intentionally limited: `WaveformChart`, `RealtimeDataTable`, and `ParamConfigForm` support representative instrument pages but avoid heavier realtime, analysis, and control concerns.
+现有 `hik-comps` MVP 建立了一个以展示为主的仪器组件基础，强调业务前端可用性、类型化 API，以及 UI 组件与后端/领域工作流之间的清晰分离。这一基础是有意受限的：`WaveformChart`、`RealtimeDataTable` 和 `ParamConfigForm` 能支持具有代表性的仪器页面，但刻意避开了更重的实时、分析和控制类职责。
 
-The new v1.1 change defines a professional expansion layer for instrument scenarios that demand higher data density, richer interaction, and more specialized operator-facing controls. This includes advanced charting (`WaveformChart`, `SpectrumChart`), control surfaces (`InstrumentPanel`), parameter management (`ParamConfigForm`), and streaming table behavior (`RealtimeDataTable`).
+新的 v1.1 变更定义了一层面向仪器场景的专业扩展，用于应对更高数据密度、更丰富交互以及更专业的操作员控制需求。这一扩展涵盖高级图表（`WaveformChart`、`SpectrumChart`）、控制界面（`InstrumentPanel`）、参数管理（`ParamConfigForm`）和流式表格行为（`RealtimeDataTable`）。
 
-The design must preserve a key architectural rule from the MVP: components may support professional UI behavior and typed integration contracts, but they must not absorb device protocol logic, backend orchestration, or full scientific computation platforms. This makes the expansion powerful without turning the component library into an application framework.
+设计必须保留 MVP 中的一条关键架构规则：组件可以支持专业级 UI 行为和类型化集成契约，但不能吸收设备协议逻辑、后端编排能力或完整科学计算平台职责。这样既能让扩展足够强大，又不会把组件库演变成应用框架。
 
 ## Goals / Non-Goals
 
 **Goals:**
-- Define a professional expansion package for instrument-oriented components on top of the MVP.
-- Support high-density and streaming visualization requirements for waveform and spectrum scenarios.
-- Support advanced instrument-facing interaction patterns such as zooming, panning, crosshairs, overlays, peak operations, templates, threshold alarms, and bounded streaming buffers.
-- Clarify which responsibilities belong inside reusable components versus which remain in consuming applications or integration adapters.
-- Preserve compatibility with the existing two-layer `general` and `instrument` component model.
-- Keep the specification implementation-aware where needed, including Canvas-first rendering and extension from foundational `Form` and `Table` primitives.
+
+- 在 MVP 之上定义一个面向仪器组件的专业扩展包。
+- 支持波形和谱图场景下的高密度与流式可视化需求。
+- 支持高级仪器交互模式，例如缩放、平移、十字准星、叠加、峰值操作、模板、阈值报警以及有界流缓冲。
+- 明确哪些职责应属于可复用组件，哪些职责应保留在消费应用或集成适配层。
+- 保持与现有 `general` 和 `instrument` 双层组件模型兼容。
+- 在必要时让规范具备实现感知能力，包括以 Canvas 为主的渲染，以及基于基础 `Form` 和 `Table` 原语进行扩展。
 
 **Non-Goals:**
-- Defining device communication protocols, transport reconnection policies, or application-specific WebSocket lifecycle management.
-- Building a full scientific analysis engine or generic algorithm platform inside the component library.
-- Encoding orchestration workflows such as experiment execution, approval flows, safety interlocks, or permission systems.
-- Guaranteeing desktop-native scientific workstation performance for every possible dataset shape.
-- Collapsing the MVP display-first components and the v1.1 professional package into a single undifferentiated contract.
+
+- 定义设备通信协议、传输重连策略或特定应用的 WebSocket 生命周期管理。
+- 在组件库内部构建完整的科学分析引擎或通用算法平台。
+- 编码实验执行、审批流、安全联锁或权限系统等编排工作流。
+- 为所有可能的数据集形态保证桌面原生科学工作站级别的性能。
+- 将 MVP 的展示型组件和 v1.1 专业包合并成一个不加区分的统一契约。
 
 ## Decisions
 
-### Decision: Treat v1.1 as a professional expansion package, not an MVP rewrite
-The v1.1 change will add advanced capabilities in separate capability specs while preserving the MVP as the baseline contract.
+### Decision: 将 v1.1 视为专业扩展包，而不是重写 MVP
 
-**Rationale:** This keeps the initial library approachable for business frontend developers while allowing a richer professional tier for advanced instrument use cases.
+v1.1 变更将在独立的 capability spec 中增加高级能力，同时保留 MVP 作为基础契约。
 
-**Alternatives considered:**
-- Rewrite the MVP capability directly: simpler on paper, but it erases the distinction between baseline and advanced behaviors.
-- Split each component into a separate change: more incremental, but weaker as a coherent v1.1 package.
-
-### Decision: Use Canvas-first rendering for high-density waveform scenarios
-`WaveformChart` will be specified as Canvas-first for professional rendering scenarios, especially where datasets may reach millions of points. The specification will allow typed stream integration contracts without embedding transport management into the component.
-
-**Rationale:** Canvas is the practical rendering path for dense waveform plotting and interactive navigation at this scale.
+**Rationale:** 这样既能保持初始组件库对业务前端开发者足够友好，也能为高级仪器使用场景提供更丰富的专业层级。
 
 **Alternatives considered:**
-- SVG-first rendering: easier DOM inspection, but not appropriate for million-point rendering.
-- Force a specific chart engine in the spec: too implementation-specific for this stage.
 
-### Decision: Keep advanced chart interactions inside the UI contract, not the data-source contract
-Features such as zoom, pan, crosshair, overlays, peak operations, baseline correction, and export will be treated as component-level capabilities. Data transport, persistence, and domain computation orchestration remain outside the component boundary.
+- 直接重写 MVP capability：纸面上更简单，但会抹平基础行为与高级行为之间的区分。
+- 将每个组件拆成独立变更：更增量，但无法形成连贯的 v1.1 包。
 
-**Rationale:** These interactions define the reusable UI value of the professional package, while transport and orchestration differ significantly across deployments.
+### Decision: 在高密度波形场景下采用以 Canvas 为主的渲染
 
-**Alternatives considered:**
-- Push more logic into the app layer: reduces component complexity, but undermines reuse.
-- Let charts fully own data subscription and analysis pipelines: increases convenience in narrow cases but creates brittle coupling.
+`WaveformChart` 将被规定为在专业渲染场景中以 Canvas 为主，尤其适用于数据集规模可能达到百万点的情况。规范允许定义类型化的流式集成契约，但不会让组件嵌入传输管理职责。
 
-### Decision: Compose advanced components from foundational primitives where possible
-`ParamConfigForm` will explicitly build on the library’s `Form` capability, and `RealtimeDataTable` will build on the library’s `Table` capability. `InstrumentPanel` will compose reusable interaction primitives such as indicators, knobs, and sliders rather than acting as a monolith.
-
-**Rationale:** This preserves consistency with the library architecture and reduces divergence between general and instrument layers.
+**Rationale:** 在这种规模下，Canvas 是处理高密度波形绘制和交互式导航的现实路径。
 
 **Alternatives considered:**
-- Rebuild everything as isolated specialized widgets: faster for isolated features, but duplicates patterns and weakens consistency.
-- Force all advanced behavior into generic foundational components: overcomplicates the base layer.
 
-### Decision: Specify bounded streaming behavior instead of infinite live-state ownership
-`RealtimeDataTable` and realtime `WaveformChart` scenarios will support append-oriented updates and configurable buffering, but the library will not be responsible for durable stream history, reconnect semantics, or upstream event guarantees.
+- 以 SVG 为主渲染：更易于 DOM 检查，但不适合百万点渲染。
+- 在 spec 中强制指定某个图表引擎：在当前阶段过于实现细节化。
 
-**Rationale:** Reusable UI components can manage presentation buffers, but durable stream management belongs to the host application.
+### Decision: 将高级图表交互保持在 UI 契约内，而不是纳入数据源契约
 
-**Alternatives considered:**
-- Infinite in-memory history inside components: unrealistic for long-running sessions.
-- No internal buffering semantics: too vague for a professional streaming UI.
+缩放、平移、十字准星、叠加、峰值操作、基线校正和导出等特性都将作为组件级能力来定义。数据传输、持久化和领域计算编排则保持在组件边界之外。
 
-### Decision: Model professional controls as typed UI contracts with explicit state feedback
-`InstrumentPanel` will support draggable layout composition, realtime status indicators, knob/slider interactions, and alarm-threshold configuration as part of the reusable UI contract, while leaving command dispatch and safety policy outside the component.
-
-**Rationale:** Operator-facing control surfaces need reusable UI semantics, but transport and policy vary by instrument platform.
+**Rationale:** 这些交互定义了专业扩展包可复用的 UI 价值，而传输和编排在不同部署中差异很大。
 
 **Alternatives considered:**
-- Keep `InstrumentPanel` display-only: too limited for the intended professional tier.
-- Embed command execution and alarm policy engines: outside component-library scope.
+
+- 将更多逻辑下推到应用层：可减少组件复杂度，但会削弱复用价值。
+- 让图表完全拥有数据订阅和分析流水线：在少数场景更方便，但会带来脆弱耦合。
+
+### Decision: 尽可能基于基础原语组合高级组件
+
+`ParamConfigForm` 将显式构建在组件库的 `Form` 能力之上，`RealtimeDataTable` 将构建在组件库的 `Table` 能力之上。`InstrumentPanel` 将组合可复用交互原语，如指示器、旋钮和滑块，而不是作为一个单体组件存在。
+
+**Rationale:** 这样可以保持与组件库整体架构的一致性，并减少通用层与仪器层之间的分化。
+
+**Alternatives considered:**
+
+- 将所有内容都重建为隔离的专业小部件：对独立功能开发更快，但会重复模式并削弱一致性。
+- 把所有高级行为强行塞进通用基础组件：会让基础层过度复杂化。
+
+### Decision: 规定有界流式行为，而不是无限实时状态托管
+
+`RealtimeDataTable` 和实时 `WaveformChart` 场景将支持追加式更新和可配置缓冲，但组件库不会负责持久流历史、重连语义或上游事件可靠性保证。
+
+**Rationale:** 可复用 UI 组件可以管理展示缓冲，但持久流管理应由宿主应用负责。
+
+**Alternatives considered:**
+
+- 在组件内维护无限内存历史：对于长时间运行会话并不现实。
+- 不定义内部缓冲语义：对于专业流式 UI 来说过于模糊。
+
+### Decision: 将专业控制建模为具备显式状态反馈的类型化 UI 契约
+
+`InstrumentPanel` 将支持拖拽式布局组合、实时状态指示、旋钮/滑块交互以及报警阈值配置，作为可复用 UI 契约的一部分；命令下发和安全策略仍保留在组件外部。
+
+**Rationale:** 面向操作员的控制界面需要可复用的 UI 语义，但传输和策略会因仪器平台而异。
+
+**Alternatives considered:**
+
+- 让 `InstrumentPanel` 只负责展示：对于目标专业层级来说过于有限。
+- 嵌入命令执行和报警策略引擎：超出组件库范围。
 
 ## Risks / Trade-offs
 
-- [Scope growth across multiple advanced components] A single v1.1 package may become too broad during implementation → Mitigation: keep capability boundaries explicit and allow implementation to phase within one change.
-- [Performance expectations outrun practical browser limits] Million-point visualization and streaming workloads may differ by environment → Mitigation: specify required behavior and rendering strategy without promising universal workstation-grade guarantees.
-- [Algorithm ambiguity in spectrum features] Peak picking, integration, and baseline correction can imply deep domain algorithms → Mitigation: specify stable user-facing behaviors and extension points rather than a full algorithm platform contract.
-- [Control-panel responsibilities drift into orchestration] Consumers may expect protocol execution, interlocks, or workflow management inside `InstrumentPanel` → Mitigation: make UI-control versus system-orchestration boundaries explicit in specs.
-- [Complexity leakage into base components] Advanced form and table behavior may pressure the foundational layer to absorb specialized logic → Mitigation: keep advanced capabilities specified as instrument-layer extensions on top of stable base components.
+- [多个高级组件导致范围膨胀] 单个 v1.1 包在实现时可能变得过于宽泛 → Mitigation: 明确 capability 边界，并允许在同一变更下分阶段实现。
+- [性能预期超过浏览器实际能力] 百万点可视化和流式负载在不同环境中表现可能差异很大 → Mitigation: 规定行为与渲染策略，但不承诺通用工作站级保障。
+- [谱图功能中的算法含义不清] 峰值识别、积分和基线校正可能暗示深度领域算法 → Mitigation: 规定稳定的用户可见行为和扩展点，而不是完整算法平台契约。
+- [控制面板职责漂移到编排层] 使用方可能期望在 `InstrumentPanel` 内处理协议执行、联锁或工作流管理 → Mitigation: 在 spec 中明确 UI 控制与系统编排的边界。
+- [复杂度泄漏到基础组件] 高级表单和表格行为可能反向推动基础层吸收专业逻辑 → Mitigation: 将高级能力明确规定为构建在稳定基础组件之上的 instrument 层扩展。
 
 ## Migration Plan
 
-- Keep the existing MVP `instrument-display-components` capability as the baseline for display-first scenarios.
-- Add new v1.1 professional capability specs for advanced visualization, control, parameter management, and streaming tables.
-- Update the modified MVP instrument capability so that its requirements remain intentionally minimal and non-conflicting with the professional package.
-- Implement advanced components and extensions behind the new capability boundaries without breaking baseline consumers.
+- 保留现有 MVP `instrument-display-components` capability 作为展示型场景的基础能力。
+- 为高级可视化、控制、参数管理和流式表格新增 v1.1 专业 capability specs。
+- 更新已修改的 MVP 仪器 capability，使其要求保持有意的精简，并避免与专业包发生冲突。
+- 在新的 capability 边界下实现高级组件和扩展能力，同时不破坏基础使用方。
 
 ## Open Questions
 
-- Whether spectrum peak operations should require pluggable analysis adapters from the start or can begin with a smaller built-in interaction model.
-- How much of `InstrumentPanel` layout persistence should be owned by the component versus the consuming application.
-- Whether export behavior should share a common library-wide export abstraction across waveform and spectrum components.
+- 谱图峰值操作是否应从一开始就要求可插拔分析适配器，还是可以先从更轻量的内建交互模型起步。
+- `InstrumentPanel` 的布局持久化能力应由组件拥有多少，或应更多交由消费应用负责。
+- 波形组件和谱图组件的导出行为是否应共享一个库级统一导出抽象。

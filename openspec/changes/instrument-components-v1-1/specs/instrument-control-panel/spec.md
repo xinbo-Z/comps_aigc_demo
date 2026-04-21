@@ -1,29 +1,37 @@
 ## ADDED Requirements
 
-### Requirement: Instrument panel supports configurable layout composition
-`InstrumentPanel` SHALL support configurable panel layouts that can be rearranged through drag-based interactions.
+### Requirement: 仪器面板 SHALL 支持可配置布局组合
 
-#### Scenario: Operator rearranges panel modules
-- **WHEN** a user drags supported panel modules to new positions
-- **THEN** `InstrumentPanel` MUST update the layout arrangement to reflect the new composition
+`InstrumentPanel` 应支持可配置的面板布局，并可通过拖拽交互重新排列。
 
-### Requirement: Instrument panel supports realtime status indication
-`InstrumentPanel` SHALL support realtime status indicators for instrument-facing operational states.
+#### Scenario: 操作员重排面板模块
 
-#### Scenario: Status indicator changes state
-- **WHEN** a consuming page updates the status model for an instrument signal or indicator
-- **THEN** the panel MUST render the corresponding realtime status indication in the UI
+- **WHEN** 用户将受支持的面板模块拖拽到新位置
+- **THEN** `InstrumentPanel` 必须更新布局排列，以反映新的组合方式
 
-### Requirement: Instrument panel supports domain-specific control inputs
-`InstrumentPanel` SHALL support operator-facing control inputs including knob-style controls and slider controls.
+### Requirement: 仪器面板 SHALL 支持实时状态指示
 
-#### Scenario: User adjusts a knob or slider control
-- **WHEN** a user interacts with a supported knob or slider control
-- **THEN** the panel MUST surface the changed control value through its typed interaction contract
+`InstrumentPanel` 应支持面向仪器操作状态的实时状态指示。
 
-### Requirement: Instrument panel supports alarm-threshold configuration
-`InstrumentPanel` SHALL support UI flows for viewing and adjusting alarm thresholds without embedding device-protocol execution inside the component.
+#### Scenario: 状态指示器发生变化
 
-#### Scenario: User updates an alarm threshold
-- **WHEN** a user edits a configured alarm threshold in the panel
-- **THEN** the panel MUST expose the updated threshold state for the consuming application to process
+- **WHEN** 消费页面更新某个仪器信号或指示器的状态模型
+- **THEN** 面板必须在 UI 中渲染对应的实时状态指示
+
+### Requirement: 仪器面板 SHALL 支持领域特定控制输入
+
+`InstrumentPanel` 应支持面向操作员的控制输入，包括旋钮式控件和滑块控件。
+
+#### Scenario: 用户调整旋钮或滑块控件
+
+- **WHEN** 用户与受支持的旋钮或滑块控件交互
+- **THEN** 面板必须通过其强类型交互契约暴露变化后的控制值
+
+### Requirement: 仪器面板 SHALL 支持报警阈值配置
+
+`InstrumentPanel` 应支持查看和调整报警阈值的 UI 流程，但不在组件内部嵌入设备协议执行逻辑。
+
+#### Scenario: 用户更新报警阈值
+
+- **WHEN** 用户在面板中编辑已配置的报警阈值
+- **THEN** 面板必须暴露更新后的阈值状态，供消费应用进一步处理
