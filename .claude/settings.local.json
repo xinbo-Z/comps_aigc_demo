@@ -18,7 +18,16 @@
       "Bash(openspec status:*)",
       "Bash(openspec instructions:*)",
       "Bash(pnpm --dir \"/Users/zhangxinbo/ai_verify_pro/comps_aigc_demo/packages/sci-comp-core\" build)",
-      "Bash(pnpm --dir \"/Users/zhangxinbo/ai_verify_pro/comps_aigc_demo/packages/sci-comp-core\" dev)"
+      "Bash(pnpm --dir \"/Users/zhangxinbo/ai_verify_pro/comps_aigc_demo/packages/sci-comp-core\" dev)",
+      "Bash(openspec new *)",
+      "Bash(openspec list *)",
+      "Bash(openspec --help)",
+      "Bash(openspec help *)",
+      "Bash(openspec validate *)",
+      "Bash(openspec show *)"
     ]
+  },
+  "preferences": {
+    "language": "zh-CN"
   }
 }
