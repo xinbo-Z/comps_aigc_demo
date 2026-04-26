@@ -50,3 +50,12 @@
 
 - **WHEN** 用户查看某个基础 Form 案例
 - **THEN** 页面 SHALL 提供完整源码说明，并允许用户展开和复制案例代码
+
+### Requirement: Form 文档页 SHALL 与 SchemaForm 页面保持稳定分层
+
+文档系统 SHALL 保持基础 Form 页与 SchemaForm 页的说明口径一致，使两者在增强型文档体系中形成稳定分流关系。
+
+#### Scenario: 基础 Form 页面与 SchemaForm 页面使用一致分流口径
+
+- **WHEN** 团队同时维护基础 Form 与 SchemaForm 文档页
+- **THEN** 两个页面 SHALL 对静态表单能力与配置驱动高阶能力使用一致的职责划分与分流表述

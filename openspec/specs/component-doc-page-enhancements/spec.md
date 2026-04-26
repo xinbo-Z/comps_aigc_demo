@@ -25,7 +25,7 @@
 
 #### Scenario: 推广到更多组件类型时保持统一骨架
 
-- **WHEN** 团队将增强型组件页从 Button / Progress 推广到 Input、Modal、Tabs、Table 或 Form
+- **WHEN** 团队将增强型组件页从 Button / Progress 推广到 Input、Modal、Tabs、Table、Form 或 SchemaForm
 - **THEN** 页面 SHALL 继续复用统一核心骨架，而不是按组件重新发明不同章节体系
 
 ### Requirement: 组件文档增强页 SHALL 支持结构化示例元数据
@@ -78,12 +78,12 @@
 
 #### Scenario: 高频复杂组件页保持主表范围收敛
 
-- **WHEN** 团队为 Tabs、Table 或 Form 等更高信息密度组件维护增强型页面
+- **WHEN** 团队为 Tabs、Table、Form 或 SchemaForm 等更高信息密度组件维护增强型页面
 - **THEN** API 主表 SHALL 继续以高频字段和 wrapper 关键语义为主，而不是扩展成 Ant Design 官方文档的全量参数镜像
 
 #### Scenario: 复杂组件优先排除非主路径能力
 
-- **WHEN** 团队维护 Table、Tabs 或 Form 等更高信息密度组件页
+- **WHEN** 团队维护 Table、Tabs、Form 或 SchemaForm 等更高信息密度组件页
 - **THEN** 排序、筛选、复杂缓存、动态编排或同等级非主路径能力 SHALL 默认不进入主案例与主 API 表，除非 wrapper 在这些能力上引入了额外语义且缺失会直接妨碍理解主用法
 
 ### Requirement: 组件文档增强页 SHALL 支持源码说明与代码展开能力

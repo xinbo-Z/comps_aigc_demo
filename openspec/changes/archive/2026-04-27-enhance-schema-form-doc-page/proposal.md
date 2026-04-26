@@ -13,9 +13,11 @@
 ## Capabilities
 
 ### New Capabilities
+
 - `schema-form-docs`: 定义 SchemaForm 增强型文档页的内容结构、案例范围、API 主表与边界说明要求
 
 ### Modified Capabilities
+
 - `component-doc-standardization`: 将统一中文文档结构扩展到 SchemaForm 页面，保持基础 Form 与高阶表单页在同一模板下清晰分层
 - `component-doc-page-enhancements`: 将增强型组件页骨架、结构化案例元数据、源码说明与高频优先 API 表的约束扩展到 SchemaForm 文档页
 - `form-docs`: 明确基础 Form 文档页与 SchemaForm 文档页之间的分流关系与职责边界表述

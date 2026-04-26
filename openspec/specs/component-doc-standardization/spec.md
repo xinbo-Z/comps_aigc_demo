@@ -30,7 +30,7 @@
 
 #### Scenario: 推广到更多组件时保持一致结构
 
-- **WHEN** 团队将增强型组件页从 Button / Progress 推广到 Input、Modal、Tabs、Table 或 Form
+- **WHEN** 团队将增强型组件页从 Button / Progress 推广到 Input、Modal、Tabs、Table、Form 或 SchemaForm
 - **THEN** 各页面 SHALL 继续遵循统一中文结构，而不是按组件形成彼此割裂的页面组织方式
 
 #### Scenario: 基础 wrapper 与高阶能力页允许表达边界
