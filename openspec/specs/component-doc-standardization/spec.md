@@ -28,6 +28,21 @@
 - **WHEN** 团队为组件页引入 API 表格、结构化案例或源码展示能力
 - **THEN** 这些增强能力 SHALL 作为统一中文结构的一部分被组织，而不是脱离原有模板单独生长
 
+#### Scenario: 推广到更多组件时保持一致结构
+
+- **WHEN** 团队将增强型组件页从 Button / Progress 推广到 Input、Modal、Tabs、Table 或 Form
+- **THEN** 各页面 SHALL 继续遵循统一中文结构，而不是按组件形成彼此割裂的页面组织方式
+
+#### Scenario: 基础 wrapper 与高阶能力页允许表达边界
+
+- **WHEN** 团队同时维护基础 wrapper 页面与更高阶能力页面
+- **THEN** 文档模板 SHALL 允许页面在统一骨架下清晰表达职责边界，而不是将两类能力混写在同一页中
+
+#### Scenario: 说明字段职责在不同页面间保持稳定
+
+- **WHEN** 团队为多个增强型组件页维护选型建议、封装说明与源码说明
+- **THEN** 文档模板 SHALL 允许这些说明字段在不同页面间保持稳定职责，而不是让同类信息在不同区块间漂移
+
 ### Requirement: 组件文档规范化 SHALL 保持 OpenSpec artifacts 为中文
 
 系统 SHALL 要求该能力相关的 proposal、design、tasks 与后续 specs 正文统一使用中文表达，以保持 OpenSpec 与项目文档语言一致。
