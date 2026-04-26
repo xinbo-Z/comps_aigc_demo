@@ -1,25 +1,6 @@
-import PreviewBlock from '../../doc-components/PreviewBlock'
-import { ButtonDocDemo } from '../../doc-components/demos'
+import { ComponentDocPage } from '../../doc-components/ComponentDoc'
+import { buttonDocPage } from '../../doc-components/componentDocData'
 
 # Button
 
-`Button` 是基于 Ant Design Button 的通用封装组件。
-
-## 实时预览
-
-<PreviewBlock
-  title="基础按钮"
-  description="保留 antd 按钮的交互能力，并通过 variant、size 等语义化属性统一业务侧使用方式。"
->
-  <ButtonDocDemo />
-</PreviewBlock>
-
-## 使用示例
-
-```tsx
-import { Button } from '@sci-comp/core'
-
-export function Example() {
-  return <Button variant="primary">创建</Button>
-}
-```
+<ComponentDocPage page={buttonDocPage} />
