@@ -13,7 +13,7 @@ export const formDocPage: ComponentDocPageData = {
   definition: [
     '基于 antd Form 做轻量封装，继续沿用 `Form.Item + children` 的组合式使用方式。',
     '默认使用 `layout="vertical"`、`colon={false}` 与 `requiredMark={false}`，帮助统一项目内基础表单的默认风格。',
-    '适合静态字段布局、基础校验、默认值与提交流程，不默认承载 schema 驱动字段生成或复杂动态编排。',
+    '适合静态字段布局、基础校验、默认值与提交流程，不默认承载 schema 驱动字段生成或复杂动态编排；这类能力应进入独立的 SchemaForm 页面。',
   ],
   scenarios: [
     '基础录入、设置页和弹窗内的组合式表单场景。',

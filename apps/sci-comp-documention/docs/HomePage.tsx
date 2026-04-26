@@ -49,6 +49,12 @@ const components = [
     description: '基础组合式表单封装，聚焦布局、校验、默认值与提交流程。',
   },
   {
+    title: 'SchemaForm',
+    href: '/components/schema-form',
+    description:
+      '高阶 schema 驱动表单封装，现已覆盖动态规则、列表编排与 schemaOnly 等主路径能力。',
+  },
+  {
     title: 'Modal',
     href: '/components/modal',
     description:
@@ -337,7 +343,7 @@ export function HomePage() {
             <h2 style={styles.panelTitle}>已具备基础通用组件能力</h2>
             <p style={styles.panelDesc}>
               当前文档覆盖
-              Button、Input、Table、Form、Modal、Tabs、Progress，且各组件页已统一到增强型文档骨架，便于查阅示例、常用
+              Button、Input、Table、Form、SchemaForm、Modal、Tabs、Progress，且各组件页已统一到增强型文档骨架，便于查阅示例、常用
               API 与封装边界。
             </p>
           </div>

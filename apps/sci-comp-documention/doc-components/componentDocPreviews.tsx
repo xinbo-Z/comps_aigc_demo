@@ -31,6 +31,12 @@ export {
   ProgressStatusPreview,
 } from './component-doc-previews/progressPreviews'
 export {
+  SchemaFormBasicPreview,
+  SchemaFormDynamicPreview,
+  SchemaFormListPreview,
+  SchemaFormSchemaOnlyPreview,
+} from './component-doc-previews/schemaFormPreviews'
+export {
   TableBasicPreview,
   TableEmptyPreview,
   TablePaginationPreview,
