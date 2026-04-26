@@ -34,27 +34,31 @@ const components = [
   {
     title: 'Input',
     href: '/components/input',
-    description: '表单输入封装，兼顾标签、提示信息与无障碍关联。',
+    description:
+      '表单输入封装，现已补齐标签、辅助说明、错误态与只读态等增强示例。',
   },
   {
     title: 'Table',
     href: '/components/table',
-    description: '面向列表场景的表格封装，支持空态、分页与选择能力。',
+    description:
+      '面向列表场景的表格封装，现已覆盖分页、空态、滚动与虚拟滚动主路径。',
   },
   {
     title: 'Form',
     href: '/components/form',
-    description: '支持 schema 与组合式使用方式的表单封装。',
+    description: '基础组合式表单封装，聚焦布局、校验、默认值与提交流程。',
   },
   {
     title: 'Modal',
     href: '/components/modal',
-    description: '保留 antd 弹窗能力，并补充 fullscreen 语义扩展。',
+    description:
+      '保留 antd 弹窗能力，现已明确 fullscreen 的布局语义与使用边界。',
   },
   {
     title: 'Tabs',
     href: '/components/tabs',
-    description: '保留原生 tabs 能力，并通过 lazy 控制内容渲染策略。',
+    description:
+      '保留原生 tabs 能力，现已覆盖 lazy、可编辑标签页与基础状态场景。',
   },
   {
     title: 'Progress',
@@ -333,8 +337,8 @@ export function HomePage() {
             <h2 style={styles.panelTitle}>已具备基础通用组件能力</h2>
             <p style={styles.panelDesc}>
               当前文档覆盖
-              Button、Input、Table、Form、Modal、Tabs，所有实现都遵循“基于 antd
-              官方组件封装”的约束，而不是仅复刻视觉样式。
+              Button、Input、Table、Form、Modal、Tabs、Progress，且各组件页已统一到增强型文档骨架，便于查阅示例、常用
+              API 与封装边界。
             </p>
           </div>
 

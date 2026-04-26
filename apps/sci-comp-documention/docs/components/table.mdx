@@ -1,31 +1,6 @@
-import PreviewBlock from '../../doc-components/PreviewBlock'
-import { TableDocDemo } from '../../doc-components/demos'
+import { ComponentDocPage } from '../../doc-components/ComponentDoc'
+import { tableDocPage } from '../../doc-components/componentDocData'
 
 # Table
 
-`Table` 是基于 Ant Design Table 的通用封装组件，用于列表展示、分页、筛选和排序，并保留 `virtualScroll` 这样的轻量语义映射。
-
-## 实时预览
-
-<PreviewBlock
-  title="基础表格"
-  description="文档页使用最小数据集展示通用列表能力，便于快速确认列定义与数据渲染结果。"
->
-  <TableDocDemo />
-</PreviewBlock>
-
-## 使用示例
-
-```tsx
-import { Table } from '@sci-comp/core'
-
-const columns = [
-  { title: '名称', dataIndex: 'name', key: 'name' },
-]
-
-const dataSource = [{ key: '1', name: 'Alpha' }]
-
-export function Example() {
-  return <Table rowKey="key" columns={columns} dataSource={dataSource} />
-}
-```
+<ComponentDocPage page={tableDocPage} />

@@ -1,32 +1,6 @@
-import PreviewBlock from '../../doc-components/PreviewBlock'
-import { FormDocDemo } from '../../doc-components/demos'
+import { ComponentDocPage } from '../../doc-components/ComponentDoc'
+import { formDocPage } from '../../doc-components/componentDocData'
 
 # Form
 
-`Form` 是基于 Ant Design Form 的通用封装组件，保留 antd 的组合式用法，并补充统一的默认布局配置。
-
-## 实时预览
-
-<PreviewBlock
-  title="基础表单"
-  description="基础 Form 保持 antd Form 的组合式心智模型，适合通过 Form.Item 与 children 自行组织表单结构。"
->
-  <FormDocDemo />
-</PreviewBlock>
-
-## 使用示例
-
-```tsx
-import { Button, Form, Input } from '@sci-comp/core'
-
-export function Example() {
-  return (
-    <Form>
-      <Form.Item label="名称" name="name">
-        <Input placeholder="请输入名称" />
-      </Form.Item>
-      <Button type="submit">提交</Button>
-    </Form>
-  )
-}
-```
+<ComponentDocPage page={formDocPage} />

@@ -1,52 +1,6 @@
-import PreviewBlock from '../../doc-components/PreviewBlock'
-import { BasicModalDocDemo, FullscreenModalDocDemo } from '../../doc-components/demos'
+import { ComponentDocPage } from '../../doc-components/ComponentDoc'
+import { modalDocPage } from '../../doc-components/componentDocData'
 
 # Modal
 
-`Modal` 是基于 Ant Design Modal 的通用封装组件，当前保留 antd 原生弹窗能力，并额外提供 `fullscreen` 语义化扩展。
-
-## 实时预览
-
-<PreviewBlock
-  title="基础弹窗"
-  description="通过按钮触发受控弹窗，避免文档页加载时直接出现遮罩层。"
->
-  <BasicModalDocDemo />
-</PreviewBlock>
-
-## 使用示例
-
-```tsx
-import { Modal } from '@sci-comp/core'
-
-export function Example() {
-  return (
-    <Modal open title="确认发布" okText="确认" cancelText="取消">
-      请确认当前配置后再继续发布。
-    </Modal>
-  )
-}
-```
-
-## Fullscreen 实时预览
-
-<PreviewBlock
-  title="全屏弹窗"
-  description="fullscreen 语义扩展适合大体量预览或复杂配置场景。"
->
-  <FullscreenModalDocDemo />
-</PreviewBlock>
-
-## Fullscreen 示例
-
-```tsx
-import { Modal } from '@sci-comp/core'
-
-export function FullscreenExample() {
-  return (
-    <Modal open title="全屏预览" fullscreen>
-      这里可以承载更大体量的预览内容。
-    </Modal>
-  )
-}
-```
+<ComponentDocPage page={modalDocPage} />
