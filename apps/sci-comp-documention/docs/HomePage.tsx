@@ -29,7 +29,7 @@ const components = [
   {
     title: 'Button',
     href: '/components/button',
-    description: '按钮语义封装，统一 variant、size 与交互状态。',
+    description: '按钮语义封装，现已补齐多案例、常用属性 API 与源码展开能力。',
   },
   {
     title: 'Input',
@@ -59,7 +59,8 @@ const components = [
   {
     title: 'Progress',
     href: '/components/progress',
-    description: '统一线性、环形与仪表盘进度反馈，适合展示完成率与阶段状态。',
+    description:
+      '统一线性、环形与仪表盘进度反馈，现已支持多案例对比、API 表与源码查阅。',
   },
 ]
 
