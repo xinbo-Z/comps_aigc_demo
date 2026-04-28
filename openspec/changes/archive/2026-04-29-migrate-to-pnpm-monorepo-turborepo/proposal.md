@@ -14,6 +14,7 @@
 ## Capabilities
 
 ### New Capabilities
+
 - `monorepo-workspace`: 定义基于 pnpm workspace 与 turborepo 的多包仓库结构、任务编排和包边界。
 - `component-library-package`: 定义纯组件库 package 的源码组织、构建输出、依赖边界和导出约束。
 - `documentation-site`: 定义基于 Rspress 的 `sci-comp-documention` 文档站能力，包括组件文档、示例和使用说明承载方式。
@@ -21,6 +22,7 @@
 - `engineering-automation`: 定义统一代码规范、提交规范和自动化校验工作流，包括 ESLint、Prettier、Husky、lint-staged、commitlint 和 cz-git。
 
 ### Modified Capabilities
+
 - None.
 
 ## Impact

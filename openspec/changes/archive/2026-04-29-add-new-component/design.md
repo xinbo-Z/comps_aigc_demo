@@ -14,6 +14,7 @@
 ## Goals / Non-Goals
 
 **Goals:**
+
 - 在 `@sci-comp/core` 中新增基于 Ant Design v6 Progress 的通用 Progress 组件
 - 为 Progress 提供统一的类型导出与包级导出入口
 - 在文档站中补充 Progress 组件文档页与导航入口
@@ -21,6 +22,7 @@
 - 保持组件新增方式与当前通用组件目录、导出结构和文档组织方式一致
 
 **Non-Goals:**
+
 - 不引入新的第三方依赖或新的构建方式
 - 不重构现有组件目录结构或导出模式
 - 不在本次变更中扩展超出基础封装范围的复杂业务能力
@@ -29,46 +31,58 @@
 ## Decisions
 
 ### 1. 沿用现有“general 组件 + index 导出”的组织模式
+
 **Decision:** Progress 组件应放入 `packages/sci-comp-core/src/components/general/progress/`，并通过该目录局部导出后，再在 `packages/sci-comp-core/src/index.ts` 中统一对外导出。
 
 **Why:**
+
 - 当前 Button / Input / Table / Form / Modal / Tabs 都采用相同模式，新增 Progress 继续沿用可以保持目录一致性与心智一致性。
 - 这种方式对文档站和测试工程最友好，不需要引入额外的注册机制或特殊导入路径。
 
 **Alternatives considered:**
+
 - 直接把 Progress 写入某个已有目录：会破坏单组件单目录的边界。
 - 新增单独的 feedback 分类目录：目前仓库没有采用按组件类型分层的结构，单独为 Progress 引入新目录会造成结构不统一。
 
 ### 2. 基于 antd Progress 做轻量 wrapper，而不是自定义实现
+
 **Decision:** Progress 必须直接基于 Ant Design v6 的 Progress 组件封装，优先复用其原生能力与类型，而不是自定义一套进度条实现。
 
 **Why:**
+
 - 这符合当前项目的核心约束：通用基础组件必须基于 antd 官方组件进行封装开发。
 - antd 的 Progress 已覆盖线性进度、圆形进度、状态展示等主流基础能力，轻量封装即可满足组件生态补全目标。
 
 **Alternatives considered:**
+
 - 自定义样式实现一套 Progress：不符合现有封装原则，也会增加维护与兼容成本。
 - 直接透传 antd Progress 不做封装：虽然可用，但不利于统一组件库的导出入口、类型命名和后续文档/测试维护。
 
 ### 3. 文档站采用“新增组件页 + 更新 sidebar”的最小接入方式
+
 **Decision:** 在 `apps/sci-comp-documention/docs/components/` 下新增 Progress 文档页，并在 `apps/sci-comp-documention/rspress.config.ts` 中补充 Progress 入口。
 
 **Why:**
+
 - 当前文档站组件页就是按单组件文档维护，导航由 `rspress.config.ts` 统一维护，新增 Progress 应沿用现有路径。
 - 这样可以让 Progress 立即进入组件列表，与现有 Button / Input / Table / Form / Modal / Tabs 保持一致展示方式。
 
 **Alternatives considered:**
+
 - 只更新 README 或首页，不新增独立组件页：无法形成完整组件文档入口。
 - 单独做聚合页介绍 Progress：不符合当前文档站“一个组件一个页面”的组织方式。
 
 ### 4. 测试工程沿用源码 alias 验证基础渲染能力
+
 **Decision:** 在 `apps/sci-comp-test` 中新增 Progress 组件测试文件，继续通过现有 alias 直接验证核心包源码行为。
 
 **Why:**
+
 - `vitest.config.ts` 已将 `@sci-comp/core` 指向核心包源码入口，新增组件测试可以无缝复用现有测试模式。
 - 对于单个基础组件新增，优先补齐渲染、基础状态和关键 props 显示逻辑的测试即可，覆盖范围与当前组件测试方式保持一致。
 
 **Alternatives considered:**
+
 - 仅靠文档站手动验证：不足以形成自动化回归保障。
 - 为 Progress 引入更复杂的视觉回归测试：超出当前测试工作区既有模式，不适合作为本次首选方案。
 
