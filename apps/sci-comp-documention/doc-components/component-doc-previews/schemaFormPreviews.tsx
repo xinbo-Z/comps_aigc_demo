@@ -1,6 +1,4 @@
-import { Button, SchemaForm, createThemeTokens, type FormSchemaField } from '@sci-comp/core'
-
-const tokens = createThemeTokens()
+import { Button, SchemaForm, type FormSchemaField } from '@sci-comp/core'
 
 const stackStyle = {
   display: 'flex',
@@ -12,9 +10,9 @@ const stackStyle = {
 const panelStyle = {
   padding: '16px',
   borderRadius: '14px',
-  border: `1px solid ${tokens.colorPrimary}1F`,
-  background: `${tokens.colorPrimary}08`,
-  color: tokens.colorText,
+  border: '1px solid var(--rp-c-divider-light)',
+  background: 'var(--rp-c-bg-soft)',
+  color: 'var(--rp-c-text-1)',
   fontSize: '13px',
   lineHeight: 1.8,
 } as const
@@ -206,7 +204,8 @@ export function SchemaFormDynamicPreview() {
         <Button type="submit">保存发布策略</Button>
       </SchemaForm>
       <div style={panelStyle}>
-        切换“发布方式”后可以看到 `visibleWhen` 与 `itemPropsWhen` 对字段展示和必填规则的影响。
+        切换“发布方式”后可以看到 `visibleWhen` 与 `itemPropsWhen`
+        对字段展示和必填规则的影响。
       </div>
     </div>
   )
@@ -235,7 +234,9 @@ export function SchemaFormSchemaOnlyPreview() {
         style={{ maxWidth: '420px' }}
       />
       <div style={panelStyle}>
-        `schemaOnly` 适合只由配置描述字段结构的场景；如果仍需额外插入自定义操作区，可继续通过 children 组合补充。
+        `schemaOnly`
+        适合只由配置描述字段结构的场景；如果仍需额外插入自定义操作区，可继续通过
+        children 组合补充。
       </div>
     </div>
   )

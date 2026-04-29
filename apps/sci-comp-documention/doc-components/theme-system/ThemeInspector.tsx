@@ -1,28 +1,34 @@
 import type { CSSProperties } from 'react'
 import type { ThemeConfig } from 'antd'
 import type { SciInstrumentThemeTokens } from '@sci-comp/core'
-import { createThemeTokens } from '@sci-comp/core'
 import { legacyVariableMappings, usageGuidance } from './themePlaygroundData'
-
-const tokens = createThemeTokens()
 
 const sectionStyle: CSSProperties = {
   display: 'grid',
   gap: 16,
 }
 
+const titleStyle: CSSProperties = {
+  margin: 0,
+  color: 'var(--rp-c-text-1)',
+}
+
 const cardStyle: CSSProperties = {
   padding: 20,
   borderRadius: 20,
-  border: `1px solid ${tokens.colorBorderBase}`,
-  background: tokens.colorSurfaceBase,
+  border: '1px solid var(--rp-c-divider-light)',
+  background: 'var(--rp-c-bg)',
+  boxShadow: 'var(--rp-c-shadow-3)',
+  color: 'var(--rp-c-text-1)',
 }
 
 const codeStyle: CSSProperties = {
   margin: 0,
   padding: 16,
   borderRadius: 16,
-  background: tokens.colorSurfaceMuted,
+  background: 'var(--rp-c-bg-soft)',
+  color: 'var(--rp-c-text-code)',
+  border: '1px solid var(--rp-c-divider-light)',
   overflowX: 'auto',
   fontSize: 12,
   lineHeight: 1.6,
@@ -43,7 +49,7 @@ export function ThemeInspector({
 }: ThemeInspectorProps) {
   return (
     <section style={sectionStyle}>
-      <h3 style={{ margin: 0 }}>主题输出检查</h3>
+      <h3 style={titleStyle}>主题输出检查</h3>
       <div style={cardStyle}>
         <h4 style={{ marginTop: 0 }}>overrides</h4>
         <pre style={codeStyle}>{JSON.stringify(overrides, null, 2)}</pre>

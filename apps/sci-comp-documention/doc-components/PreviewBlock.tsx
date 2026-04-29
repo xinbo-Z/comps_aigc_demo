@@ -1,16 +1,24 @@
-import type { ReactNode } from 'react'
-import { createThemeTokens } from '@sci-comp/core'
+import type { CSSProperties, ReactNode } from 'react'
 
-const tokens = createThemeTokens()
+const surfaces = {
+  card: 'var(--rp-c-bg)',
+  cardMuted: 'var(--rp-c-bg-soft)',
+  border: 'var(--rp-c-divider-light)',
+  borderStrong: 'var(--rp-c-divider)',
+  text: 'var(--rp-c-text-1)',
+  textSecondary: 'var(--rp-c-text-2)',
+  brandTint: 'var(--rp-c-brand-tint)',
+  shadow: 'var(--rp-c-shadow-3)',
+} as const
 
 const styles = {
   wrapper: {
     margin: '20px 0',
     padding: '20px',
     borderRadius: '20px',
-    border: `1px solid ${tokens.colorPrimary}22`,
-    background: `linear-gradient(180deg, ${tokens.colorPrimary}08 0%, ${tokens.colorBgContainer} 100%)`,
-    boxShadow: `0 12px 32px ${tokens.colorPrimary}12`,
+    border: `1px solid ${surfaces.border}`,
+    background: `linear-gradient(180deg, ${surfaces.brandTint} 0%, ${surfaces.card} 100%)`,
+    boxShadow: surfaces.shadow,
   },
   header: {
     marginBottom: '14px',
@@ -19,21 +27,21 @@ const styles = {
     margin: '0 0 6px',
     fontSize: '16px',
     fontWeight: 700,
-    color: tokens.colorText,
+    color: surfaces.text,
   },
   description: {
     margin: 0,
     fontSize: '14px',
     lineHeight: 1.7,
-    color: `${tokens.colorText}B8`,
+    color: surfaces.textSecondary,
   },
   body: {
     padding: '18px',
     borderRadius: '16px',
-    background: tokens.colorBgContainer,
-    border: `1px dashed ${tokens.colorPrimary}26`,
+    background: surfaces.cardMuted,
+    border: `1px dashed ${surfaces.borderStrong}`,
   },
-} as const
+} as const satisfies Record<string, CSSProperties>
 
 interface PreviewBlockProps {
   title?: string
@@ -41,7 +49,11 @@ interface PreviewBlockProps {
   children: ReactNode
 }
 
-export default function PreviewBlock({ title, description, children }: PreviewBlockProps) {
+export default function PreviewBlock({
+  title,
+  description,
+  children,
+}: PreviewBlockProps) {
   return (
     <div style={styles.wrapper}>
       {title || description ? (

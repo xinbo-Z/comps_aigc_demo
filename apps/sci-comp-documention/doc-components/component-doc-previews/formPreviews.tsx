@@ -1,6 +1,5 @@
-import { Button, Form, Input, createThemeTokens } from '@sci-comp/core'
-
-const tokens = createThemeTokens()
+import type { CSSProperties } from 'react'
+import { Button, Form, Input } from '@sci-comp/core'
 
 const stackStyle = {
   display: 'flex',
@@ -12,9 +11,9 @@ const stackStyle = {
 const cardStyle = {
   padding: '16px',
   borderRadius: '14px',
-  border: `1px solid ${tokens.colorPrimary}1F`,
-  background: `${tokens.colorPrimary}08`,
-} as const
+  border: '1px solid var(--rp-c-divider-light)',
+  background: 'var(--rp-c-bg-soft)',
+} as const satisfies CSSProperties
 
 export function FormBasicPreview() {
   return (

@@ -1,8 +1,22 @@
-import { useMemo, useState } from 'react'
-import { Button, createThemeTokens } from '@sci-comp/core'
+import { useMemo, useState, type CSSProperties } from 'react'
+import { Button } from '@sci-comp/core'
 import type { ReactNode } from 'react'
 
-const tokens = createThemeTokens()
+const surfaces = {
+  card: 'var(--rp-c-bg)',
+  cardMuted: 'var(--rp-c-bg-soft)',
+  cardSubtle: 'var(--rp-c-bg-mute)',
+  border: 'var(--rp-c-divider-light)',
+  borderStrong: 'var(--rp-c-divider)',
+  text: 'var(--rp-c-text-1)',
+  textSecondary: 'var(--rp-c-text-2)',
+  textTertiary: 'var(--rp-c-text-3)',
+  brand: 'var(--rp-c-brand)',
+  brandTint: 'var(--rp-c-brand-tint)',
+  codeText: 'var(--rp-c-text-code)',
+  codeBackground: 'var(--rp-c-text-code-bg)',
+  shadow: 'var(--rp-c-shadow-3)',
+} as const
 
 export interface ExampleSourceDetails {
   purpose: string
@@ -63,27 +77,27 @@ const styles = {
     margin: 0,
     fontSize: '26px',
     lineHeight: 1.35,
-    color: tokens.colorText,
+    color: surfaces.text,
   },
   sectionDescription: {
     margin: 0,
     fontSize: '14px',
     lineHeight: 1.8,
-    color: `${tokens.colorText}B8`,
+    color: surfaces.textSecondary,
   },
   card: {
     padding: '24px',
     borderRadius: '24px',
-    border: `1px solid ${tokens.colorPrimary}1F`,
-    background: tokens.colorBgContainer,
-    boxShadow: `0 18px 48px ${tokens.colorPrimary}10`,
+    border: `1px solid ${surfaces.border}`,
+    background: surfaces.card,
+    boxShadow: surfaces.shadow,
   },
   proseList: {
     margin: 0,
     paddingLeft: '20px',
     display: 'grid',
     gap: '10px',
-    color: tokens.colorText,
+    color: surfaces.text,
     lineHeight: 1.8,
     fontSize: '14px',
   },
@@ -96,9 +110,9 @@ const styles = {
     gap: '18px',
     padding: '24px',
     borderRadius: '24px',
-    border: `1px solid ${tokens.colorPrimary}1F`,
-    background: `linear-gradient(180deg, ${tokens.colorPrimary}08 0%, ${tokens.colorBgContainer} 100%)`,
-    boxShadow: `0 18px 48px ${tokens.colorPrimary}12`,
+    border: `1px solid ${surfaces.border}`,
+    background: `linear-gradient(180deg, ${surfaces.brandTint} 0%, ${surfaces.card} 100%)`,
+    boxShadow: surfaces.shadow,
   },
   exampleHeader: {
     display: 'grid',
@@ -108,13 +122,13 @@ const styles = {
     margin: 0,
     fontSize: '20px',
     lineHeight: 1.4,
-    color: tokens.colorText,
+    color: surfaces.text,
   },
   exampleSummary: {
     margin: 0,
     fontSize: '14px',
     lineHeight: 1.8,
-    color: `${tokens.colorText}B8`,
+    color: surfaces.textSecondary,
   },
   propTags: {
     display: 'flex',
@@ -128,15 +142,15 @@ const styles = {
     borderRadius: '999px',
     fontSize: '12px',
     fontWeight: 700,
-    color: tokens.colorPrimary,
-    background: `${tokens.colorPrimary}12`,
-    border: `1px solid ${tokens.colorPrimary}22`,
+    color: surfaces.brand,
+    background: surfaces.brandTint,
+    border: `1px solid ${surfaces.border}`,
   },
   previewPanel: {
     padding: '20px',
     borderRadius: '18px',
-    background: tokens.colorBgContainer,
-    border: `1px dashed ${tokens.colorPrimary}30`,
+    background: surfaces.cardMuted,
+    border: `1px dashed ${surfaces.borderStrong}`,
   },
   detailGrid: {
     display: 'grid',
@@ -146,14 +160,14 @@ const styles = {
   detailCard: {
     padding: '16px',
     borderRadius: '18px',
-    background: `${tokens.colorPrimary}08`,
-    border: `1px solid ${tokens.colorPrimary}18`,
+    background: surfaces.cardSubtle,
+    border: `1px solid ${surfaces.border}`,
   },
   detailTitle: {
     margin: '0 0 8px',
     fontSize: '13px',
     fontWeight: 700,
-    color: tokens.colorPrimary,
+    color: surfaces.brand,
     letterSpacing: '0.02em',
   },
   detailList: {
@@ -161,7 +175,7 @@ const styles = {
     paddingLeft: '18px',
     display: 'grid',
     gap: '8px',
-    color: tokens.colorText,
+    color: surfaces.text,
     lineHeight: 1.75,
     fontSize: '13px',
   },
@@ -174,8 +188,9 @@ const styles = {
     margin: 0,
     padding: '18px 20px',
     borderRadius: '18px',
-    background: '#0f172a',
-    color: '#e2e8f0',
+    background: surfaces.codeBackground,
+    color: surfaces.codeText,
+    border: `1px solid ${surfaces.border}`,
     overflowX: 'auto',
     fontSize: '13px',
     lineHeight: 1.8,
@@ -183,8 +198,9 @@ const styles = {
   tableWrap: {
     overflowX: 'auto',
     borderRadius: '20px',
-    border: `1px solid ${tokens.colorPrimary}1A`,
-    background: tokens.colorBgContainer,
+    border: `1px solid ${surfaces.border}`,
+    background: surfaces.card,
+    boxShadow: surfaces.shadow,
   },
   table: {
     width: '100%',
@@ -192,38 +208,38 @@ const styles = {
     minWidth: '720px',
   },
   tableHead: {
-    background: `${tokens.colorPrimary}0F`,
+    background: surfaces.cardMuted,
   },
   tableHeaderCell: {
     padding: '14px 16px',
     textAlign: 'left' as const,
     fontSize: '13px',
     fontWeight: 700,
-    color: tokens.colorText,
-    borderBottom: `1px solid ${tokens.colorPrimary}18`,
+    color: surfaces.text,
+    borderBottom: `1px solid ${surfaces.border}`,
   },
   tableCell: {
     padding: '14px 16px',
     verticalAlign: 'top' as const,
     fontSize: '14px',
     lineHeight: 1.7,
-    color: tokens.colorText,
-    borderBottom: `1px solid ${tokens.colorPrimary}12`,
+    color: surfaces.text,
+    borderBottom: `1px solid ${surfaces.border}`,
   },
   tableName: {
     fontWeight: 700,
-    color: tokens.colorPrimary,
+    color: surfaces.brand,
   },
   notesList: {
     margin: 0,
     paddingLeft: '20px',
     display: 'grid',
     gap: '10px',
-    color: tokens.colorText,
+    color: surfaces.text,
     lineHeight: 1.8,
     fontSize: '14px',
   },
-} as const
+} as const satisfies Record<string, CSSProperties>
 
 interface SectionBlockProps {
   title: string

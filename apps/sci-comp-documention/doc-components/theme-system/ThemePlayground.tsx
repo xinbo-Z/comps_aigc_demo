@@ -23,6 +23,17 @@ const panelGridStyle = {
   gap: 24,
 } as const
 
+const headingStyle: CSSProperties = {
+  marginBottom: 8,
+  color: 'var(--rp-c-text-1)',
+}
+
+const descriptionStyle: CSSProperties = {
+  margin: 0,
+  color: 'var(--rp-c-text-2)',
+  lineHeight: 1.7,
+}
+
 interface ThemePlaygroundProps {
   initialOverrides?: Partial<SciInstrumentThemeTokens>
 }
@@ -64,8 +75,8 @@ export function ThemePlayground({
   return (
     <section style={layoutStyle}>
       <div>
-        <h2 style={{ marginBottom: 8 }}>主题演示工作台</h2>
-        <p style={{ margin: 0 }}>
+        <h2 style={headingStyle}>主题演示工作台</h2>
+        <p style={descriptionStyle}>
           同一份 themeOverrides 会同时驱动 Ant Design token 与 CSS variables。
         </p>
       </div>

@@ -1,6 +1,5 @@
-import { Button, createThemeTokens } from '@sci-comp/core'
-
-const tokens = createThemeTokens()
+import type { CSSProperties } from 'react'
+import { Button } from '@sci-comp/core'
 
 const rowStyle = {
   display: 'flex',
@@ -30,11 +29,11 @@ const comparePanelStyle = {
 const compareCardStyle = {
   padding: '16px',
   borderRadius: '16px',
-  border: `1px solid ${tokens.colorPrimary}20`,
-  background: `${tokens.colorPrimary}08`,
+  border: '1px solid var(--rp-c-divider-light)',
+  background: 'var(--rp-c-bg-soft)',
   display: 'grid',
   gap: '12px',
-} as const
+} as const satisfies CSSProperties
 
 export function ButtonVariantPreview() {
   return (

@@ -1,13 +1,6 @@
 import type { CSSProperties } from 'react'
-import {
-  Button,
-  Input,
-  createThemeTokens,
-  type SciInstrumentThemeTokens,
-} from '@sci-comp/core'
+import { Button, Input, type SciInstrumentThemeTokens } from '@sci-comp/core'
 import { themePresets } from './themePlaygroundData'
-
-const tokens = createThemeTokens()
 
 const sectionStyle: CSSProperties = {
   display: 'flex',
@@ -15,8 +8,14 @@ const sectionStyle: CSSProperties = {
   gap: 16,
   padding: 20,
   borderRadius: 20,
-  border: `1px solid ${tokens.colorBorderBase}`,
-  background: tokens.colorSurfaceBase,
+  border: '1px solid var(--rp-c-divider-light)',
+  background: 'var(--rp-c-bg)',
+  boxShadow: 'var(--rp-c-shadow-3)',
+}
+
+const titleStyle: CSSProperties = {
+  margin: 0,
+  color: 'var(--rp-c-text-1)',
 }
 
 const presetRowStyle: CSSProperties = {
@@ -40,7 +39,7 @@ export function ThemeControlPanel({
 }: ThemeControlPanelProps) {
   return (
     <section style={sectionStyle}>
-      <h3 style={{ margin: 0 }}>主题输入</h3>
+      <h3 style={titleStyle}>主题输入</h3>
       <Input
         label="主色"
         value={overrides.colorPrimary ?? ''}

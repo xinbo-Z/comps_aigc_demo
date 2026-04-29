@@ -1,20 +1,13 @@
-import { useRef, useState } from 'react'
-import {
-  Tabs,
-  createThemeTokens,
-  type TabsItem,
-  type TabsProps,
-} from '@sci-comp/core'
-
-const tokens = createThemeTokens()
+import { useRef, useState, type CSSProperties } from 'react'
+import { Tabs, type TabsItem, type TabsProps } from '@sci-comp/core'
 
 const panelStyle = {
   padding: '16px',
   borderRadius: '14px',
-  border: `1px solid ${tokens.colorPrimary}1F`,
-  background: `${tokens.colorPrimary}08`,
-  color: tokens.colorText,
-} as const
+  border: '1px solid var(--rp-c-divider-light)',
+  background: 'var(--rp-c-bg-soft)',
+  color: 'var(--rp-c-text-1)',
+} as const satisfies CSSProperties
 
 const stackStyle = {
   display: 'flex',
