@@ -6,9 +6,9 @@
 
 .listItem {
   padding: 1rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--bg);
+  border: 1px solid var(--sci-color-border-base);
+  border-radius: var(--sci-form-list-item-radius);
+  background: var(--sci-color-surface-base);
 }
 
 .listItemHeader {
@@ -23,7 +23,7 @@
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.4;
-  color: var(--text-h);
+  color: var(--sci-color-text-primary);
 }
 
 .listItemFields {

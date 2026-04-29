@@ -13,7 +13,12 @@ export default defineConfig({
       '/guide/': [
         {
           text: '指南',
-          items: [{ text: '快速开始', link: '/guide/getting-started' }],
+          items: [
+            { text: '快速开始', link: '/guide/getting-started#快速开始' },
+            { text: '快速上手', link: '/guide/getting-started#快速上手' },
+            { text: '主题配置', link: '/guide/getting-started#主题配置' },
+            { text: '组件列表', link: '/guide/getting-started#组件列表' },
+          ],
         },
       ],
       '/components/': [

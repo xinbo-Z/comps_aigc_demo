@@ -4,7 +4,7 @@
   justify-content: center;
   gap: 0.5rem;
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: var(--sci-button-radius);
   font: inherit;
   font-weight: 600;
   cursor: pointer;
@@ -16,7 +16,7 @@
 }
 
 .button:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--sci-color-action-primary);
   outline-offset: 2px;
 }
 
@@ -60,49 +60,49 @@
 }
 
 .primary {
-  background-color: var(--accent);
-  border-color: var(--accent);
-  color: var(--accent-bg);
+  background-color: var(--sci-color-action-primary);
+  border-color: var(--sci-color-action-primary);
+  color: var(--sci-color-action-primary-text);
 }
 
 .secondary {
-  background-color: var(--code-bg);
-  border-color: var(--border);
-  color: var(--text-h);
+  background-color: var(--sci-color-surface-muted);
+  border-color: var(--sci-color-border-base);
+  color: var(--sci-color-text-primary);
 }
 
 .danger {
-  background-color: var(--danger);
-  border-color: var(--danger);
-  color: var(--bg);
+  background-color: var(--sci-color-danger);
+  border-color: var(--sci-color-danger);
+  color: var(--sci-color-text-inverse);
 }
 
 .ghost {
   background-color: transparent;
-  border-color: var(--border);
-  color: var(--text-h);
+  border-color: var(--sci-color-border-base);
+  color: var(--sci-color-text-primary);
 }
 
 .text {
   background-color: transparent;
   border-color: transparent;
-  color: var(--accent);
+  color: var(--sci-color-action-primary);
 }
 
 .sm {
-  min-height: 28px;
+  min-height: var(--sci-button-height-sm);
   padding: 0 0.75rem;
   font-size: 0.875rem;
 }
 
 .md {
-  min-height: 36px;
+  min-height: var(--sci-button-height-md);
   padding: 0 1rem;
   font-size: 1rem;
 }
 
 .lg {
-  min-height: 44px;
+  min-height: var(--sci-button-height-lg);
   padding: 0 1.25rem;
   font-size: 1.125rem;
 }
