@@ -1,32 +1,18 @@
 ## 快速开始
 
-欢迎使用 SCI Comp 组件库！这是一个基于 Ant Design v6 封装的通用组件库，旨在帮助开发者快速构建高质量的企业级应用。
+本页用于说明如何在业务项目中接入 `@sci-comp/core`，并完成最小主题配置。
 
-### 安装
+## 安装
 
-使用 npm 或 yarn 安装：
+在业务项目中安装组件库及其基础依赖：
 
 ```bash
-npm install sci-comp
-# 或
-yarn add sci-comp
+pnpm add @sci-comp/core antd react react-dom
 ```
 
-## 快速上手
+## 最小接入示例
 
-在你的项目中引入组件：
-
-```tsx
-import { Button } from 'sci-comp'
-
-function App() {
-  return <Button type="primary">点击我</Button>
-}
-```
-
-### 主题配置
-
-SCI Comp 支持通过统一主题源同时驱动 Ant Design token 与组件库内部 CSS 变量：
+下面示例演示如何用同一份主题输入同时驱动 Ant Design token 与组件库内部 CSS variables。
 
 ```tsx
 import { ConfigProvider } from 'antd'
@@ -37,11 +23,11 @@ import {
 } from '@sci-comp/core'
 
 const themeOverrides = {
-  colorPrimary: '#667eea',
+  colorPrimary: '#0052d9',
   borderRadius: 10,
 }
 
-function App() {
+export function App() {
   return (
     <ConfigProvider theme={{ token: createAntdThemeTokens(themeOverrides) }}>
       <div style={createThemeCssVariables(themeOverrides)}>
@@ -52,14 +38,9 @@ function App() {
 }
 ```
 
-## 组件列表
+如果你想继续了解主题 token 的职责划分、兼容映射、维护规则和交互式演示，请前往：[主题系统](/guide/theme-system)。
 
-- **Button** - 按钮组件
-- **Input** - 输入框组件
-- **Table** - 表格组件
-- **Form** - 表单组件
-- **Modal** - 模态框组件
-- **Tabs** - 标签页组件
-- **Progress** - 进度条组件
+## 下一步
 
-查看左侧导航栏了解更多组件详情。
+- 查看[主题系统](/guide/theme-system)，了解主题入口分工、双输出通道与 token 约束
+- 查看组件文档，按需接入 Button、Input、Form 等基础组件

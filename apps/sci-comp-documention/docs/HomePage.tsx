@@ -1,4 +1,3 @@
-import React from 'react'
 import { Button, createThemeTokens } from '@sci-comp/core'
 import { useState } from 'react'
 

@@ -2,11 +2,12 @@ import { defineConfig } from 'rspress/config'
 
 export default defineConfig({
   root: 'docs',
-  title: 'SCI Comp Documentation',
+  title: 'SCI 组件库文档',
   description: '基于 Ant Design v6 封装的通用组件库文档站',
   themeConfig: {
     nav: [
       { text: '指南', link: '/guide/getting-started' },
+      { text: '主题系统', link: '/guide/theme-system' },
       { text: '组件', link: '/components/button' },
     ],
     sidebar: {
@@ -14,10 +15,8 @@ export default defineConfig({
         {
           text: '指南',
           items: [
-            { text: '快速开始', link: '/guide/getting-started#快速开始' },
-            { text: '快速上手', link: '/guide/getting-started#快速上手' },
-            { text: '主题配置', link: '/guide/getting-started#主题配置' },
-            { text: '组件列表', link: '/guide/getting-started#组件列表' },
+            { text: '快速开始', link: '/guide/getting-started' },
+            { text: '主题系统', link: '/guide/theme-system' },
           ],
         },
       ],
