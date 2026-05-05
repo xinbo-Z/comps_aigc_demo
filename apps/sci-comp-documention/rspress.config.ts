@@ -17,6 +17,10 @@ export default defineConfig({
           items: [
             { text: '快速开始', link: '/guide/getting-started' },
             { text: '主题系统', link: '/guide/theme-system' },
+            {
+              text: 'Table 列宽拖拽与持久化',
+              link: '/guide/table-column-resize',
+            },
             { text: '组件导航', link: '/guide/components' },
           ],
         },
