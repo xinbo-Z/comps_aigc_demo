@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Table, type TableColumnsType } from '@sci-comp/core'
 
 const stackStyle = {
@@ -26,6 +27,12 @@ const baseColumns: TableColumnsType<TableRow> = [
   { title: '名称', dataIndex: 'name', key: 'name' },
   { title: '负责人', dataIndex: 'owner', key: 'owner' },
   { title: '状态', dataIndex: 'status', key: 'status' },
+]
+
+const resizableColumns: TableColumnsType<TableRow> = [
+  { title: '名称', dataIndex: 'name', key: 'name', width: 180 },
+  { title: '负责人', dataIndex: 'owner', key: 'owner', width: 140 },
+  { title: '状态', dataIndex: 'status', key: 'status', width: 120 },
 ]
 
 const baseData: TableRow[] = [
@@ -118,6 +125,30 @@ export function TableVirtualPreview() {
       />
       <div style={panelStyle}>
         virtualScroll 通过语义化配置接入 antd 原生虚拟滚动能力。
+      </div>
+    </div>
+  )
+}
+
+export function TableColumnResizePreview() {
+  const [columns, setColumns] = useState(resizableColumns)
+
+  return (
+    <div style={stackStyle}>
+      <Table
+        rowKey="key"
+        columns={columns}
+        dataSource={pagedData}
+        pagination={false}
+        columnResize={{ minWidth: 96 }}
+        onColumnsChange={setColumns}
+        scroll={{ x: 520 }}
+      />
+      <div style={panelStyle}>
+        <strong>约束说明</strong>
+        <div>优先使用 key，其次使用单字段 dataIndex 识别列。</div>
+        <div>grouped columns 不渲染拖拽手柄。</div>
+        <div>拖拽只修改当前列宽，最终由外部回写 columns。</div>
       </div>
     </div>
   )

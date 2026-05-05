@@ -4,6 +4,7 @@ import {
   ComponentDocPage,
   type ComponentDocPageData,
 } from '../../../sci-comp-documention/doc-components/ComponentDoc'
+import { tableDocPage } from '../../../sci-comp-documention/doc-components/component-doc-data/tableDoc'
 
 const page: ComponentDocPageData = {
   title: 'Button',
@@ -53,5 +54,15 @@ describe('ComponentDocPage', () => {
     ).toBeInTheDocument()
     expect(screen.getByText('选型建议')).toBeInTheDocument()
     expect(screen.getByText('封装说明')).toBeInTheDocument()
+  })
+
+  it('renders table column resize documentation content inside the component doc page', () => {
+    render(<ComponentDocPage page={tableDocPage} />)
+
+    expect(screen.getByText('列宽拖拽')).toBeInTheDocument()
+    expect(screen.getAllByText(/onColumnsChange/i).length).toBeGreaterThan(0)
+    expect(
+      screen.getAllByText(/grouped columns 不渲染拖拽手柄/i).length,
+    ).toBeGreaterThan(0)
   })
 })

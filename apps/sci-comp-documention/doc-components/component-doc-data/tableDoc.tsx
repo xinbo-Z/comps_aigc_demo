@@ -1,6 +1,7 @@
 import type { ComponentDocPageData } from '../ComponentDoc'
 import {
   TableBasicPreview,
+  TableColumnResizePreview,
   TableEmptyPreview,
   TablePaginationPreview,
   TableScrollPreview,
@@ -10,17 +11,18 @@ import {
 export const tableDocPage: ComponentDocPageData = {
   title: 'Table',
   description:
-    '`Table` 是基于 Ant Design Table 的通用封装组件，用于列表展示、分页、滚动和虚拟滚动等高频场景，并通过 `virtualScroll` 提供轻量语义映射。',
+    '`Table` 是基于 Ant Design Table 的通用封装组件，用于列表展示、分页、滚动、虚拟滚动和受控列宽拖拽等高频场景，并通过 `virtualScroll` 提供轻量语义映射。',
   definition: [
     '基于 antd Table 做直接封装，保留 columns、dataSource、pagination 与 scroll 等主路径能力。',
     '`virtualScroll` 是对 antd 原生虚拟滚动接入方式的轻量语义映射，帮助收敛高频大列表场景。',
-    '第一版文档聚焦基础列表搭建主路径，不扩展为 antd Table 的全量教程页。',
+    '`columnResize` 与 `onColumnsChange` 提供受控列宽拖拽能力，便于业务持久化后回写整份 columns。',
   ],
   scenarios: [
     '后台列表页中的基础数据展示场景。',
     '需要分页浏览中等规模数据集的场景。',
     '宽表格或列较多时需要横向滚动保持可读性的场景。',
     '数据量较大时需要通过虚拟滚动控制渲染成本的场景。',
+    '业务需要允许用户拖拽列宽并保存个人偏好的场景。',
   ],
   examples: [
     {
@@ -229,6 +231,61 @@ export function TableVirtualPreview() {
         supportedControls: ['virtualScroll', 'scroll'],
       },
     },
+    {
+      id: 'table-column-resize',
+      title: '列宽拖拽',
+      summary:
+        '展示 `columnResize` 与 `onColumnsChange` 的最小受控写法，帮助说明列宽结果应由外部回写与持久化。',
+      relatedProps: ['columnResize', 'onColumnsChange', 'scroll'],
+      preview: <TableColumnResizePreview />,
+      code: `import { useState } from 'react'
+import { Table, type TableColumnsType } from '@sci-comp/core'
+
+interface TableRow {
+  key: string
+  name: string
+  owner: string
+  status: string
+}
+
+const initialColumns: TableColumnsType<TableRow> = [
+  { title: '名称', dataIndex: 'name', key: 'name', width: 180 },
+  { title: '负责人', dataIndex: 'owner', key: 'owner', width: 140 },
+  { title: '状态', dataIndex: 'status', key: 'status', width: 120 },
+]
+
+export function TableColumnResizePreview() {
+  const [columns, setColumns] = useState(initialColumns)
+
+  return (
+    <Table
+      rowKey="key"
+      columns={columns}
+      dataSource={pagedData}
+      pagination={false}
+      columnResize={{ minWidth: 96 }}
+      onColumnsChange={setColumns}
+      scroll={{ x: 520 }}
+    />
+  )
+}`,
+      sourceDetails: {
+        purpose:
+          '帮助读者理解列宽拖拽采用受控回写模式，而不是组件内部自动持久化。',
+        highlights: [
+          '`columnResize` 用于开启列宽拖拽，并可通过 `minWidth` 指定列宽下限。',
+          '`onColumnsChange` 会返回整份更新后的 columns，便于外部持久化并回写。',
+        ],
+        boundaries: [
+          '优先使用 `key`，其次支持单字段 `dataIndex` 作为列标识。',
+          'grouped columns 不渲染拖拽手柄，拖拽只修改当前列宽。',
+        ],
+      },
+      editorReservation: {
+        initialCode: 'TableColumnResizePreview',
+        supportedControls: ['columnResize', 'onColumnsChange', 'scroll'],
+      },
+    },
   ],
   api: [
     {
@@ -267,6 +324,20 @@ export function TableVirtualPreview() {
       notes: '会映射到 antd 的 virtual 与 scroll 配置。',
     },
     {
+      name: 'columnResize',
+      description: '开启列宽拖拽，可通过 minWidth 指定列宽下限。',
+      type: 'boolean | TableColumnResizeConfig',
+      defaultValue: '-',
+      notes: '建议与稳定列标识和 `scroll.x` 配合使用。',
+    },
+    {
+      name: 'onColumnsChange',
+      description: '拖拽结束后返回整份更新后的 columns，便于外部持久化并回写。',
+      type: '(columns: TableColumnsType<RecordType>) => void',
+      defaultValue: '-',
+      notes: '适合与 React state、localStorage 或服务端用户偏好联动。',
+    },
+    {
       name: 'rowSelection',
       description: '控制列表选择行为。',
       type: 'TableSelection<RecordType>',
@@ -277,7 +348,7 @@ export function TableVirtualPreview() {
   selectionTips: [
     '优先用 Table 完成基础列表搭建、分页浏览与宽表格展示。',
     '数据量较大时，可优先考虑 `virtualScroll` 作为轻量语义入口。',
-    '排序、筛选、展开行等非主路径能力默认先收敛在透传边界说明中，而不是全部进入主案例。',
+    '如果业务需要允许用户调节列宽，应采用 `columns` + `onColumnsChange` 的受控回写模式。',
   ],
   wrapperNotes: [
     'Table 仍然基于 antd Table 实现，不引入独立列表 DSL。',
