@@ -3,10 +3,27 @@ import { Input as AntInput, type InputRef } from 'antd'
 import styles from './Input.module.css'
 import type { InputProps } from './types'
 
+/**
+ * 合并多个类名部分，过滤掉 falsy 值
+ */
 function getClassName(parts: Array<string | false | undefined>) {
   return parts.filter(Boolean).join(' ')
 }
 
+/**
+ * Input 输入框组件
+ *
+ * 基于 Ant Design Input 封装，添加了标签和辅助文字支持
+ *
+ * @example
+ * ```tsx
+ * <Input
+ *   label="用户名"
+ *   placeholder="请输入用户名"
+ *   helperText="用户名由字母、数字组成"
+ * />
+ * ```
+ */
 export const Input = React.forwardRef<InputRef, InputProps>(function Input(
   {
     label,

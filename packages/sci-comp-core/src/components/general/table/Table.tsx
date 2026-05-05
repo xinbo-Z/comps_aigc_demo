@@ -16,8 +16,10 @@ import type {
   TableProps,
 } from './types'
 
+/** 列标识符类型 */
 type ColumnIdentifier = string | number
 
+/** 调整列宽时的状态 */
 type ResizeState = {
   columnId: ColumnIdentifier
   startX: number
@@ -25,15 +27,24 @@ type ResizeState = {
   nextWidth: number
 }
 
+/** 可调整列宽的表头单元格属性 */
 type HeaderCellResizeProps = {
   children: ReactNode
   onResizeStart?: (event: ReactMouseEvent<HTMLSpanElement>) => void
 }
 
+/**
+ * 标准化最小宽度
+ * 确保最小宽度是一个有效的正数，否则返回默认值 80
+ */
 function normalizeMinWidth(minWidth?: number) {
   return Number.isFinite(minWidth) && minWidth! > 0 ? minWidth! : 80
 }
 
+/**
+ * 获取列的唯一标识符
+ * 优先使用 key，其次使用 dataIndex
+ */
 function getColumnIdentifier<RecordType extends object>(
   column: TableColumnType<RecordType> | TableColumnGroupType<RecordType>,
 ): ColumnIdentifier | null {
@@ -65,12 +76,19 @@ function getColumnIdentifier<RecordType extends object>(
   return null
 }
 
+/**
+ * 判断是否为叶子节点列（非分组列）
+ */
 function isLeafColumn<RecordType extends object>(
   column: TableColumnType<RecordType> | TableColumnGroupType<RecordType>,
 ): column is TableColumnType<RecordType> {
   return !('children' in column) || !Array.isArray(column.children)
 }
 
+/**
+ * 可调整列宽的表头单元格组件
+ * 在表头单元格右侧添加一个可拖拽的手柄
+ */
 function ResizableHeaderCell({
   children,
   onResizeStart,
@@ -112,6 +130,24 @@ function ResizableHeaderCell({
   )
 }
 
+/**
+ * Table 表格组件
+ *
+ * 基于 Ant Design Table 封装，支持：
+ * - 虚拟滚动
+ * - 列宽可调整
+ * - 自定义列变化回调
+ *
+ * @example
+ * ```tsx
+ * <Table
+ *   columns={columns}
+ *   dataSource={data}
+ *   columnResize={{ minWidth: 100 }}
+ *   onColumnsChange={(cols) => setColumns(cols)}
+ * />
+ * ```
+ */
 export function Table<RecordType extends object = Record<string, unknown>>({
   virtualScroll,
   scroll,
@@ -130,18 +166,24 @@ export function Table<RecordType extends object = Record<string, unknown>>({
       : 80
   const isResizeEnabled = Boolean(columnResize)
 
+  // 同步 resizeState 到 ref
   useEffect(() => {
     resizeStateRef.current = resizeState
   }, [resizeState])
 
+  // 同步 columns 到 ref
   useEffect(() => {
     columnsRef.current = columns
   }, [columns])
 
+  // 同步 onColumnsChange 到 ref
   useEffect(() => {
     onColumnsChangeRef.current = onColumnsChange
   }, [onColumnsChange])
 
+  /**
+   * 处理鼠标移动事件（拖拽调整列宽）
+   */
   const handleMouseMove = useCallback(
     (event: MouseEvent) => {
       const activeState = resizeStateRef.current
@@ -166,6 +208,9 @@ export function Table<RecordType extends object = Record<string, unknown>>({
     [minWidth],
   )
 
+  /**
+   * 处理鼠标释放事件（结束拖拽）
+   */
   const handleMouseUp = useCallback(() => {
     const activeState = resizeStateRef.current
 
@@ -191,6 +236,7 @@ export function Table<RecordType extends object = Record<string, unknown>>({
     setResizeState(null)
   }, [])
 
+  // 监听全局鼠标事件
   useEffect(() => {
     if (!resizeStateRef.current) {
       return undefined
@@ -205,6 +251,9 @@ export function Table<RecordType extends object = Record<string, unknown>>({
     }
   }, [handleMouseMove, handleMouseUp, resizeState?.columnId])
 
+  /**
+   * 处理列配置，添加调整宽度相关属性
+   */
   const displayColumns = useMemo<TableColumnsType<RecordType>>(() => {
     return columns.map((column) => {
       if (!isLeafColumn(column)) {

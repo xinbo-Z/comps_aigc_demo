@@ -23,12 +23,18 @@ import type {
   FormSchemaTextareaField,
 } from './types'
 
+/**
+ * 判断 schema 是否为 FormSchemaDefinition 格式
+ */
 function isSchemaDefinition(
   schema: NonNullable<SchemaFormProps['schema']>,
 ): schema is FormSchemaDefinition {
   return !Array.isArray(schema) && 'fields' in schema
 }
 
+/**
+ * 标准化 schema 为数组格式
+ */
 function normalizeSchema(
   schema: SchemaFormProps['schema'],
 ): readonly FormSchemaField[] {
@@ -39,14 +45,23 @@ function normalizeSchema(
   return isSchemaDefinition(schema) ? schema.fields : schema
 }
 
+/**
+ * 获取字段的组件类型
+ */
 function getFieldComponent(field: FormSchemaField): FormSchemaFieldComponent {
   return field.component ?? field.type ?? 'input'
 }
 
+/**
+ * 判断字段是否为列表类型
+ */
 function isListField(field: FormSchemaField): field is FormSchemaListField {
   return getFieldComponent(field) === 'list'
 }
 
+/**
+ * 获取字段的唯一键
+ */
 function getFieldKey(field: FormSchemaField) {
   return (
     field.key ??
@@ -54,10 +69,16 @@ function getFieldKey(field: FormSchemaField) {
   )
 }
 
+/**
+ * 获取列表字段的子字段
+ */
 function getListItemFields(field: FormSchemaListField) {
   return field.fields ?? field.itemSchema ?? []
 }
 
+/**
+ * 构建列表项的初始值
+ */
 function buildListItemInitialValues(
   field: FormSchemaListField,
 ): Record<string | number, unknown> {
@@ -98,6 +119,9 @@ function buildListItemInitialValues(
   )
 }
 
+/**
+ * 从 store 中获取指定路径的值
+ */
 function getValueFromStore(
   values: Record<string, unknown>,
   path: NamePath | string,
@@ -113,6 +137,9 @@ function getValueFromStore(
   }, values)
 }
 
+/**
+ * 构建条件上下文
+ */
 function buildConditionContext(
   values: Record<string, unknown>,
 ): FormSchemaConditionContext {
@@ -122,6 +149,9 @@ function buildConditionContext(
   }
 }
 
+/**
+ * 获取动态表单项属性
+ */
 function getDynamicItemProps(
   field: FormSchemaField,
   values: Record<string, unknown>,
@@ -133,6 +163,9 @@ function getDynamicItemProps(
   return field.itemPropsWhen(buildConditionContext(values))
 }
 
+/**
+ * 判断字段是否可见
+ */
 function isFieldVisible(
   field: FormSchemaField,
   values: Record<string, unknown>,
@@ -150,6 +183,9 @@ function isFieldVisible(
   return field.visibleWhen(buildConditionContext(values))
 }
 
+/**
+ * 构建验证规则
+ */
 function buildRules(
   field: FormSchemaField,
   dynamicItemProps?: FormSchemaDynamicItemProps,
@@ -173,6 +209,9 @@ function buildRules(
   return rules
 }
 
+/**
+ * 渲染表单控件
+ */
 function renderControl(field: Exclude<FormSchemaField, FormSchemaListField>) {
   const component = getFieldComponent(field)
 
@@ -204,6 +243,9 @@ function renderControl(field: Exclude<FormSchemaField, FormSchemaListField>) {
   }
 }
 
+/**
+ * 渲染单个表单字段
+ */
 function renderField(
   field: FormSchemaField,
   values: Record<string, unknown>,
@@ -314,6 +356,10 @@ function renderField(
   )
 }
 
+/**
+ * Schema 字段渲染组件
+ * 负责渲染基于 schema 定义的表单字段
+ */
 function SchemaFields({ schema }: { schema: readonly FormSchemaField[] }) {
   const values = AntForm.useWatch([], { preserve: true }) as
     | Record<string, unknown>
@@ -326,6 +372,22 @@ function SchemaFields({ schema }: { schema: readonly FormSchemaField[] }) {
   )
 }
 
+/**
+ * SchemaForm 基于 Schema 的表单组件
+ *
+ * 支持通过 schema 配置来渲染表单字段，同时也支持自定义渲染
+ *
+ * @example
+ * ```tsx
+ * <SchemaForm
+ *   schema={[
+ *     { name: 'username', type: 'input', label: '用户名', required: true },
+ *     { name: 'email', type: 'input', label: '邮箱' },
+ *   ]}
+ *   onFinish={(values) => console.log(values)}
+ * />
+ * ```
+ */
 export function SchemaForm<Values extends object = Record<string, unknown>>({
   children,
   schema,
