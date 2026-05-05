@@ -1,3 +1,19 @@
+/**
+ * 主题系统核心逻辑
+ *
+ * 本文件实现了主题系统的核心功能：
+ * 1. 颜色处理工具函数
+ * 2. Token 计算与转换
+ * 3. 输出到 Ant Design 和 CSS Variables
+ *
+ * 架构说明：
+ * - 单一主题源，双输出通道：同一份配置同时驱动 Ant Design 和 CSS 组件
+ * - 三层 Token 架构：Seed -> Semantic -> Component
+ * - 类型安全：完整的 TypeScript 类型定义
+ *
+ * @module theme
+ */
+
 import type { ThemeConfig } from 'antd'
 import {
   defaultThemeSeedTokens,
@@ -7,14 +23,22 @@ import {
   type SciInstrumentThemeTokens,
 } from './tokens'
 
+/** 主题 Token 的键类型 */
 type ThemeTokenKey = keyof SciInstrumentThemeTokens
 
+/** CSS 变量对象类型 */
 type ThemeCssVariables = Record<string, string>
 
+/** Ant Design 主题 Token 类型 */
 type AntdThemeTokens = NonNullable<ThemeConfig['token']>
 
+/** RGB 颜色对象类型 */
 type RgbColor = { r: number; g: number; b: number }
 
+/**
+ * CSS 命名颜色映射表
+ * 包含所有标准 CSS 颜色名称与对应十六进制值的映射
+ */
 const NAMED_COLORS: Record<string, string> = {
   aliceblue: '#f0f8ff',
   antiquewhite: '#faebd7',
@@ -159,10 +183,26 @@ const NAMED_COLORS: Record<string, string> = {
   yellowgreen: '#9acd32',
 }
 
+/**
+ * 数值限制函数
+ * 将数值限制在指定的最小值和最大值之间
+ *
+ * @param value - 需要限制的数值
+ * @param min - 最小值，默认为 0
+ * @param max - 最大值，默认为 255
+ * @returns 限制后的数值
+ */
 function clamp(value: number, min = 0, max = 255) {
   return Math.min(max, Math.max(min, value))
 }
 
+/**
+ * 标准化十六进制颜色
+ * 支持两种格式：三位简写（如 #f00）和六位完整（如 #ff0000）
+ *
+ * @param value - 十六进制颜色值
+ * @returns 标准化后的六位十六进制字符串（不带 #）
+ */
 function normalizeHex(value: string) {
   const hex = value.trim().replace('#', '')
 
@@ -176,6 +216,13 @@ function normalizeHex(value: string) {
   return hex.slice(0, 6)
 }
 
+/**
+ * 十六进制颜色转 RGB
+ * 将十六进制颜色转换为 RGB 对象
+ *
+ * @param value - 十六进制颜色值
+ * @returns RGB 颜色对象
+ */
 function hexToRgb(value: string): RgbColor {
   const hex = normalizeHex(value)
 
@@ -186,6 +233,13 @@ function hexToRgb(value: string): RgbColor {
   }
 }
 
+/**
+ * 解析多种颜色格式为 RGB
+ * 支持的格式：命名颜色、十六进制、RGB/RGBA
+ *
+ * @param color - 颜色字符串
+ * @returns RGB 颜色对象
+ */
 function parseRgb(color: string): RgbColor {
   const trimmed = color.trim().toLowerCase()
 
@@ -215,12 +269,30 @@ function parseRgb(color: string): RgbColor {
   return { r: 0, g: 0, b: 0 }
 }
 
+/**
+ * RGB 颜色转十六进制
+ * 将 RGB 对象转换为十六进制颜色字符串
+ *
+ * @param r - 红色通道值
+ * @param g - 绿色通道值
+ * @param b - 蓝色通道值
+ * @returns 十六进制颜色字符串
+ */
 function rgbToHex(r: number, g: number, b: number) {
   return `#${[r, g, b]
     .map((channel) => clamp(Math.round(channel)).toString(16).padStart(2, '0'))
     .join('')}`
 }
 
+/**
+ * 颜色混合函数
+ * 根据权重混合两个颜色
+ *
+ * @param base - 基础颜色
+ * @param target - 目标颜色
+ * @param weight - 混合权重，0 为完全基础色，1 为完全目标色
+ * @returns 混合后的颜色
+ */
 function mixColors(base: string, target: string, weight: number): string {
   const from = parseRgb(base)
   const to = parseRgb(target)
@@ -232,12 +304,27 @@ function mixColors(base: string, target: string, weight: number): string {
   )
 }
 
+/**
+ * 颜色添加透明度
+ * 将颜色转换为带透明度的 RGBA 格式
+ *
+ * @param color - 基础颜色
+ * @param alpha - 透明度，0-1 之间
+ * @returns RGBA 颜色字符串
+ */
 function withAlpha(color: string, alpha: number): string {
   const { r, g, b } = parseRgb(color)
 
   return `rgba(${r}, ${g}, ${b}, ${alpha})`
 }
 
+/**
+ * 从完整的 overrides 中提取 seed token
+ * 只保留 seed token 的属性，过滤掉其他 token
+ *
+ * @param overrides - 完整的主题覆盖配置
+ * @returns 提取后的 seed token 覆盖
+ */
 function pickSeedOverrides(
   overrides: Partial<SciInstrumentThemeTokens>,
 ): Partial<SciInstrumentThemeSeedTokens> {
@@ -264,6 +351,13 @@ function pickSeedOverrides(
   }
 }
 
+/**
+ * 从 Seed Tokens 计算 Semantic Tokens
+ * 根据种子 token 自动计算所有语义 token
+ *
+ * @param seedTokens - 种子 token
+ * @returns 语义 token 对象
+ */
 function createSemanticTokens(
   seedTokens: SciInstrumentThemeSeedTokens,
 ): SciInstrumentThemeSemanticTokens {
@@ -314,6 +408,13 @@ function createSemanticTokens(
   }
 }
 
+/**
+ * 从 Semantic Tokens 计算 Component Tokens
+ * 根据语义 token 自动计算所有组件 token
+ *
+ * @param semanticTokens - 语义 token
+ * @returns 组件 token 对象
+ */
 function createComponentTokens(
   semanticTokens: SciInstrumentThemeSemanticTokens,
 ): SciInstrumentThemeComponentTokens {
@@ -328,6 +429,19 @@ function createComponentTokens(
   }
 }
 
+/**
+ * 创建完整的主题 Token
+ * 结合默认值和用户覆盖，生成完整的主题配置
+ *
+ * 计算流程：
+ * 1. 合并默认 seed token 和用户覆盖的 seed token
+ * 2. 计算 semantic token
+ * 3. 计算 component token
+ * 4. 应用用户的完整覆盖（最高优先级）
+ *
+ * @param overrides - 主题覆盖配置，可覆盖任意层级的 token
+ * @returns 完整的主题 token 对象
+ */
 export function createThemeTokens(
   overrides: Partial<SciInstrumentThemeTokens> = {},
 ): SciInstrumentThemeTokens {
@@ -347,6 +461,13 @@ export function createThemeTokens(
   }
 }
 
+/**
+ * 创建 Ant Design 主题 Token
+ * 将主题 token 映射为 Ant Design 的 token 格式
+ *
+ * @param overrides - 主题覆盖配置
+ * @returns Ant Design 格式的 token 对象
+ */
 export function createAntdThemeTokens(
   overrides: Partial<SciInstrumentThemeTokens> = {},
 ): AntdThemeTokens {
@@ -373,6 +494,17 @@ export function createAntdThemeTokens(
   }
 }
 
+/**
+ * 创建主题 CSS 变量
+ * 将主题 token 转换为 CSS 变量对象
+ *
+ * 支持两种变量名：
+ * - 正式变量名：以 --sci- 开头（推荐）
+ * - 兼容变量名：保留历史变量名以便迁移
+ *
+ * @param overrides - 主题覆盖配置
+ * @returns CSS 变量对象，可直接应用到 style 属性
+ */
 export function createThemeCssVariables(
   overrides: Partial<SciInstrumentThemeTokens> = {},
 ): ThemeCssVariables {
