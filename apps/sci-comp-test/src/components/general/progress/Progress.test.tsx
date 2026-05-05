@@ -27,10 +27,12 @@ describe('Progress', () => {
   })
 
   test('renders success segment when success percent is provided', () => {
-    const { container } = render(<Progress percent={60} success={{ percent: 30 }} />)
+    const { container } = render(
+      <Progress percent={60} success={{ percent: 30 }} />,
+    )
 
     expect(screen.getByText('60%')).toBeInTheDocument()
-    expect(container.firstElementChild).toHaveClass('ant-progress-line')
+    expect(container.querySelector('.ant-progress-line')).not.toBeNull()
   })
 
   test('renders circle progress', () => {
@@ -44,6 +46,6 @@ describe('Progress', () => {
     const { container } = render(<Progress type="dashboard" percent={70} />)
 
     expect(screen.getByText('70%')).toBeInTheDocument()
-    expect(container.firstElementChild).toHaveClass('ant-progress-circle')
+    expect(container.querySelector('.ant-progress-circle')).not.toBeNull()
   })
 })

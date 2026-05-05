@@ -421,6 +421,160 @@ describe('Table', () => {
     })
   })
 
+  test('normalizes invalid minWidth values before applying resized width', async () => {
+    const onColumnsChange = vi.fn()
+
+    const resizableColumns: TableColumnsType<TestRow> = [
+      {
+        key: 'name',
+        title: 'Name',
+        dataIndex: 'name',
+        width: 120,
+      },
+      {
+        key: 'status',
+        title: 'Status',
+        dataIndex: 'status',
+        width: 180,
+      },
+    ]
+
+    const { container } = render(
+      <Table<TestRow>
+        columns={resizableColumns}
+        dataSource={dataSource}
+        rowKey="id"
+        columnResize={{ minWidth: Number.NaN }}
+        onColumnsChange={onColumnsChange}
+      />,
+    )
+
+    const headerCells = container.querySelectorAll('th')
+    const nameHeaderCell = headerCells[0]
+    const resizeHandle = nameHeaderCell.querySelector(
+      'span[aria-hidden="true"]',
+    )
+
+    expect(resizeHandle).not.toBeNull()
+
+    Object.defineProperty(nameHeaderCell, 'getBoundingClientRect', {
+      configurable: true,
+      value: () => ({
+        width: 120,
+        height: 40,
+        top: 0,
+        right: 120,
+        bottom: 40,
+        left: 0,
+        x: 0,
+        y: 0,
+        toJSON: () => ({}),
+      }),
+    })
+
+    fireEvent.mouseDown(resizeHandle!, { clientX: 200 })
+    fireEvent.mouseMove(window, { clientX: 150 })
+    fireEvent.mouseUp(window)
+
+    await waitFor(() => {
+      expect(onColumnsChange).toHaveBeenCalledWith([
+        expect.objectContaining({ key: 'name', width: 80 }),
+        expect.objectContaining({ key: 'status', width: 180 }),
+      ])
+    })
+  })
+
+  test('registers drag listeners once for the active resize session', async () => {
+    const addEventListenerSpy = vi.spyOn(window, 'addEventListener')
+    const removeEventListenerSpy = vi.spyOn(window, 'removeEventListener')
+    const onColumnsChange = vi.fn()
+
+    const resizableColumns: TableColumnsType<TestRow> = [
+      {
+        key: 'name',
+        title: 'Name',
+        dataIndex: 'name',
+        width: 120,
+      },
+      {
+        key: 'status',
+        title: 'Status',
+        dataIndex: 'status',
+        width: 180,
+      },
+    ]
+
+    const { container } = render(
+      <Table<TestRow>
+        columns={resizableColumns}
+        dataSource={dataSource}
+        rowKey="id"
+        columnResize
+        onColumnsChange={onColumnsChange}
+      />,
+    )
+
+    const headerCells = container.querySelectorAll('th')
+    const nameHeaderCell = headerCells[0]
+    const resizeHandle = nameHeaderCell.querySelector(
+      'span[aria-hidden="true"]',
+    )
+
+    expect(resizeHandle).not.toBeNull()
+
+    Object.defineProperty(nameHeaderCell, 'getBoundingClientRect', {
+      configurable: true,
+      value: () => ({
+        width: 120,
+        height: 40,
+        top: 0,
+        right: 120,
+        bottom: 40,
+        left: 0,
+        x: 0,
+        y: 0,
+        toJSON: () => ({}),
+      }),
+    })
+
+    fireEvent.mouseDown(resizeHandle!, { clientX: 200 })
+    fireEvent.mouseMove(window, { clientX: 220 })
+    fireEvent.mouseMove(window, { clientX: 240 })
+    fireEvent.mouseMove(window, { clientX: 260 })
+    fireEvent.mouseUp(window)
+
+    await waitFor(() => {
+      expect(onColumnsChange).toHaveBeenCalledWith([
+        expect.objectContaining({ key: 'name', width: 180 }),
+        expect.objectContaining({ key: 'status', width: 180 }),
+      ])
+    })
+
+    expect(
+      addEventListenerSpy.mock.calls.filter(
+        ([eventName]) => eventName === 'mousemove',
+      ),
+    ).toHaveLength(1)
+    expect(
+      addEventListenerSpy.mock.calls.filter(
+        ([eventName]) => eventName === 'mouseup',
+      ),
+    ).toHaveLength(1)
+    expect(
+      removeEventListenerSpy.mock.calls.filter(
+        ([eventName]) => eventName === 'mousemove',
+      ),
+    ).toHaveLength(1)
+    expect(
+      removeEventListenerSpy.mock.calls.filter(
+        ([eventName]) => eventName === 'mouseup',
+      ),
+    ).toHaveLength(1)
+
+    addEventListenerSpy.mockRestore()
+    removeEventListenerSpy.mockRestore()
+  })
+
   test('uses single-segment dataIndex as the resize identifier when key is absent', async () => {
     const onColumnsChange = vi.fn()
 

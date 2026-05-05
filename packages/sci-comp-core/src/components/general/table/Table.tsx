@@ -29,6 +29,10 @@ type HeaderCellResizeProps = {
   onResizeStart?: (event: ReactMouseEvent<HTMLSpanElement>) => void
 }
 
+function normalizeMinWidth(minWidth?: number) {
+  return Number.isFinite(minWidth) && minWidth! > 0 ? minWidth! : 80
+}
+
 function getColumnIdentifier<RecordType extends object>(
   column: TableColumnType<RecordType> | TableColumnGroupType<RecordType>,
 ): ColumnIdentifier | null {
@@ -121,7 +125,9 @@ export function Table<RecordType extends object = Record<string, unknown>>({
   const columnsRef = useRef(columns)
   const onColumnsChangeRef = useRef(onColumnsChange)
   const minWidth =
-    typeof columnResize === 'object' ? (columnResize.minWidth ?? 80) : 80
+    typeof columnResize === 'object'
+      ? normalizeMinWidth(columnResize.minWidth)
+      : 80
   const isResizeEnabled = Boolean(columnResize)
 
   useEffect(() => {
@@ -148,17 +154,18 @@ export function Table<RecordType extends object = Record<string, unknown>>({
         return
       }
 
-      const deltaX = event.clientX - activeState.startX
-      const nextWidth = Math.max(minWidth, activeState.startWidth + deltaX)
-
-      setResizeState((currentState) =>
-        currentState
-          ? {
-              ...currentState,
-              nextWidth,
-            }
-          : currentState,
+      const nextWidth = Math.max(
+        minWidth,
+        activeState.startWidth + (event.clientX - activeState.startX),
       )
+
+      const nextState = {
+        ...activeState,
+        nextWidth,
+      }
+
+      resizeStateRef.current = nextState
+      setResizeState(nextState)
     }
 
     const handleMouseUp = () => {
@@ -182,6 +189,7 @@ export function Table<RecordType extends object = Record<string, unknown>>({
       })
 
       onColumnsChangeRef.current?.(nextColumns)
+      resizeStateRef.current = null
       setResizeState(null)
     }
 
@@ -192,7 +200,7 @@ export function Table<RecordType extends object = Record<string, unknown>>({
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('mouseup', handleMouseUp)
     }
-  }, [minWidth, resizeState])
+  }, [minWidth, resizeState?.columnId])
 
   const displayColumns = useMemo<TableColumnsType<RecordType>>(() => {
     return columns.map((column) => {
@@ -232,12 +240,15 @@ export function Table<RecordType extends object = Record<string, unknown>>({
                   ? column.width
                   : measuredWidth
 
-              setResizeState({
+              const nextResizeState = {
                 columnId,
                 startX: event.clientX,
                 startWidth: Math.max(minWidth, initialWidth),
                 nextWidth: Math.max(minWidth, initialWidth),
-              })
+              }
+
+              resizeStateRef.current = nextResizeState
+              setResizeState(nextResizeState)
             },
           }
         },
