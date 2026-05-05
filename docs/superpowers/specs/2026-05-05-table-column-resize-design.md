@@ -179,6 +179,31 @@ Table 内部只保留拖拽过程中的临时状态：
 - 带 `virtualScroll` 的表格可拖拽。
 - 排序、筛选、选择列不被破坏。
 
+## 已实现事实
+
+- 已新增 `columnResize?: boolean | TableColumnResizeConfig`
+- 已新增 `onColumnsChange?: (columns) => void`
+- 已新增 `TableColumnResizeConfig.minWidth`
+- 已支持 `key` 与单字段 `dataIndex` 识别
+- grouped columns 不渲染拖拽手柄
+- 非法 `minWidth` 会回退到默认下限
+- 拖拽监听器按单次拖拽会话稳定注册
+
+## 未纳入范围
+
+- fixed 列专项保证
+- 自动持久化
+- 恢复默认列宽
+- 多列联动拖拽
+- 列级禁用拖拽 API
+
+## 后续扩展入口
+
+- localStorage / 服务端持久化完整示例
+- fixed columns 兼容专题说明
+- 恢复默认宽度示例
+- 列级拖拽开关的 API 评估
+
 ## 最终结论
 
 这次增强最适合采用“**表头拖拽手柄 + 受控 columns 回写**”的方式实现。它能满足“所有列默认可拖拽、只改当前列、可受控/可持久化”的目标，同时保持 `Table.tsx` 作为薄包装的现有定位，不把列宽管理扩散成新的复杂表格系统。

@@ -26,6 +26,12 @@
   - 增加列宽拖拽行为测试。
   - 覆盖受控回写、不可识别列、与 existing scroll/virtualScroll/排序/筛选 共存。
 
+## 当前已完成 / 已验证边界
+
+- Table API 已落地：`columnResize?: boolean | TableColumnResizeConfig` 与 `onColumnsChange?: (columns) => void`
+- `apps/sci-comp-test/src/components/general/table/Table.test.tsx` 已覆盖 grouped columns、单字段 `dataIndex` fallback、非法 `minWidth` 归一化、拖拽监听器单次会话稳定注册
+- 当前运行时实现保持在 Table wrapper 内部收口，后续文档补全只围绕组件页、guide 和记录同步，不再新增 Table 运行时能力
+
 ## Task 1: 扩展 Table 公共类型，定义可受控列宽 API
 
 **Files:**
