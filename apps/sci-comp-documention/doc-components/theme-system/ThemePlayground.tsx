@@ -73,7 +73,7 @@ export function ThemePlayground({
   }
 
   return (
-    <section style={layoutStyle}>
+    <section style={{ ...layoutStyle, ...cssVariables }}>
       <div>
         <h2 style={headingStyle}>主题演示工作台</h2>
         <p style={descriptionStyle}>
@@ -83,7 +83,7 @@ export function ThemePlayground({
       <div style={panelGridStyle}>
         <ThemeControlPanel
           overrides={overrides}
-          onChange={handleChange}
+          onBlur={handleChange}
           onReset={handleReset}
           onPresetSelect={handlePresetSelect}
         />

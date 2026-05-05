@@ -29,8 +29,8 @@ const comparePanelStyle = {
 const compareCardStyle = {
   padding: '16px',
   borderRadius: '16px',
-  border: '1px solid var(--rp-c-divider-light)',
-  background: 'var(--rp-c-bg-soft)',
+  border: '1px solid var(--rp-c-divider)',
+  background: 'var(--rp-c-bg-mute)',
   display: 'grid',
   gap: '12px',
 } as const satisfies CSSProperties

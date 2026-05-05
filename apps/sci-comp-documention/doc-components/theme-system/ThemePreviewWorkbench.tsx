@@ -33,14 +33,14 @@ export function ThemePreviewWorkbench() {
           <Button variant="secondary">保存草稿</Button>
           <Button variant="ghost">更多操作</Button>
         </div>
-        <div style={{ marginTop: 16, maxWidth: 360 }}>
+        <div style={{ marginTop: 16, maxWidth: '100%' }}>
           <Input
             label="组件名称"
             placeholder="请输入组件名称"
             helperText="同一份 overrides 会同时影响这里的输入框与按钮。"
           />
         </div>
-        <div style={{ marginTop: 16, maxWidth: 360 }}>
+        <div style={{ marginTop: 16, maxWidth: '100%' }}>
           <Progress percent={72} />
         </div>
       </div>

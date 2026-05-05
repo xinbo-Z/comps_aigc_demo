@@ -1,5 +1,5 @@
 import { useMemo, useState, type CSSProperties } from 'react'
-import { Button } from '@sci-comp/core'
+import { Button, createThemeCssVariables } from '@sci-comp/core'
 import type { ReactNode } from 'react'
 
 const surfaces = {
@@ -149,8 +149,9 @@ const styles = {
   previewPanel: {
     padding: '20px',
     borderRadius: '18px',
-    background: surfaces.cardMuted,
-    border: `1px dashed ${surfaces.borderStrong}`,
+    background: surfaces.cardSubtle,
+    border: `1px solid ${surfaces.borderStrong}`,
+    color: surfaces.text,
   },
   detailGrid: {
     display: 'grid',
@@ -160,8 +161,8 @@ const styles = {
   detailCard: {
     padding: '16px',
     borderRadius: '18px',
-    background: surfaces.cardSubtle,
-    border: `1px solid ${surfaces.border}`,
+    background: surfaces.cardMuted,
+    border: `1px solid ${surfaces.borderStrong}`,
   },
   detailTitle: {
     margin: '0 0 8px',
@@ -344,7 +345,7 @@ function ExampleCard({ example }: { example: ComponentDocExample }) {
 
 export function ComponentDocPage({ page }: { page: ComponentDocPageData }) {
   return (
-    <div style={styles.page}>
+    <div style={{ ...styles.page, ...createThemeCssVariables() }}>
       <SectionBlock title="组件定义" description={page.description}>
         <div style={styles.card}>
           <ul style={styles.proseList}>

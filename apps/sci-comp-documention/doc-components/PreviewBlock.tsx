@@ -3,6 +3,7 @@ import type { CSSProperties, ReactNode } from 'react'
 const surfaces = {
   card: 'var(--rp-c-bg)',
   cardMuted: 'var(--rp-c-bg-soft)',
+  cardSubtle: 'var(--rp-c-bg-mute)',
   border: 'var(--rp-c-divider-light)',
   borderStrong: 'var(--rp-c-divider)',
   text: 'var(--rp-c-text-1)',
@@ -38,8 +39,9 @@ const styles = {
   body: {
     padding: '18px',
     borderRadius: '16px',
-    background: surfaces.cardMuted,
-    border: `1px dashed ${surfaces.borderStrong}`,
+    background: surfaces.cardSubtle,
+    border: `1px solid ${surfaces.borderStrong}`,
+    color: surfaces.text,
   },
 } as const satisfies Record<string, CSSProperties>
 

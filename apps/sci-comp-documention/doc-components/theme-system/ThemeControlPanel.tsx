@@ -1,5 +1,10 @@
-import type { CSSProperties } from 'react'
-import { Button, Input, type SciInstrumentThemeTokens } from '@sci-comp/core'
+import { useEffect, type CSSProperties } from 'react'
+import {
+  Button,
+  Form,
+  Input,
+  type SciInstrumentThemeTokens,
+} from '@sci-comp/core'
 import { themePresets } from './themePlaygroundData'
 
 const sectionStyle: CSSProperties = {
@@ -8,7 +13,7 @@ const sectionStyle: CSSProperties = {
   gap: 16,
   padding: 20,
   borderRadius: 20,
-  border: '1px solid var(--rp-c-divider-light)',
+  border: '1px solid var(--rp-c-divider)',
   background: 'var(--rp-c-bg)',
   boxShadow: 'var(--rp-c-shadow-3)',
 }
@@ -26,80 +31,126 @@ const presetRowStyle: CSSProperties = {
 
 interface ThemeControlPanelProps {
   overrides: Partial<SciInstrumentThemeTokens>
-  onChange: (patch: Partial<SciInstrumentThemeTokens>) => void
+  onBlur: (patch: Partial<SciInstrumentThemeTokens>) => void
   onReset: () => void
   onPresetSelect: (key: string) => void
 }
 
 export function ThemeControlPanel({
   overrides,
-  onChange,
+  onBlur,
   onReset,
   onPresetSelect,
 }: ThemeControlPanelProps) {
+  const [form] = Form.useForm()
+
+  // 当 overrides 变化时，同步表单的值
+  useEffect(() => {
+    form.setFieldsValue({
+      colorPrimary: overrides.colorPrimary,
+      colorDanger: overrides.colorDanger,
+      colorText: overrides.colorText,
+      colorBgContainer: overrides.colorBgContainer,
+      borderRadius: overrides.borderRadius,
+      controlHeightSM: overrides.controlHeightSM,
+      controlHeight: overrides.controlHeight,
+      controlHeightLG: overrides.controlHeightLG,
+    })
+  }, [overrides, form])
+
+  const handleReset = () => {
+    form.resetFields()
+    onReset()
+  }
+
+  const handlePresetClick = (key: string) => {
+    onPresetSelect(key)
+  }
+
+  const handleFieldBlur = (key: string, value: string) => {
+    let processedValue: string | number = value
+    if (
+      key !== 'colorPrimary' &&
+      key !== 'colorDanger' &&
+      key !== 'colorText' &&
+      key !== 'colorBgContainer'
+    ) {
+      processedValue = Number(value)
+    }
+    onBlur({ [key]: processedValue })
+  }
+
   return (
     <section style={sectionStyle}>
       <h3 style={titleStyle}>主题输入</h3>
-      <Input
-        label="主色"
-        value={overrides.colorPrimary ?? ''}
-        onChange={(event) => onChange({ colorPrimary: event.target.value })}
-      />
-      <Input
-        label="危险色"
-        value={overrides.colorDanger ?? ''}
-        onChange={(event) => onChange({ colorDanger: event.target.value })}
-      />
-      <Input
-        label="文本色"
-        value={overrides.colorText ?? ''}
-        onChange={(event) => onChange({ colorText: event.target.value })}
-      />
-      <Input
-        label="容器背景色"
-        value={overrides.colorBgContainer ?? ''}
-        onChange={(event) => onChange({ colorBgContainer: event.target.value })}
-      />
-      <Input
-        label="圆角"
-        value={String(overrides.borderRadius ?? '')}
-        onChange={(event) =>
-          onChange({ borderRadius: Number(event.target.value) })
-        }
-      />
-      <Input
-        label="小尺寸高度"
-        value={String(overrides.controlHeightSM ?? '')}
-        onChange={(event) =>
-          onChange({ controlHeightSM: Number(event.target.value) })
-        }
-      />
-      <Input
-        label="默认高度"
-        value={String(overrides.controlHeight ?? '')}
-        onChange={(event) =>
-          onChange({ controlHeight: Number(event.target.value) })
-        }
-      />
-      <Input
-        label="大尺寸高度"
-        value={String(overrides.controlHeightLG ?? '')}
-        onChange={(event) =>
-          onChange({ controlHeightLG: Number(event.target.value) })
-        }
-      />
+      <Form form={form} layout="vertical" style={{ width: '100%' }}>
+        <Form.Item label="主色" name="colorPrimary">
+          <Input
+            onBlur={(event) =>
+              handleFieldBlur('colorPrimary', event.target.value)
+            }
+          />
+        </Form.Item>
+        <Form.Item label="危险色" name="colorDanger">
+          <Input
+            onBlur={(event) =>
+              handleFieldBlur('colorDanger', event.target.value)
+            }
+          />
+        </Form.Item>
+        <Form.Item label="文本色" name="colorText">
+          <Input
+            onBlur={(event) => handleFieldBlur('colorText', event.target.value)}
+          />
+        </Form.Item>
+        <Form.Item label="容器背景色" name="colorBgContainer">
+          <Input
+            onBlur={(event) =>
+              handleFieldBlur('colorBgContainer', event.target.value)
+            }
+          />
+        </Form.Item>
+        <Form.Item label="圆角" name="borderRadius">
+          <Input
+            onBlur={(event) =>
+              handleFieldBlur('borderRadius', event.target.value)
+            }
+          />
+        </Form.Item>
+        <Form.Item label="小尺寸高度" name="controlHeightSM">
+          <Input
+            onBlur={(event) =>
+              handleFieldBlur('controlHeightSM', event.target.value)
+            }
+          />
+        </Form.Item>
+        <Form.Item label="默认高度" name="controlHeight">
+          <Input
+            onBlur={(event) =>
+              handleFieldBlur('controlHeight', event.target.value)
+            }
+          />
+        </Form.Item>
+        <Form.Item label="大尺寸高度" name="controlHeightLG">
+          <Input
+            onBlur={(event) =>
+              handleFieldBlur('controlHeightLG', event.target.value)
+            }
+          />
+        </Form.Item>
+      </Form>
       <div style={presetRowStyle}>
         {themePresets.map((preset) => (
           <Button
             key={preset.key}
             variant="secondary"
-            onClick={() => onPresetSelect(preset.key)}
+            onClick={() => handlePresetClick(preset.key)}
           >
             {preset.label}
           </Button>
         ))}
       </div>
-      <Button variant="ghost" onClick={onReset}>
+      <Button variant="ghost" onClick={handleReset}>
         重置
       </Button>
     </section>

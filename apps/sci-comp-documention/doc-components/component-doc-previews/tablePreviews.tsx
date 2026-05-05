@@ -10,8 +10,8 @@ const stackStyle = {
 const panelStyle = {
   padding: '16px',
   borderRadius: '14px',
-  border: '1px solid var(--rp-c-divider-light)',
-  background: 'var(--rp-c-bg-soft)',
+  border: '1px solid var(--rp-c-divider)',
+  background: 'var(--rp-c-bg-mute)',
   color: 'var(--rp-c-text-1)',
 } as const
 
