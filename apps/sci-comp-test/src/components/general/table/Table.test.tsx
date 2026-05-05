@@ -482,6 +482,50 @@ describe('Table', () => {
     })
   })
 
+  test('does not render resize handles for grouped columns', () => {
+    const groupedColumns: TableColumnsType<TestRow> = [
+      {
+        key: 'metrics',
+        title: 'Metrics',
+        children: [
+          {
+            key: 'name',
+            title: 'Name',
+            dataIndex: 'name',
+            width: 120,
+          },
+          {
+            key: 'throughput',
+            title: 'Throughput',
+            dataIndex: 'throughput',
+            width: 180,
+          },
+        ],
+      },
+    ]
+
+    const { container } = render(
+      <Table<TestRow>
+        columns={groupedColumns}
+        dataSource={dataSource}
+        rowKey="id"
+        columnResize
+      />,
+    )
+
+    const groupedHeaderCell = screen.getByRole('columnheader', {
+      name: 'Metrics',
+    })
+    const resizeHandle = groupedHeaderCell.querySelector(
+      'span[aria-hidden="true"]',
+    )
+
+    expect(resizeHandle).toBeNull()
+    expect(container.querySelectorAll('span[aria-hidden="true"]')).toHaveLength(
+      0,
+    )
+  })
+
   test('keeps sorting and filtering driven by the wrapped antd table', async () => {
     const user = userEvent.setup()
     const onChange = vi.fn<NonNullable<TableProps<TestRow>['onChange']>>()
