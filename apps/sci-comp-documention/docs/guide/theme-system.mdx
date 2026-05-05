@@ -1,0 +1,416 @@
+# 主题系统
+
+import { ThemePlayground } from '../../doc-components/theme-system/ThemePlayground'
+
+本页用于全面说明 `@sci-comp/core` 的主题系统设计、工作原理、接入方式与维护规则。
+
+---
+
+## 核心设计理念
+
+### 为什么需要统一主题入口
+
+当前组件库的主题能力并不只作用于 Ant Design `ConfigProvider`，还会同时驱动组件内部消费的 CSS variables。为了避免业务侧只改一半、维护时只看一层，本页把主题输入、输出通道、兼容层和维护规则统一收敛到同一个入口。
+
+### 单一主题源，双输出通道
+
+主题系统的核心心智模型是：**同一份主题输入，同时驱动两条输出通道**。
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    themeOverrides                       │
+│           (单一主题输入 - 你的自定义配置)                │
+└────────────────────────┬────────────────────────────────┘
+                         │
+         ┌───────────────┴───────────────┐
+         │                               │
+         ▼                               ▼
+┌─────────────────────┐    ┌────────────────────────────┐
+│  createAntdTheme    │    │  createThemeCssVariables   │
+│  Tokens(overrides)  │    │  (overrides)               │
+└───────────┬─────────┘    └─────────────┬──────────────┘
+            │                            │
+            ▼                            ▼
+┌─────────────────────┐    ┌────────────────────────────┐
+│   Ant Design        │    │   CSS Custom Properties    │
+│   ConfigProvider    │    │   (--sci-*)                │
+└───────────┬─────────┘    └─────────────┬──────────────┘
+            │                            │
+            ▼                            ▼
+┌─────────────────────┐    ┌────────────────────────────┐
+│  AntD wrapper 组件  │    │  CSS Module wrapper 组件   │
+│  (Button, Input)   │    │  (Button.module.css)       │
+└─────────────────────┘    └────────────────────────────┘
+```
+
+这种设计确保了：
+- 你只需要维护一份主题配置
+- AntD 组件和自定义 CSS 组件的样式保持一致
+- 主题变更能够同步生效到所有组件
+
+---
+
+## API 入口分工
+
+- `createThemeTokens(overrides)`：函数，查看完整主题对象、调试配置，返回 `SciInstrumentThemeTokens`
+- `createAntdThemeTokens(overrides)`：函数，生成 Ant Design ConfigProvider 主题，返回 `AntdThemeTokens`
+- `createThemeCssVariables(overrides)`：函数，生成组件内部使用的 CSS 变量对象，返回 `Record<string, string>`
+- `defaultThemeTokens`：常量，默认主题基线、覆盖时的参考值，返回 `SciInstrumentThemeTokens`
+- `SciInstrumentThemeTokens`：TypeScript 类型，主题对象结构约束、类型提示
+
+---
+
+## 最小接入示例
+
+### 基础用法
+
+```tsx
+import { ConfigProvider } from 'antd'
+import {
+  Button,
+  createAntdThemeTokens,
+  createThemeCssVariables,
+} from '@sci-comp/core'
+
+// 1. 定义你的主题覆盖（单一入口）
+const themeOverrides = {
+  colorPrimary: '#667eea',
+  borderRadius: 10,
+}
+
+export function App() {
+  return (
+    <ConfigProvider theme={{ token: createAntdThemeTokens(themeOverrides) }}>
+      <div style={createThemeCssVariables(themeOverrides)}>
+        <Button variant="primary">自定义主题</Button>
+      </div>
+    </ConfigProvider>
+  )
+}
+```
+
+### 完整主题配置示例
+
+```tsx
+import { ConfigProvider } from 'antd'
+import {
+  Button,
+  Input,
+  createAntdThemeTokens,
+  createThemeCssVariables,
+  type SciInstrumentThemeTokens,
+} from '@sci-comp/core'
+
+const themeOverrides: Partial<SciInstrumentThemeTokens> = {
+  colorPrimary: '#667eea',
+  colorDanger: '#ef4444',
+  colorText: '#1f2937',
+  colorBgContainer: '#ffffff',
+  borderRadius: 12,
+  controlHeightSM: 28,
+  controlHeight: 36,
+  controlHeightLG: 44,
+  colorBorderBase: '#e5e7eb',
+  colorSurfaceMuted: '#f9fafb',
+}
+
+export function App() {
+  return (
+    <ConfigProvider theme={{ token: createAntdThemeTokens(themeOverrides) }}>
+      <div style={createThemeCssVariables(themeOverrides)}>
+        <div style={{ padding: 24, display: 'flex', gap: 16 }}>
+          <Button variant="primary">主要按钮</Button>
+          <Button variant="secondary">次要按钮</Button>
+          <Input placeholder="输入框" />
+        </div>
+      </div>
+    </ConfigProvider>
+  )
+}
+```
+
+---
+
+## 主题演示工作台
+
+<ThemePlayground initialOverrides={{ colorPrimary: '#667eea', borderRadius: 10 }} />
+
+---
+
+## Token 分层详解
+
+当前主题系统按照三层结构组织，每层都有明确的职责分工：
+
+```
+┌─────────────────────────────────────────────────────────┐
+│              Component Token（组件层）                    │
+│  作用：Button、Input、Form 等组件的局部收敛               │
+│  示例：buttonRadius、buttonHeightSm、inputRadius         │
+└─────────────────────────────┬───────────────────────────┘
+                              │ 继承
+┌─────────────────────────────▼───────────────────────────┐
+│             Semantic Token（语义层）                     │
+│  作用：文本、边框、表面、主操作、危险态等可复用语义值      │
+│  示例：colorTextPrimary、colorSurfaceBase、radiusControl │
+└─────────────────────────────┬───────────────────────────┘
+                              │ 继承
+┌─────────────────────────────▼───────────────────────────┐
+│               Seed Token（种子层）                       │
+│  作用：最小输入，主色、危险色、文本色、容器背景、圆角等      │
+│  示例：colorPrimary、colorDanger、borderRadius          │
+└─────────────────────────────────────────────────────────┘
+```
+
+### 各层 Token 详情
+
+#### Seed Token（种子令牌）
+这是主题配置的最小输入集，也是推荐优先修改的层级：
+
+- `colorPrimary`：string，默认值 `#1677ff`，主题主色
+- `colorDanger`：string，默认值 `#ff4d4f`，危险状态色
+- `colorText`：string，默认值 `#1f1f1f`，文本色基线
+- `colorBgContainer`：string，默认值 `#ffffff`，容器背景色基线
+- `borderRadius`：number，默认值 `8`，控件圆角基线
+- `controlHeightSM`：number，默认值 `28`，小尺寸控件高度
+- `controlHeight`：number，默认值 `36`，中尺寸控件高度
+- `controlHeightLG`：number，默认值 `44`，大尺寸控件高度
+
+#### Semantic Token（语义令牌）
+这些 token 基于 seed token 自动计算得出，提供可复用的语义含义：
+
+- `colorTextPrimary`：直接继承 `colorText`，主要文本色
+- `colorTextSecondary`：`mixColors(colorText, colorBgContainer, 0.32)`，次要文本色
+- `colorTextDisabled`：`mixColors(colorText, colorBgContainer, 0.52)`，禁用态文本色
+- `colorTextInverse`：固定 `#ffffff`，反向文本色
+- `colorSurfaceBase`：直接继承 `colorBgContainer`，基础表面色
+- `colorSurfaceMuted`：`mixColors(colorBgContainer, colorText, 0.04)`，次要表面色
+- `colorSurfaceElevated`：`mixColors(colorBgContainer, #ffffff, 0.12)`，浮层表面色
+- `colorBorderBase`：`mixColors(colorText, colorBgContainer, 0.78)`，基础边框色
+- `colorBorderFocus`：`mixColors(colorPrimary, #ffffff, 0.16)`，聚焦边框色
+- `colorActionPrimary`：直接继承 `colorPrimary`，主操作色
+- `colorActionPrimaryHover`：`mixColors(colorPrimary, #000000, 0.08)`，主操作悬停色
+- `colorActionPrimarySoft`：`withAlpha(colorPrimary, 0.14)`，主操作弱色（半透明）
+- `colorActionPrimaryText`：固定 `#ffffff`，主操作文本色
+- `colorDangerSoft`：`withAlpha(colorDanger, 0.14)`，危险态弱色
+- `colorDangerText`：直接继承 `colorDanger`，危险态文本色
+- `radiusControl`：直接继承 `borderRadius`，控件圆角
+- `sizeControlSm`：直接继承 `controlHeightSM`，小尺寸
+- `sizeControlMd`：直接继承 `controlHeight`，中尺寸
+- `sizeControlLg`：直接继承 `controlHeightLG`，大尺寸
+
+#### Component Token（组件令牌）
+针对特定组件的局部配置，继承自 semantic token：
+
+- `buttonRadius`：继承自 `radiusControl`，Button 圆角
+- `buttonHeightSm`：继承自 `sizeControlSm`，Button 小尺寸高度
+- `buttonHeightMd`：继承自 `sizeControlMd`，Button 中尺寸高度
+- `buttonHeightLg`：继承自 `sizeControlLg`，Button 大尺寸高度
+- `inputRadius`：继承自 `radiusControl`，Input 圆角
+- `inputHeight`：继承自 `sizeControlMd`，Input 高度
+- `formListItemRadius`：继承自 `radiusControl`，Form 列表项圆角
+
+### Token 修改优先级
+
+**推荐做法**：
+1. **优先修改 Seed Token**：让 semantic 和 component token 自动联动
+2. **次要修改 Semantic Token**：当 seed token 的自动计算结果不符合需求时
+3. **最后考虑 Component Token**：仅当某个组件确实需要特殊处理且无法通过语义层表达时
+
+**禁止做法**：
+- ❌ 直接在组件样式中硬编码颜色/尺寸
+- ❌ 绕过主题系统直接写 CSS
+- ❌ 只改 ConfigProvider 或只改 CSS Variables（单侧修改）
+
+---
+
+## CSS 变量契约
+
+### 规范变量名（--sci-*）
+
+主题系统输出以下规范 CSS 变量，供组件内部消费：
+
+**颜色变量：**
+- `--sci-color-text-primary`：对应 `colorTextPrimary`
+- `--sci-color-text-secondary`：对应 `colorTextSecondary`
+- `--sci-color-text-disabled`：对应 `colorTextDisabled`
+- `--sci-color-text-inverse`：对应 `colorTextInverse`
+- `--sci-color-surface-base`：对应 `colorSurfaceBase`
+- `--sci-color-surface-muted`：对应 `colorSurfaceMuted`
+- `--sci-color-surface-elevated`：对应 `colorSurfaceElevated`
+- `--sci-color-border-base`：对应 `colorBorderBase`
+- `--sci-color-border-focus`：对应 `colorBorderFocus`
+- `--sci-color-action-primary`：对应 `colorActionPrimary`
+- `--sci-color-action-primary-hover`：对应 `colorActionPrimaryHover`
+- `--sci-color-action-primary-soft`：对应 `colorActionPrimarySoft`
+- `--sci-color-action-primary-text`：对应 `colorActionPrimaryText`
+- `--sci-color-danger`：对应 `colorDanger`
+- `--sci-color-danger-soft`：对应 `colorDangerSoft`
+- `--sci-color-danger-text`：对应 `colorDangerText`
+
+**尺寸变量（px）：**
+- `--sci-radius-control`：对应 `radiusControl`
+- `--sci-size-control-sm`：对应 `sizeControlSm`
+- `--sci-size-control-md`：对应 `sizeControlMd`
+- `--sci-size-control-lg`：对应 `sizeControlLg`
+- `--sci-button-radius`：对应 `buttonRadius`
+- `--sci-button-height-sm`：对应 `buttonHeightSm`
+- `--sci-button-height-md`：对应 `buttonHeightMd`
+- `--sci-button-height-lg`：对应 `buttonHeightLg`
+- `--sci-input-radius`：对应 `inputRadius`
+- `--sci-input-height`：对应 `inputHeight`
+- `--sci-form-list-item-radius`：对应 `formListItemRadius`
+
+### 兼容层与迁移规则
+
+当前组件库在输出 `--sci-*` 规范变量的同时，仍会保留一层历史别名，方便渐进迁移：
+
+- `--text-h` → `--sci-color-text-primary`：主标题文本色
+- `--text` → `--sci-color-text-secondary`：正文文本色
+- `--bg` → `--sci-color-surface-base`：背景色
+- `--code-bg` → `--sci-color-surface-muted`：代码块背景色
+- `--border` → `--sci-color-border-base`：边框色
+- `--accent` → `--sci-color-action-primary`：强调色
+- `--accent-hover` → `--sci-color-action-primary-hover`：强调色悬停
+- `--accent-border` → `--sci-color-border-focus`：强调边框色
+- `--accent-bg` → `--sci-color-action-primary-soft`：强调背景色
+- `--danger` → `--sci-color-danger`：危险色
+
+**迁移指南**：
+- ✅ 新代码直接消费 `--sci-*` 规范变量
+- ⚠️ 旧变量只作为兼容输出，不再新增消费点
+- 🔄 迁移时逐步替换旧变量引用
+
+### 组件 CSS 示例
+
+下面是 Button 组件如何使用 CSS 变量的示例：
+
+```css
+.button {
+  border-radius: var(--sci-button-radius);
+}
+.primary {
+  background-color: var(--sci-color-action-primary);
+  border-color: var(--sci-color-action-primary);
+  color: var(--sci-color-action-primary-text);
+}
+.secondary {
+  background-color: var(--sci-color-surface-muted);
+  border-color: var(--sci-color-border-base);
+  color: var(--sci-color-text-primary);
+}
+.sm {
+  min-height: var(--sci-button-height-sm);
+  padding: 0 0.75rem;
+}
+.md {
+  min-height: var(--sci-button-height-md);
+  padding: 0 1rem;
+}
+```
+
+---
+
+## 维护规则
+
+### 组件开发规则
+
+1. **优先复用 Semantic Token**：新增组件时优先消费现有 semantic token，不要硬编码颜色、圆角或尺寸
+2. **不要新增 Seed Token**：只有当多个组件都需要同一语义且现有 token 无法表达时，再考虑补充新的 token
+3. **遵循 CSS 变量契约**：组件样式必须通过 CSS 变量消费主题，而不是直接引用 token 对象
+
+### 主题系统维护规则
+
+1. **同步文档**：修改主题 API、变量映射或推荐做法后，应同步检查快速开始、本页文档是否一致
+2. **双向验证**：验证主题改动时，应同时观察 AntD wrapper 与 CSS variable 消费组件是否同步生效
+3. **保持向后兼容**：新增或调整 token 时，应保持现有 token 的可用性，避免破坏性变更
+4. **更新演示**：主题系统变更后，应同步更新 ThemePlayground 和相关示例
+
+### 代码审查清单
+
+当审查与主题相关的 PR 时，检查以下项目：
+- 是否同时配置了 `createAntdThemeTokens` 和 `createThemeCssVariables`？
+- 是否优先修改了 seed token 而不是直接修改 component token？
+- 组件样式是否使用了 CSS 变量而不是硬编码值？
+- 主题变更是否同时验证了 AntD 组件和 CSS Module 组件？
+- 文档是否同步更新？
+
+---
+
+## 常见问题
+
+### 为什么不能只改 ConfigProvider？
+
+因为当前组件库除了包装 AntD 组件，还包含消费 CSS variables 的样式层。只改 ConfigProvider 会导致一部分组件变了，另一部分维持旧样式。
+
+### 应该优先覆盖 component token 还是 seed token？
+
+优先覆盖 seed token。只有当某个组件确实需要局部收敛且无法通过现有语义层表达时，才考虑扩展 component token。
+
+### 后续如果要做品牌换肤或暗色模式怎么办？
+
+继续沿用同一份主题输入，再在 seed 与 semantic 层扩展映射规则即可，不需要重新发明新的主题入口。例如：
+
+```tsx
+const darkThemeOverrides = {
+  colorPrimary: '#3b82f6',
+  colorText: '#f3f4f6',
+  colorBgContainer: '#1f2937',
+  borderRadius: 8,
+}
+```
+
+### 如何查看当前完整的主题配置？
+
+使用 `createThemeTokens` 函数：
+
+```tsx
+import { createThemeTokens } from '@sci-comp/core'
+
+const themeOverrides = { colorPrimary: '#667eea' }
+const fullTheme = createThemeTokens(themeOverrides)
+console.log(fullTheme)
+```
+
+### CSS variables 是如何应用到 DOM 上的？
+
+`createThemeCssVariables` 返回的是一个普通的对象，你可以像使用任何内联样式一样使用它：
+
+```tsx
+const cssVars = createThemeCssVariables(themeOverrides)
+<div style={cssVars}>
+  {/* 子组件都能访问到这些 CSS 变量 */}
+</div>
+```
+
+### 如何在多个应用之间共享主题配置？
+
+将主题配置抽取为独立模块：
+
+```tsx
+// themes/my-brand-theme.ts
+import type { SciInstrumentThemeTokens } from '@sci-comp/core'
+
+export const myBrandTheme: Partial<SciInstrumentThemeTokens> = {
+  colorPrimary: '#667eea',
+  colorDanger: '#ef4444',
+  borderRadius: 12,
+}
+```
+
+然后在各个应用中复用：
+
+```tsx
+import { myBrandTheme } from './themes/my-brand-theme'
+import { createAntdThemeTokens, createThemeCssVariables } from '@sci-comp/core'
+
+const antdTokens = createAntdThemeTokens(myBrandTheme)
+const cssVars = createThemeCssVariables(myBrandTheme)
+```
+
+---
+
+## 下一步
+
+- 查看[快速开始](/guide/getting-started)，了解如何在项目中最小接入
+- 查看组件文档，了解 Button、Input、Form 等组件的具体用法
+- 在你的项目中实践主题配置，体验双通道同步生效的效果

@@ -43,4 +43,4 @@ export function App() {
 ## 下一步
 
 - 查看[主题系统](/guide/theme-system)，了解主题入口分工、双输出通道与 token 约束
-- 查看组件文档，按需接入 Button、Input、Form 等基础组件
+- 查看[组件导航](/guide/components)，了解所有可用组件并选择需要接入的组件
