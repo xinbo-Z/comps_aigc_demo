@@ -295,6 +295,135 @@ describe('Table', () => {
     expect(tableRoot).toHaveAttribute('data-scroll-y', '240')
   })
 
+  test('positions the resize handle on the header cell boundary', () => {
+    const resizableColumns: TableColumnsType<TestRow> = [
+      {
+        key: 'name',
+        title: 'Name',
+        dataIndex: 'name',
+        width: 120,
+      },
+      {
+        key: 'status',
+        title: 'Status',
+        dataIndex: 'status',
+        width: 180,
+      },
+    ]
+
+    const { container } = render(
+      <Table<TestRow>
+        columns={resizableColumns}
+        dataSource={dataSource}
+        rowKey="id"
+        columnResize
+      />,
+    )
+
+    const nameHeaderCell = container.querySelectorAll('th')[0]
+    const resizeHandle = nameHeaderCell?.querySelector(
+      'span[aria-hidden="true"]',
+    )
+
+    expect(resizeHandle).not.toBeNull()
+    expect(nameHeaderCell).toHaveStyle({ position: 'relative' })
+    expect(resizeHandle).toHaveStyle({
+      right: '0px',
+      width: '8px',
+      transform: 'translateX(50%)',
+    })
+  })
+
+  test('preserves an existing header cell position style when rendering resize handles', () => {
+    const resizableColumns: TableColumnsType<TestRow> = [
+      {
+        key: 'name',
+        title: 'Name',
+        dataIndex: 'name',
+        width: 120,
+        onHeaderCell: () => ({
+          style: {
+            position: 'sticky',
+            left: 0,
+          },
+        }),
+      },
+      {
+        key: 'status',
+        title: 'Status',
+        dataIndex: 'status',
+        width: 180,
+      },
+    ]
+
+    const { container } = render(
+      <Table<TestRow>
+        columns={resizableColumns}
+        dataSource={dataSource}
+        rowKey="id"
+        columnResize
+      />,
+    )
+
+    const nameHeaderCell = container.querySelectorAll('th')[0]
+    const resizeHandle = nameHeaderCell?.querySelector(
+      'span[aria-hidden="true"]',
+    )
+
+    expect(resizeHandle).not.toBeNull()
+    expect(nameHeaderCell).toHaveStyle({
+      position: 'sticky',
+      left: '0px',
+    })
+  })
+
+  test('does not trigger sorting when the custom resize handle is pressed', async () => {
+    const user = userEvent.setup()
+    const onChange = vi.fn<NonNullable<TableProps<TestRow>['onChange']>>()
+
+    const resizableColumns: TableColumnsType<TestRow> = [
+      {
+        key: 'name',
+        title: 'Name',
+        dataIndex: 'name',
+        width: 120,
+      },
+      {
+        key: 'throughput',
+        title: 'Throughput',
+        dataIndex: 'throughput',
+        width: 180,
+        sorter: (left, right) => left.throughput - right.throughput,
+      },
+    ]
+
+    const { container } = render(
+      <Table<TestRow>
+        columns={resizableColumns}
+        dataSource={dataSource}
+        rowKey="id"
+        columnResize
+        onChange={onChange}
+      />,
+    )
+
+    const throughputHeaderCell = container.querySelectorAll('th')[1]
+    const resizeHandles = throughputHeaderCell?.querySelectorAll(
+      'span[aria-hidden="true"]',
+    )
+    const resizeHandle = resizeHandles?.[resizeHandles.length - 1] ?? null
+
+    expect(resizeHandle).not.toBeNull()
+    expect(resizeHandle).toHaveStyle({
+      cursor: 'col-resize',
+      transform: 'translateX(50%)',
+    })
+
+    await user.click(resizeHandle!)
+
+    expect(onChange).not.toHaveBeenCalled()
+  })
+
   test('emits updated columns when a resizable column drag ends', async () => {
     const onColumnsChange = vi.fn()
 

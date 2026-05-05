@@ -77,37 +77,36 @@ function ResizableHeaderCell({
   ...restProps
 }: ThHTMLAttributes<HTMLTableCellElement> & HeaderCellResizeProps) {
   return (
-    <th {...restProps} style={style}>
-      <div
-        style={{
-          position: 'relative',
-          width: '100%',
-          minHeight: '100%',
-        }}
-      >
-        {children}
-        {onResizeStart ? (
-          <span
-            aria-hidden="true"
-            onClick={(event) => {
-              event.preventDefault()
-              event.stopPropagation()
-            }}
-            onMouseDown={onResizeStart}
-            style={{
-              position: 'absolute',
-              top: 0,
-              right: -4,
-              bottom: 0,
-              width: 8,
-              cursor: 'col-resize',
-              userSelect: 'none',
-              touchAction: 'none',
-              zIndex: 1,
-            }}
-          />
-        ) : null}
-      </div>
+    <th
+      {...restProps}
+      style={{
+        ...style,
+        position: style?.position ?? 'relative',
+      }}
+    >
+      {children}
+      {onResizeStart ? (
+        <span
+          aria-hidden="true"
+          onClick={(event) => {
+            event.preventDefault()
+            event.stopPropagation()
+          }}
+          onMouseDown={onResizeStart}
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            width: 8,
+            cursor: 'col-resize',
+            userSelect: 'none',
+            touchAction: 'none',
+            transform: 'translateX(50%)',
+            zIndex: 1,
+          }}
+        />
+      ) : null}
     </th>
   )
 }
