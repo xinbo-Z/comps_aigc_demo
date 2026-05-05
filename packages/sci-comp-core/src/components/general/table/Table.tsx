@@ -1,5 +1,6 @@
 import { Table as AntTable } from 'antd'
 import {
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -141,12 +142,8 @@ export function Table<RecordType extends object = Record<string, unknown>>({
     onColumnsChangeRef.current = onColumnsChange
   }, [onColumnsChange])
 
-  useEffect(() => {
-    if (!resizeState) {
-      return undefined
-    }
-
-    const handleMouseMove = (event: MouseEvent) => {
+  const handleMouseMove = useCallback(
+    (event: MouseEvent) => {
       const activeState = resizeStateRef.current
 
       if (!activeState) {
@@ -165,31 +162,38 @@ export function Table<RecordType extends object = Record<string, unknown>>({
 
       resizeStateRef.current = nextState
       setResizeState(nextState)
+    },
+    [minWidth],
+  )
+
+  const handleMouseUp = useCallback(() => {
+    const activeState = resizeStateRef.current
+
+    if (!activeState) {
+      return
     }
 
-    const handleMouseUp = () => {
-      const activeState = resizeStateRef.current
-
-      if (!activeState) {
-        return
+    const nextColumns = columnsRef.current.map((column) => {
+      if (!isLeafColumn(column)) {
+        return column
       }
 
-      const nextColumns = columnsRef.current.map((column) => {
-        if (!isLeafColumn(column)) {
-          return column
-        }
+      return getColumnIdentifier(column) === activeState.columnId
+        ? {
+            ...column,
+            width: activeState.nextWidth,
+          }
+        : column
+    })
 
-        return getColumnIdentifier(column) === activeState.columnId
-          ? {
-              ...column,
-              width: activeState.nextWidth,
-            }
-          : column
-      })
+    onColumnsChangeRef.current?.(nextColumns)
+    resizeStateRef.current = null
+    setResizeState(null)
+  }, [])
 
-      onColumnsChangeRef.current?.(nextColumns)
-      resizeStateRef.current = null
-      setResizeState(null)
+  useEffect(() => {
+    if (!resizeStateRef.current) {
+      return undefined
     }
 
     window.addEventListener('mousemove', handleMouseMove)
@@ -199,7 +203,7 @@ export function Table<RecordType extends object = Record<string, unknown>>({
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('mouseup', handleMouseUp)
     }
-  }, [minWidth, resizeState?.columnId])
+  }, [handleMouseMove, handleMouseUp, resizeState?.columnId])
 
   const displayColumns = useMemo<TableColumnsType<RecordType>>(() => {
     return columns.map((column) => {
