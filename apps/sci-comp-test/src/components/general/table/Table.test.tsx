@@ -8,7 +8,13 @@ import {
   vi,
 } from 'vitest'
 import userEvent from '@testing-library/user-event'
-import { render, screen, waitFor, within } from '../../../support/render'
+import {
+  render,
+  screen,
+  waitFor,
+  within,
+  fireEvent,
+} from '../../../support/render'
 import { Table, type TableColumnsType, type TableProps } from '@sci-comp/core'
 
 type TestRow = {
@@ -262,6 +268,7 @@ describe('Table', () => {
           virtual?: boolean
         }) => (
           <div
+            data-testid="mocked-antd-table"
             data-scroll-x={String(scroll?.x ?? '')}
             data-scroll-y={String(scroll?.y ?? '')}
             data-virtual={String(Boolean(virtual))}
@@ -271,7 +278,7 @@ describe('Table', () => {
     })
 
     const { Table: MockedTable } = await import('@sci-comp/core')
-    const { container } = render(
+    render(
       <MockedTable<TestRow>
         columns={columns}
         dataSource={dataSource}
@@ -281,11 +288,198 @@ describe('Table', () => {
       />,
     )
 
-    const tableRoot = container.firstElementChild
+    const tableRoot = screen.getByTestId('mocked-antd-table')
 
     expect(tableRoot).toHaveAttribute('data-virtual', 'true')
     expect(tableRoot).toHaveAttribute('data-scroll-x', '720')
     expect(tableRoot).toHaveAttribute('data-scroll-y', '240')
+  })
+
+  test('emits updated columns when a resizable column drag ends', async () => {
+    const onColumnsChange = vi.fn()
+
+    const resizableColumns: TableColumnsType<TestRow> = [
+      {
+        key: 'name',
+        title: 'Name',
+        dataIndex: 'name',
+        width: 120,
+      },
+      {
+        key: 'status',
+        title: 'Status',
+        dataIndex: 'status',
+        width: 180,
+      },
+    ]
+
+    const { container } = render(
+      <Table<TestRow>
+        columns={resizableColumns}
+        dataSource={dataSource}
+        rowKey="id"
+        columnResize
+        onColumnsChange={onColumnsChange}
+      />,
+    )
+
+    const headerCells = container.querySelectorAll('th')
+    const nameHeaderCell = headerCells[0]
+    const resizeHandle = nameHeaderCell.querySelector(
+      'span[aria-hidden="true"]',
+    )
+
+    expect(resizeHandle).not.toBeNull()
+
+    Object.defineProperty(nameHeaderCell, 'getBoundingClientRect', {
+      configurable: true,
+      value: () => ({
+        width: 120,
+        height: 40,
+        top: 0,
+        right: 120,
+        bottom: 40,
+        left: 0,
+        x: 0,
+        y: 0,
+        toJSON: () => ({}),
+      }),
+    })
+
+    fireEvent.mouseDown(resizeHandle!, { clientX: 200 })
+    fireEvent.mouseMove(window, { clientX: 260 })
+    fireEvent.mouseUp(window)
+
+    await waitFor(() => {
+      expect(onColumnsChange).toHaveBeenCalledWith([
+        expect.objectContaining({ key: 'name', width: 180 }),
+        expect.objectContaining({ key: 'status', width: 180 }),
+      ])
+    })
+  })
+
+  test('clamps resized width to the configured minWidth', async () => {
+    const onColumnsChange = vi.fn()
+
+    const resizableColumns: TableColumnsType<TestRow> = [
+      {
+        key: 'name',
+        title: 'Name',
+        dataIndex: 'name',
+        width: 120,
+      },
+      {
+        key: 'status',
+        title: 'Status',
+        dataIndex: 'status',
+        width: 180,
+      },
+    ]
+
+    const { container } = render(
+      <Table<TestRow>
+        columns={resizableColumns}
+        dataSource={dataSource}
+        rowKey="id"
+        columnResize={{ minWidth: 90 }}
+        onColumnsChange={onColumnsChange}
+      />,
+    )
+
+    const headerCells = container.querySelectorAll('th')
+    const nameHeaderCell = headerCells[0]
+    const resizeHandle = nameHeaderCell.querySelector(
+      'span[aria-hidden="true"]',
+    )
+
+    expect(resizeHandle).not.toBeNull()
+
+    Object.defineProperty(nameHeaderCell, 'getBoundingClientRect', {
+      configurable: true,
+      value: () => ({
+        width: 120,
+        height: 40,
+        top: 0,
+        right: 120,
+        bottom: 40,
+        left: 0,
+        x: 0,
+        y: 0,
+        toJSON: () => ({}),
+      }),
+    })
+
+    fireEvent.mouseDown(resizeHandle!, { clientX: 200 })
+    fireEvent.mouseMove(window, { clientX: 80 })
+    fireEvent.mouseUp(window)
+
+    await waitFor(() => {
+      expect(onColumnsChange).toHaveBeenCalledWith([
+        expect.objectContaining({ key: 'name', width: 90 }),
+        expect.objectContaining({ key: 'status', width: 180 }),
+      ])
+    })
+  })
+
+  test('uses single-segment dataIndex as the resize identifier when key is absent', async () => {
+    const onColumnsChange = vi.fn()
+
+    const resizableColumns: TableColumnsType<TestRow> = [
+      {
+        title: 'Name',
+        dataIndex: 'name',
+        width: 120,
+      },
+      {
+        title: 'Status',
+        dataIndex: 'status',
+        width: 180,
+      },
+    ]
+
+    const { container } = render(
+      <Table<TestRow>
+        columns={resizableColumns}
+        dataSource={dataSource}
+        rowKey="id"
+        columnResize
+        onColumnsChange={onColumnsChange}
+      />,
+    )
+
+    const headerCells = container.querySelectorAll('th')
+    const nameHeaderCell = headerCells[0]
+    const resizeHandle = nameHeaderCell.querySelector(
+      'span[aria-hidden="true"]',
+    )
+
+    expect(resizeHandle).not.toBeNull()
+
+    Object.defineProperty(nameHeaderCell, 'getBoundingClientRect', {
+      configurable: true,
+      value: () => ({
+        width: 120,
+        height: 40,
+        top: 0,
+        right: 120,
+        bottom: 40,
+        left: 0,
+        x: 0,
+        y: 0,
+        toJSON: () => ({}),
+      }),
+    })
+
+    fireEvent.mouseDown(resizeHandle!, { clientX: 200 })
+    fireEvent.mouseMove(window, { clientX: 250 })
+    fireEvent.mouseUp(window)
+
+    await waitFor(() => {
+      expect(onColumnsChange).toHaveBeenCalledWith([
+        expect.objectContaining({ dataIndex: 'name', width: 170 }),
+        expect.objectContaining({ dataIndex: 'status', width: 180 }),
+      ])
+    })
   })
 
   test('keeps sorting and filtering driven by the wrapped antd table', async () => {
