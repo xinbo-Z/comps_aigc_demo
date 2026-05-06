@@ -171,8 +171,9 @@ export function InputReadonlyPreview() {
         purpose:
           '帮助读者在表单只读区、详情面板和条件受限场景下选择合适的输入状态。',
         highlights: [
-          '`disabled` 更适合当前不可交互的字段。',
-          '`readOnly` 更适合允许聚焦查看但不允许编辑的字段。',
+          '`disabled` 更适合当前不可交互、也不希望用户聚焦尝试编辑的字段。',
+          '`readOnly` 更适合允许聚焦查看、复制内容但不允许修改的字段。',
+          '`invalid` 应用于当前值需要纠正或校验失败的场景，而不是替代禁用或只读语义。',
         ],
         boundaries: [
           '如果字段只是临时不可改，不应一律替换为纯文本展示。',
@@ -239,11 +240,12 @@ export function InputReadonlyPreview() {
   selectionTips: [
     '需要统一字段标签、说明与错误提示时，优先使用当前 Input wrapper。',
     '如果只是最基础的文本输入，仍可把它当作轻量 antd Input 使用。',
-    '更复杂的字段编排、校验联动与提交流程应交给 Form 或更高阶容器处理。',
+    '`invalid` 用于表达当前值需要修正，`disabled` 用于当前不可操作，`readOnly` 用于允许查看但不允许编辑。',
+    '更复杂的字段编排、校验联动与提交流程应交给 Form 或更高阶容器处理，而不是继续把流程能力堆进单个 Input。',
   ],
   wrapperNotes: [
     'Input 仍然基于 antd Input 封装，不引入独立的输入 DSL 或复杂规则系统。',
     'API 主表只覆盖帮助理解 wrapper 的高频能力，不等同于 antd Input 的全量参数镜像。',
-    '未纳入主表的其他输入能力继续遵循 antd 原生 props 透传规则。',
+    '`label`、`helperText` 与 `invalid` 负责字段级展示和轻量错误表达；整体验证时机、字段布局与提交流程继续由 Form 或业务容器负责。',
   ],
 }

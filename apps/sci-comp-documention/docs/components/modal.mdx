@@ -1,6 +1,49 @@
-import { ComponentDocPage } from '../../doc-components/ComponentDoc'
+import {
+  ComponentDocApi,
+  ComponentDocDefinition,
+  ComponentDocExampleBlock,
+  ComponentDocScenarios,
+  ComponentDocSelectionTips,
+  ComponentDocWrapperNotes,
+} from '../../doc-components/ComponentDoc'
 import { modalDocPage } from '../../doc-components/componentDocData'
 
 # Modal
 
-<ComponentDocPage page={modalDocPage} />
+## 组件定义
+
+<ComponentDocDefinition page={modalDocPage} />
+
+## 适用场景
+
+<ComponentDocScenarios page={modalDocPage} />
+
+## 案例演示
+
+### 基础确认弹窗
+
+<ComponentDocExampleBlock example={modalDocPage.examples[0]} />
+
+### 全屏弹窗
+
+<ComponentDocExampleBlock example={modalDocPage.examples[1]} />
+
+### 承载表单内容
+
+<ComponentDocExampleBlock example={modalDocPage.examples[2]} />
+
+### 提交中状态
+
+<ComponentDocExampleBlock example={modalDocPage.examples[3]} />
+
+## 常用属性 API
+
+<ComponentDocApi page={modalDocPage} />
+
+## 选型建议
+
+<ComponentDocSelectionTips page={modalDocPage} />
+
+## 封装说明
+
+<ComponentDocWrapperNotes page={modalDocPage} />

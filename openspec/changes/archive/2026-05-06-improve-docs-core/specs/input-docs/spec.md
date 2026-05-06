@@ -1,8 +1,4 @@
-## Purpose
-
-定义 Input 组件文档页的增强型使用指引与高频优先信息组织方式。
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Input 文档页 SHALL 提供增强型使用指引
 

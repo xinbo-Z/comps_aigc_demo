@@ -1,6 +1,49 @@
-import { ComponentDocPage } from '../../doc-components/ComponentDoc'
+import {
+  ComponentDocApi,
+  ComponentDocDefinition,
+  ComponentDocExampleBlock,
+  ComponentDocScenarios,
+  ComponentDocSelectionTips,
+  ComponentDocWrapperNotes,
+} from '../../doc-components/ComponentDoc'
 import { schemaFormDocPage } from '../../doc-components/componentDocData'
 
 # SchemaForm
 
-<ComponentDocPage page={schemaFormDocPage} />
+## 组件定义
+
+<ComponentDocDefinition page={schemaFormDocPage} />
+
+## 适用场景
+
+<ComponentDocScenarios page={schemaFormDocPage} />
+
+## 案例演示
+
+### 基础 schema 驱动表单
+
+<ComponentDocExampleBlock example={schemaFormDocPage.examples[0]} />
+
+### 动态显示与动态规则
+
+<ComponentDocExampleBlock example={schemaFormDocPage.examples[1]} />
+
+### 列表项编排
+
+<ComponentDocExampleBlock example={schemaFormDocPage.examples[2]} />
+
+### schemaOnly 与纯配置渲染
+
+<ComponentDocExampleBlock example={schemaFormDocPage.examples[3]} />
+
+## 常用属性 API
+
+<ComponentDocApi page={schemaFormDocPage} />
+
+## 选型建议
+
+<ComponentDocSelectionTips page={schemaFormDocPage} />
+
+## 封装说明
+
+<ComponentDocWrapperNotes page={schemaFormDocPage} />

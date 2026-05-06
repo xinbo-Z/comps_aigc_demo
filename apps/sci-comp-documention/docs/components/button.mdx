@@ -1,6 +1,53 @@
-import { ComponentDocPage } from '../../doc-components/ComponentDoc'
+import {
+  ComponentDocApi,
+  ComponentDocDefinition,
+  ComponentDocExampleBlock,
+  ComponentDocScenarios,
+  ComponentDocSelectionTips,
+  ComponentDocWrapperNotes,
+} from '../../doc-components/ComponentDoc'
 import { buttonDocPage } from '../../doc-components/componentDocData'
 
 # Button
 
-<ComponentDocPage page={buttonDocPage} />
+## 组件定义
+
+<ComponentDocDefinition page={buttonDocPage} />
+
+## 适用场景
+
+<ComponentDocScenarios page={buttonDocPage} />
+
+## 案例演示
+
+### 基础变体
+
+<ComponentDocExampleBlock example={buttonDocPage.examples[0]} />
+
+### 风险操作
+
+<ComponentDocExampleBlock example={buttonDocPage.examples[1]} />
+
+### 尺寸层级
+
+<ComponentDocExampleBlock example={buttonDocPage.examples[2]} />
+
+### 加载与禁用状态
+
+<ComponentDocExampleBlock example={buttonDocPage.examples[3]} />
+
+### 工具栏组合场景
+
+<ComponentDocExampleBlock example={buttonDocPage.examples[4]} />
+
+## 常用属性 API
+
+<ComponentDocApi page={buttonDocPage} />
+
+## 选型建议
+
+<ComponentDocSelectionTips page={buttonDocPage} />
+
+## 封装说明
+
+<ComponentDocWrapperNotes page={buttonDocPage} />

@@ -1,8 +1,4 @@
-## Purpose
-
-定义 Table 组件文档页的增强型使用指引与高频优先范围约束。
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Table 文档页 SHALL 提供增强型使用指引
 

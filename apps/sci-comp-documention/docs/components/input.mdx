@@ -1,6 +1,49 @@
-import { ComponentDocPage } from '../../doc-components/ComponentDoc'
+import {
+  ComponentDocApi,
+  ComponentDocDefinition,
+  ComponentDocExampleBlock,
+  ComponentDocScenarios,
+  ComponentDocSelectionTips,
+  ComponentDocWrapperNotes,
+} from '../../doc-components/ComponentDoc'
 import { inputDocPage } from '../../doc-components/componentDocData'
 
 # Input
 
-<ComponentDocPage page={inputDocPage} />
+## 组件定义
+
+<ComponentDocDefinition page={inputDocPage} />
+
+## 适用场景
+
+<ComponentDocScenarios page={inputDocPage} />
+
+## 案例演示
+
+### 基础输入
+
+<ComponentDocExampleBlock example={inputDocPage.examples[0]} />
+
+### 标签与辅助说明
+
+<ComponentDocExampleBlock example={inputDocPage.examples[1]} />
+
+### 错误态与校验反馈
+
+<ComponentDocExampleBlock example={inputDocPage.examples[2]} />
+
+### 禁用态与只读态
+
+<ComponentDocExampleBlock example={inputDocPage.examples[3]} />
+
+## 常用属性 API
+
+<ComponentDocApi page={inputDocPage} />
+
+## 选型建议
+
+<ComponentDocSelectionTips page={inputDocPage} />
+
+## 封装说明
+
+<ComponentDocWrapperNotes page={inputDocPage} />

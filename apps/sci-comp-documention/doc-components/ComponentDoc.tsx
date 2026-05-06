@@ -1,8 +1,9 @@
 import { useMemo, useState, type CSSProperties } from 'react'
-import { Button, createThemeCssVariables } from '@sci-comp/core'
+import { Button } from '@sci-comp/core'
 import type { ReactNode } from 'react'
 
 const surfaces = {
+  page: 'var(--rp-c-bg-soft)',
   card: 'var(--rp-c-bg)',
   cardMuted: 'var(--rp-c-bg-soft)',
   cardSubtle: 'var(--rp-c-bg-mute)',
@@ -10,12 +11,21 @@ const surfaces = {
   borderStrong: 'var(--rp-c-divider)',
   text: 'var(--rp-c-text-1)',
   textSecondary: 'var(--rp-c-text-2)',
-  textTertiary: 'var(--rp-c-text-3)',
   brand: 'var(--rp-c-brand)',
-  brandTint: 'var(--rp-c-brand-tint)',
+  brandTint:
+    'color-mix(in srgb, var(--rp-c-brand-tint) 48%, var(--rp-c-bg) 52%)',
   codeText: 'var(--rp-c-text-code)',
-  codeBackground: 'var(--rp-c-text-code-bg)',
+  codeBackground: 'var(--rp-c-bg-alt)',
   shadow: 'var(--rp-c-shadow-3)',
+} as const
+
+const componentDocSectionIds = {
+  definition: 'definition',
+  scenarios: 'scenarios',
+  examples: 'examples',
+  api: 'api',
+  selectionTips: 'selection-tips',
+  wrapperNotes: 'wrapper-notes',
 } as const
 
 export interface ExampleSourceDetails {
@@ -64,26 +74,14 @@ const styles = {
     display: 'grid',
     gap: '28px',
     marginTop: '24px',
+    padding: '24px',
+    borderRadius: '28px',
+    background: surfaces.page,
   },
   section: {
     display: 'grid',
     gap: '14px',
-  },
-  sectionHeader: {
-    display: 'grid',
-    gap: '8px',
-  },
-  sectionTitle: {
-    margin: 0,
-    fontSize: '26px',
-    lineHeight: 1.35,
-    color: surfaces.text,
-  },
-  sectionDescription: {
-    margin: 0,
-    fontSize: '14px',
-    lineHeight: 1.8,
-    color: surfaces.textSecondary,
+    scrollMarginTop: '24px',
   },
   card: {
     padding: '24px',
@@ -117,12 +115,6 @@ const styles = {
   exampleHeader: {
     display: 'grid',
     gap: '10px',
-  },
-  exampleTitle: {
-    margin: 0,
-    fontSize: '20px',
-    lineHeight: 1.4,
-    color: surfaces.text,
   },
   exampleSummary: {
     margin: 0,
@@ -242,21 +234,9 @@ const styles = {
   },
 } as const satisfies Record<string, CSSProperties>
 
-interface SectionBlockProps {
-  title: string
-  description?: string
-  children: ReactNode
-}
-
-function SectionBlock({ title, description, children }: SectionBlockProps) {
+function SectionBody({ id, children }: { id: string; children: ReactNode }) {
   return (
-    <section style={styles.section}>
-      <div style={styles.sectionHeader}>
-        <h2 style={styles.sectionTitle}>{title}</h2>
-        {description ? (
-          <p style={styles.sectionDescription}>{description}</p>
-        ) : null}
-      </div>
+    <section id={id} style={styles.section}>
       {children}
     </section>
   )
@@ -292,9 +272,8 @@ function ExampleCard({ example }: { example: ComponentDocExample }) {
   }
 
   return (
-    <article style={styles.exampleCard}>
+    <article id={example.id} style={styles.exampleCard}>
       <div style={styles.exampleHeader}>
-        <h3 style={styles.exampleTitle}>{example.title}</h3>
         <p style={styles.exampleSummary}>{example.summary}</p>
         <div style={styles.propTags}>
           {example.relatedProps.map((prop) => (
@@ -343,102 +322,144 @@ function ExampleCard({ example }: { example: ComponentDocExample }) {
   )
 }
 
+export function ComponentDocDefinition({
+  page,
+}: {
+  page: ComponentDocPageData
+}) {
+  return (
+    <SectionBody id={componentDocSectionIds.definition}>
+      <div style={styles.card}>
+        <ul style={styles.proseList}>
+          {page.definition.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </div>
+    </SectionBody>
+  )
+}
+
+export function ComponentDocScenarios({
+  page,
+}: {
+  page: ComponentDocPageData
+}) {
+  return (
+    <SectionBody id={componentDocSectionIds.scenarios}>
+      <div style={styles.card}>
+        <ul style={styles.proseList}>
+          {page.scenarios.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </div>
+    </SectionBody>
+  )
+}
+
+export function ComponentDocExampleBlock({
+  example,
+}: {
+  example: ComponentDocExample
+}) {
+  return <ExampleCard example={example} />
+}
+
+export function ComponentDocExamples({ page }: { page: ComponentDocPageData }) {
+  return (
+    <SectionBody id={componentDocSectionIds.examples}>
+      <div style={styles.examples}>
+        {page.examples.map((example) => (
+          <ExampleCard key={example.id} example={example} />
+        ))}
+      </div>
+    </SectionBody>
+  )
+}
+
+export function ComponentDocApi({ page }: { page: ComponentDocPageData }) {
+  return (
+    <SectionBody id={componentDocSectionIds.api}>
+      <div style={styles.tableWrap}>
+        <table style={styles.table}>
+          <thead style={styles.tableHead}>
+            <tr>
+              <th style={styles.tableHeaderCell}>属性</th>
+              <th style={styles.tableHeaderCell}>说明</th>
+              <th style={styles.tableHeaderCell}>类型</th>
+              <th style={styles.tableHeaderCell}>默认值</th>
+              <th style={styles.tableHeaderCell}>备注</th>
+            </tr>
+          </thead>
+          <tbody>
+            {page.api.map((item) => (
+              <tr key={item.name}>
+                <td style={styles.tableCell}>
+                  <span style={styles.tableName}>{item.name}</span>
+                </td>
+                <td style={styles.tableCell}>{item.description}</td>
+                <td style={styles.tableCell}>{item.type}</td>
+                <td style={styles.tableCell}>{item.defaultValue}</td>
+                <td style={styles.tableCell}>{item.notes ?? '-'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </SectionBody>
+  )
+}
+
+export function ComponentDocSelectionTips({
+  page,
+}: {
+  page: ComponentDocPageData
+}) {
+  if (!page.selectionTips?.length) {
+    return null
+  }
+
+  return (
+    <SectionBody id={componentDocSectionIds.selectionTips}>
+      <div style={styles.card}>
+        <ul style={styles.notesList}>
+          {page.selectionTips.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </div>
+    </SectionBody>
+  )
+}
+
+export function ComponentDocWrapperNotes({
+  page,
+}: {
+  page: ComponentDocPageData
+}) {
+  return (
+    <SectionBody id={componentDocSectionIds.wrapperNotes}>
+      <div style={styles.card}>
+        <ul style={styles.notesList}>
+          {page.wrapperNotes.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </div>
+    </SectionBody>
+  )
+}
+
 export function ComponentDocPage({ page }: { page: ComponentDocPageData }) {
   return (
-    <div style={{ ...styles.page, ...createThemeCssVariables() }}>
-      <SectionBlock title="组件定义" description={page.description}>
-        <div style={styles.card}>
-          <ul style={styles.proseList}>
-            {page.definition.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
-      </SectionBlock>
-
-      <SectionBlock
-        title="适用场景"
-        description="优先覆盖在业务里最常见、最容易对比选型的使用方式。"
-      >
-        <div style={styles.card}>
-          <ul style={styles.proseList}>
-            {page.scenarios.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
-      </SectionBlock>
-
-      <SectionBlock
-        title="案例演示"
-        description="每个案例都包含实时预览、源码说明、代码展开与复制能力。"
-      >
-        <div style={styles.examples}>
-          {page.examples.map((example) => (
-            <ExampleCard key={example.id} example={example} />
-          ))}
-        </div>
-      </SectionBlock>
-
-      <SectionBlock
-        title="常用属性 API"
-        description="第一版只覆盖高频使用属性；更多能力仍沿用 Ant Design 原生能力与透传规则。"
-      >
-        <div style={styles.tableWrap}>
-          <table style={styles.table}>
-            <thead style={styles.tableHead}>
-              <tr>
-                <th style={styles.tableHeaderCell}>属性</th>
-                <th style={styles.tableHeaderCell}>说明</th>
-                <th style={styles.tableHeaderCell}>类型</th>
-                <th style={styles.tableHeaderCell}>默认值</th>
-                <th style={styles.tableHeaderCell}>备注</th>
-              </tr>
-            </thead>
-            <tbody>
-              {page.api.map((item) => (
-                <tr key={item.name}>
-                  <td style={styles.tableCell}>
-                    <span style={styles.tableName}>{item.name}</span>
-                  </td>
-                  <td style={styles.tableCell}>{item.description}</td>
-                  <td style={styles.tableCell}>{item.type}</td>
-                  <td style={styles.tableCell}>{item.defaultValue}</td>
-                  <td style={styles.tableCell}>{item.notes ?? '-'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </SectionBlock>
-
-      {page.selectionTips?.length ? (
-        <SectionBlock
-          title="选型建议"
-          description="帮助在不同呈现方式之间快速做出选择。"
-        >
-          <div style={styles.card}>
-            <ul style={styles.notesList}>
-              {page.selectionTips.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </div>
-        </SectionBlock>
-      ) : null}
-
-      <SectionBlock
-        title="封装说明"
-        description="明确 wrapper 的边界，避免把文档页误解为官方全量镜像。"
-      >
-        <div style={styles.card}>
-          <ul style={styles.notesList}>
-            {page.wrapperNotes.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </div>
-      </SectionBlock>
+    <div style={styles.page}>
+      <ComponentDocDefinition page={page} />
+      <ComponentDocScenarios page={page} />
+      <ComponentDocExamples page={page} />
+      <ComponentDocApi page={page} />
+      <ComponentDocSelectionTips page={page} />
+      <ComponentDocWrapperNotes page={page} />
     </div>
   )
 }

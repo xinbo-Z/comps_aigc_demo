@@ -30,9 +30,10 @@ const rowStyle = {
 const panelStyle = {
   padding: '16px',
   borderRadius: '14px',
-  border: '1px solid var(--rp-c-divider-light)',
-  background: 'var(--rp-c-bg-soft)',
+  border: '1px solid var(--rp-c-divider)',
+  background: 'var(--rp-c-bg)',
   color: 'var(--rp-c-text-1)',
+  boxShadow: 'var(--rp-c-shadow-2)',
 } as const satisfies CSSProperties
 
 interface TableRow {

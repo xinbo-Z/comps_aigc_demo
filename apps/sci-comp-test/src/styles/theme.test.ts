@@ -57,4 +57,14 @@ describe('createThemeTokens', () => {
     expect(cssVariables['--sci-radius-control']).toBe('10px')
     expect(cssVariables['--sci-size-control-md']).toBe('40px')
   })
+
+  it('keeps documentation surface tokens consumable through the shared test provider entry', () => {
+    const variables = createThemeCssVariables({ colorPrimary: '#1d4ed8' })
+
+    expect(variables['--sci-color-surface-base']).toBeDefined()
+    expect(variables['--sci-color-surface-muted']).toBeDefined()
+    expect(variables['--sci-color-text-primary']).toBeDefined()
+    expect(variables['--sci-color-text-secondary']).toBeDefined()
+    expect(variables['--border']).toBeDefined()
+  })
 })

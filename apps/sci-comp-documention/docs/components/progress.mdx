@@ -1,6 +1,53 @@
-import { ComponentDocPage } from '../../doc-components/ComponentDoc'
+import {
+  ComponentDocApi,
+  ComponentDocDefinition,
+  ComponentDocExampleBlock,
+  ComponentDocScenarios,
+  ComponentDocSelectionTips,
+  ComponentDocWrapperNotes,
+} from '../../doc-components/ComponentDoc'
 import { progressDocPage } from '../../doc-components/componentDocData'
 
 # Progress
 
-<ComponentDocPage page={progressDocPage} />
+## 组件定义
+
+<ComponentDocDefinition page={progressDocPage} />
+
+## 适用场景
+
+<ComponentDocScenarios page={progressDocPage} />
+
+## 案例演示
+
+### 线性进度基础用法
+
+<ComponentDocExampleBlock example={progressDocPage.examples[0]} />
+
+### 环形进度
+
+<ComponentDocExampleBlock example={progressDocPage.examples[1]} />
+
+### 仪表盘进度
+
+<ComponentDocExampleBlock example={progressDocPage.examples[2]} />
+
+### 状态反馈
+
+<ComponentDocExampleBlock example={progressDocPage.examples[3]} />
+
+### 组合选型对比
+
+<ComponentDocExampleBlock example={progressDocPage.examples[4]} />
+
+## 常用属性 API
+
+<ComponentDocApi page={progressDocPage} />
+
+## 选型建议
+
+<ComponentDocSelectionTips page={progressDocPage} />
+
+## 封装说明
+
+<ComponentDocWrapperNotes page={progressDocPage} />

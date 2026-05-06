@@ -347,12 +347,14 @@ export function TableColumnResizePreview() {
   ],
   selectionTips: [
     '优先用 Table 完成基础列表搭建、分页浏览与宽表格展示。',
-    '数据量较大时，可优先考虑 `virtualScroll` 作为轻量语义入口。',
-    '如果业务需要允许用户调节列宽，应采用 `columns` + `onColumnsChange` 的受控回写模式。',
+    '数据量较大时，可优先考虑 `virtualScroll` 作为轻量语义入口，但它只解决渲染成本，不替代查询、缓存或懒加载策略。',
+    '如果业务需要允许用户调节列宽，应采用 `columns` + `onColumnsChange` 的受控回写模式，并在外层负责持久化与恢复。',
+    '当列表同时启用 `scroll`、`rowSelection`、`columnResize` 等能力时，应先确认页面的主目标仍是通用数据浏览，而不是已经演化成高阶业务工作台。',
   ],
   wrapperNotes: [
     'Table 仍然基于 antd Table 实现，不引入独立列表 DSL。',
     'API 主表只覆盖帮助理解高频列表搭建路径的关键字段，不等同于 antd Table 的全量参数面。',
     '排序、筛选、展开行等未进入主案例的能力继续遵循 antd 原生能力或透传规则。',
+    '复杂查询编排、强业务状态联动、跨区块批处理和重交互工作台能力应由外层业务容器或独立高级组件承担，而不是继续堆进基础 Table 文档主路径。',
   ],
 }

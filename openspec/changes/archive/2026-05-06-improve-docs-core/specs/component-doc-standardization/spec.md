@@ -1,8 +1,4 @@
-## Purpose
-
-定义组件文档页中文结构与相关 OpenSpec 中文化约束。
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: 组件文档规范化 SHALL 定义中文文档结构
 

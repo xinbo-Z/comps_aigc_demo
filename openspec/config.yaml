@@ -1,20 +1,25 @@
+# openspec/config.yaml
 schema: spec-driven
+context: |
+  语言：中文（简体）
+  所有产出物（proposal、specs、design、tasks）必须用简体中文撰写。
+  技术术语、代码示例、文件路径、命令名称保持英文原文。
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+  Tech stack: React 19, TypeScript 5.x, Ant Design 5, Tailwind CSS 4
+  Build tool: Vite
+  Testing: Vitest + React Testing Library
+  State management: useState/useContext for simple, Zustand for complex
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+rules:
+  proposal:
+    - 用中文撰写，包含回滚方案
+    - 标明受影响的组件和路由
+  specs:
+    - 用中文撰写，使用 Given/When/Then 格式编写场景
+    - 覆盖正常路径和边界情况
+  design:
+    - 用中文撰写，包含组件层级图
+    - 说明状态管理方案
+  tasks:
+    - 用中文撰写，按组件或功能分组
+    - 每组任务包含验证步骤

@@ -8,7 +8,8 @@ const surfaces = {
   borderStrong: 'var(--rp-c-divider)',
   text: 'var(--rp-c-text-1)',
   textSecondary: 'var(--rp-c-text-2)',
-  brandTint: 'var(--rp-c-brand-tint)',
+  brandTint:
+    'color-mix(in srgb, var(--rp-c-brand-tint) 48%, var(--rp-c-bg) 52%)',
   shadow: 'var(--rp-c-shadow-3)',
 } as const
 
@@ -39,9 +40,16 @@ const styles = {
   body: {
     padding: '18px',
     borderRadius: '16px',
-    background: surfaces.cardSubtle,
+    background: surfaces.cardMuted,
     border: `1px solid ${surfaces.borderStrong}`,
     color: surfaces.text,
+    boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.04)',
+  },
+  content: {
+    padding: '16px',
+    borderRadius: '14px',
+    background: surfaces.cardSubtle,
+    border: `1px solid ${surfaces.border}`,
   },
 } as const satisfies Record<string, CSSProperties>
 
@@ -64,7 +72,9 @@ export default function PreviewBlock({
           {description ? <p style={styles.description}>{description}</p> : null}
         </div>
       ) : null}
-      <div style={styles.body}>{children}</div>
+      <div style={styles.body}>
+        <div style={styles.content}>{children}</div>
+      </div>
     </div>
   )
 }

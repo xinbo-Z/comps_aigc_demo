@@ -1,6 +1,49 @@
-import { ComponentDocPage } from '../../doc-components/ComponentDoc'
+import {
+  ComponentDocApi,
+  ComponentDocDefinition,
+  ComponentDocExampleBlock,
+  ComponentDocScenarios,
+  ComponentDocSelectionTips,
+  ComponentDocWrapperNotes,
+} from '../../doc-components/ComponentDoc'
 import { tabsDocPage } from '../../doc-components/componentDocData'
 
 # Tabs
 
-<ComponentDocPage page={tabsDocPage} />
+## 组件定义
+
+<ComponentDocDefinition page={tabsDocPage} />
+
+## 适用场景
+
+<ComponentDocScenarios page={tabsDocPage} />
+
+## 案例演示
+
+### 基础标签切换
+
+<ComponentDocExampleBlock example={tabsDocPage.examples[0]} />
+
+### Lazy 渲染
+
+<ComponentDocExampleBlock example={tabsDocPage.examples[1]} />
+
+### 可编辑标签页
+
+<ComponentDocExampleBlock example={tabsDocPage.examples[2]} />
+
+### 默认激活项与禁用项
+
+<ComponentDocExampleBlock example={tabsDocPage.examples[3]} />
+
+## 常用属性 API
+
+<ComponentDocApi page={tabsDocPage} />
+
+## 选型建议
+
+<ComponentDocSelectionTips page={tabsDocPage} />
+
+## 封装说明
+
+<ComponentDocWrapperNotes page={tabsDocPage} />

@@ -1,6 +1,49 @@
-import { ComponentDocPage } from '../../doc-components/ComponentDoc'
+import {
+  ComponentDocApi,
+  ComponentDocDefinition,
+  ComponentDocExampleBlock,
+  ComponentDocScenarios,
+  ComponentDocSelectionTips,
+  ComponentDocWrapperNotes,
+} from '../../doc-components/ComponentDoc'
 import { formDocPage } from '../../doc-components/componentDocData'
 
 # Form
 
-<ComponentDocPage page={formDocPage} />
+## 组件定义
+
+<ComponentDocDefinition page={formDocPage} />
+
+## 适用场景
+
+<ComponentDocScenarios page={formDocPage} />
+
+## 案例演示
+
+### 基础表单
+
+<ComponentDocExampleBlock example={formDocPage.examples[0]} />
+
+### 布局差异
+
+<ComponentDocExampleBlock example={formDocPage.examples[1]} />
+
+### 必填与校验反馈
+
+<ComponentDocExampleBlock example={formDocPage.examples[2]} />
+
+### 默认值与提交流程
+
+<ComponentDocExampleBlock example={formDocPage.examples[3]} />
+
+## 常用属性 API
+
+<ComponentDocApi page={formDocPage} />
+
+## 选型建议
+
+<ComponentDocSelectionTips page={formDocPage} />
+
+## 封装说明
+
+<ComponentDocWrapperNotes page={formDocPage} />

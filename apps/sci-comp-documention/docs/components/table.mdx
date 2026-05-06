@@ -1,6 +1,57 @@
-import { ComponentDocPage } from '../../doc-components/ComponentDoc'
+import {
+  ComponentDocApi,
+  ComponentDocDefinition,
+  ComponentDocExampleBlock,
+  ComponentDocScenarios,
+  ComponentDocSelectionTips,
+  ComponentDocWrapperNotes,
+} from '../../doc-components/ComponentDoc'
 import { tableDocPage } from '../../doc-components/componentDocData'
 
 # Table
 
-<ComponentDocPage page={tableDocPage} />
+## 组件定义
+
+<ComponentDocDefinition page={tableDocPage} />
+
+## 适用场景
+
+<ComponentDocScenarios page={tableDocPage} />
+
+## 案例演示
+
+### 基础表格
+
+<ComponentDocExampleBlock example={tableDocPage.examples[0]} />
+
+### 分页列表
+
+<ComponentDocExampleBlock example={tableDocPage.examples[1]} />
+
+### 空态列表
+
+<ComponentDocExampleBlock example={tableDocPage.examples[2]} />
+
+### 滚动表格
+
+<ComponentDocExampleBlock example={tableDocPage.examples[3]} />
+
+### 虚拟滚动
+
+<ComponentDocExampleBlock example={tableDocPage.examples[4]} />
+
+### 列宽拖拽
+
+<ComponentDocExampleBlock example={tableDocPage.examples[5]} />
+
+## 常用属性 API
+
+<ComponentDocApi page={tableDocPage} />
+
+## 选型建议
+
+<ComponentDocSelectionTips page={tableDocPage} />
+
+## 封装说明
+
+<ComponentDocWrapperNotes page={tableDocPage} />

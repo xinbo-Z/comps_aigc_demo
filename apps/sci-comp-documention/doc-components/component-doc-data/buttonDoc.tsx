@@ -264,9 +264,15 @@ export function ButtonToolbarPreview() {
       notes: '内部会补充装饰性图标的 aria-hidden 处理。',
     },
   ],
+  selectionTips: [
+    '提交、创建、发布这类主流程动作优先使用 `primary`，同一区域通常只保留一个主按钮。',
+    '跳转到详情页、文档页或外部站点的动作优先使用 Link，而不是仅为了视觉统一继续堆 Button。',
+    '当同一区域存在多个次级操作且需要收纳时，优先考虑 Dropdown Button 或外层操作菜单，而不是把所有动作平铺成同级按钮。',
+    'danger 只用于真正具有破坏性或不可逆后果的操作，普通返回、关闭或清空不应滥用该语义。',
+  ],
   wrapperNotes: [
     'Button 仍然基于 antd Button 实现，不是脱离 antd 的自定义按钮体系。',
     '第一版 API 表只覆盖业务里高频使用的属性，不等同于 antd Button 的全量参数镜像。',
-    '更细粒度的布局、危险确认、权限控制等仍应由业务层或更高阶组件承载，而不是继续堆在基础 Button wrapper 中。',
+    'Button wrapper 主要负责主次层级、危险语义和基础状态表达；导航跳转、批量动作收纳和危险确认流程仍应由 Link、Dropdown 或业务层容器承担。',
   ],
 }
