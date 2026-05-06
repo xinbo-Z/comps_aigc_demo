@@ -20,7 +20,7 @@
     "build": "pnpm build:types && pnpm build:bundle",
     "build:types": "tsc -p tsconfig.json",
     "build:bundle": "vite build",
-    "dev": "sh -c 'pnpm dev:types & pnpm dev:bundle & wait'",
+    "dev": "concurrently \"pnpm dev:types\" \"pnpm dev:bundle\"",
     "dev:types": "tsc -p tsconfig.json --watch --preserveWatchOutput",
     "dev:bundle": "vite build --watch",
     "lint": "eslint src",
