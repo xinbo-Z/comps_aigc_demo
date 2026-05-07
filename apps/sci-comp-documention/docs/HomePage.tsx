@@ -1028,7 +1028,7 @@ function HeroSection() {
     <section style={styles.heroSection}>
       <div style={styles.pageBackground} />
       <div style={styles.pageGlow} />
-      <h1 style={styles.heroTitle}>你的设计系统基础</h1>
+      <h1 style={styles.heroTitle}>SCI通用组件库</h1>
       <p style={styles.heroDescription}>
         一套设计精良的组件，你可以按需定制、扩展并构建自己的产品。从这里开始，把它变成你自己的样子。开源，开放代码。
       </p>
@@ -1223,7 +1223,7 @@ function Footer() {
           ))}
         </div>
         <div style={styles.footerCopyright}>
-          <p>© 2024 SCI Comp. All rights reserved.</p>
+          <p>© 2026 SCI Comp. All rights reserved.</p>
         </div>
       </div>
     </footer>
