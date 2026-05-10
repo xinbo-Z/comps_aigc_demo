@@ -5,21 +5,80 @@ context: |
   所有产出物（proposal、specs、design、tasks）必须用简体中文撰写。
   技术术语、代码示例、文件路径、命令名称保持英文原文。
 
-  Tech stack: React 19, TypeScript 5.x, Ant Design 5, Tailwind CSS 4
-  Build tool: Vite
-  Testing: Vitest + React Testing Library
-  State management: useState/useContext for simple, Zustand for complex
+  项目技术栈：
+  - React 19
+  - TypeScript 5.x
+  - Ant Design 6.x
+  - pnpm workspace + turborepo
+  - Vite
+  - Vitest + React Testing Library
+  - Rspress
+
+  项目结构：
+  - packages/sci-comp-core/：通用组件库 package，承载组件源码、样式、类型与对外导出。
+  - apps/sci-comp-test/：组件测试工作区。
+  - apps/sci-comp-documention/：组件文档工作区。
+  - apps/sci-comp-admin/：后台管理系统工作区。
+  - 根目录：统一维护 workspace、turbo、lint、format、typecheck、commit hooks 等工程配置。
+
+  通用组件消费边界：
+  - 应用层必须通过 @sci-comp/core 公共入口消费组件、类型和主题能力。
+  - 禁止从 packages/sci-comp-core/src/** 深层导入。
+  - 禁止在应用层复制或并行实现基础组件能力。
+  - Button、Input、Table、Form、Modal、Tabs、Progress 等基础能力必须优先使用 @sci-comp/core。
+  - 基础 wrapper 只允许少量语义映射、样式收敛、a11y 增强和 antd props 透传。
+  - 高阶能力必须以独立组件承载，不能堆积到基础 wrapper 中。
+
+  主题与样式边界：
+  - 颜色、背景、边框、文本、状态色必须优先使用项目主题 token 或 --sci-* CSS variables。
+  - 禁止在最终实现中大量保留设计工具导出的 rgba(...) 或 hex 硬编码颜色。
+  - 应用页面允许使用语义 className 和普通 CSS，但必须围绕项目主题变量组织样式。
+
+  MCP 设计稿实现边界：
+  - Pixso/Figma MCP 生成代码只作为设计信息来源，不得直接作为最终实现提交。
+  - MCP 输出主要用于提取页面结构、文案、数据项、视觉层级、资源引用和截图参考。
+  - 最终代码必须重构为项目语义组件和语义 className。
+  - 禁止保留 frame-*、group-* 等设计工具生成式 className。
+  - 禁止保留 id="2_61"、id="xxx_xxx" 等设计工具节点 id。
+  - 禁止保留 localhost、临时 MCP 资源 URL 或设计工具临时资源路径。
+  - 禁止引入设计工具生成的 router、main.tsx、global.css，除非需求明确要求并经过 design 说明。
+  - 设计资源必须下载到项目本地资源目录后再引用。
+  - UI 页面实现完成后必须同时进行需求验收和设计还原验收。
 
 rules:
   proposal:
-    - 用中文撰写，包含回滚方案
-    - 标明受影响的组件和路由
+    - 用中文撰写，说明需求来源、业务目标和为什么需要变更。
+    - 如果需求来自 OR 文档、设计稿或外部链接，必须在 proposal 中记录来源和范围。
+    - 明确列出受影响的 app、package、组件、页面或路由。
+    - 明确说明非目标范围，例如不接入真实 API、不新增权限系统、不引入路由等。
+    - 包含回滚方案。
+
   specs:
-    - 用中文撰写，使用 Given/When/Then 格式编写场景
-    - 覆盖正常路径和边界情况
+    - 用中文撰写。
+    - 使用 Requirement + Scenario 结构描述可验收行为。
+    - 场景使用 WHEN / THEN / AND 格式，不使用含糊描述。
+    - 如果需求来自设计稿，必须把设计稿内容拆成可验收场景。
+    - 如果需求包含设计稿 URL，specs 中必须至少覆盖 Layout、Content、Interaction、Theme、MCP Normalization 五类 Requirement。
+    - 必须覆盖页面结构、关键文案、核心数据、主要交互、组件库消费边界和主题样式边界。
+    - 对 MCP 设计稿实现类需求，必须包含“最终代码不得直接提交 MCP 原始生成结构”的要求。
+    - 对前端页面类需求，必须包含基础响应式或不破版要求。
+    - 覆盖正常路径和必要边界情况。
+
   design:
-    - 用中文撰写，包含组件层级图
-    - 说明状态管理方案
+    - 用中文撰写。
+    - 说明当前代码结构和目标落点。
+    - 包含组件层级图或页面结构图。
+    - 说明状态管理方案；如果只需要静态数据、useState 或 useMemo，必须明确不引入复杂状态管理。
+    - 说明如何消费 @sci-comp/core，以及哪些能力必须来自公共入口。
+    - 说明主题 token / CSS variables 的映射策略。
+    - 如果使用 Pixso/Figma MCP，必须说明 MCP 输出如何被转换为项目代码。
+    - 明确列出不采纳 MCP 原始生成文件的部分，例如 router、main.tsx、global.css、frame className、节点 id。
+    - 明确设计还原验收方式，例如截图对照、文案核对、区块完整性检查、布局比例检查。
+
   tasks:
-    - 用中文撰写，按组件或功能分组
-    - 每组任务包含验证步骤
+    - 用中文撰写。
+    - 按垂直功能切片，而不是只按技术层分组。
+    - 每组任务必须包含实现步骤和验证步骤。
+    - 如果涉及 MCP 设计稿，任务必须包含获取 design_to_code 输出、获取 screenshot、提取结构文案数据资源、本地化资源、丢弃设计工具生成式代码结构、重构为项目语义组件、映射主题 token、运行 typecheck/build、对照设计稿人工验收。
+    - 不允许把“还原设计稿”写成单个粗粒度任务。
+    - 每个任务应能独立判断是否完成。
