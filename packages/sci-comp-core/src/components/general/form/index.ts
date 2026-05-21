@@ -16,4 +16,6 @@ export type {
   FormSchemaOption,
   FormSchemaSelectField,
   FormSchemaTextareaField,
+  FormSchemaTimePickerField,
+  FormSchemaTimeRangePickerField,
 } from './types'

@@ -142,6 +142,9 @@ importers:
         specifier: ^19.2.4
         version: 19.2.5(react@19.2.5)
     devDependencies:
+      '@rc-component/picker':
+        specifier: 1.9.1
+        version: 1.9.1(dayjs@1.11.20)(react-dom@19.2.5(react@19.2.5))(react@19.2.5)
       '@types/node':
         specifier: ^24.12.2
         version: 24.12.2
@@ -3230,6 +3233,7 @@ packages:
     resolution:
       {
         integrity: sha512-Qgzu8kfBvo+cA4962jnP1KkS6Dop5NS6g7R5LFYJr4b8Ub94PPQXUksCw9PvXoeXPRRddRNC5C1JQUR2SMGtnA==,
+        tarball: http://af.hikvision.com.cn/artifactory/api/npm/npm-down/chokidar/-/chokidar-4.0.3.tgz,
       }
     engines: { node: '>= 14.16.0' }
 
@@ -6849,6 +6853,7 @@ packages:
     resolution:
       {
         integrity: sha512-EW8af29ak8Oaf4T8k8YsajjrDBDYgnKZ5er6ljWFJsXABfTNowQfvHLftwcepVgdz+IoLSdEAbBiM9DFXoll9w==,
+        tarball: http://af.hikvision.com.cn/artifactory/api/npm/npm-down/webpack/-/webpack-5.106.1.tgz,
       }
     engines: { node: '>=10.13.0' }
     hasBin: true

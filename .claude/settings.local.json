@@ -24,7 +24,8 @@
       "Bash(openspec --help)",
       "Bash(openspec help *)",
       "Bash(openspec validate *)",
-      "Bash(openspec show *)"
+      "Bash(openspec show *)",
+      "mcp__pixso-mcp__getCode"
     ]
   },
   "preferences": {

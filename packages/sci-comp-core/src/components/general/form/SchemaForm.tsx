@@ -8,6 +8,7 @@ import {
 } from 'antd'
 import type { FormItemProps } from 'antd'
 import type { NamePath } from 'antd/es/form/interface'
+import { TimePicker, TimeRangePicker } from '../time-picker'
 import styles from './Form.module.css'
 import type {
   SchemaFormProps,
@@ -21,6 +22,8 @@ import type {
   FormSchemaNumberField,
   FormSchemaSelectField,
   FormSchemaTextareaField,
+  FormSchemaTimePickerField,
+  FormSchemaTimeRangePickerField,
 } from './types'
 
 /**
@@ -234,6 +237,14 @@ function renderControl(field: Exclude<FormSchemaField, FormSchemaListField>) {
       return (
         <InputNumber {...numberField.numberProps} style={{ width: '100%' }} />
       )
+    }
+    case 'timePicker': {
+      const timePickerField = field as FormSchemaTimePickerField
+      return <TimePicker {...timePickerField.timePickerProps} />
+    }
+    case 'timeRangePicker': {
+      const timeRangePickerField = field as FormSchemaTimeRangePickerField
+      return <TimeRangePicker {...timeRangePickerField.timeRangePickerProps} />
     }
     case 'input':
     default: {

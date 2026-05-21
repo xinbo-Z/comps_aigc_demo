@@ -1,0 +1,4 @@
+.picker {
+  min-height: var(--sci-input-height);
+  border-radius: var(--sci-input-radius);
+}

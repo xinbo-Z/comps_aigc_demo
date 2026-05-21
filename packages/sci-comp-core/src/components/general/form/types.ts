@@ -2,11 +2,15 @@ import type {
   FormItemProps,
   FormListFieldData,
   FormListOperation,
-  FormProps as AntFormProps,
   FormRule,
   InputNumberProps,
-  InputProps as AntInputProps,
 } from 'antd'
+import type { FormProps as AntFormProps } from 'antd/es/form'
+import type { InputProps as AntInputProps } from 'antd/es/input'
+import type {
+  TimePickerProps as AntTimePickerProps,
+  TimeRangePickerProps as AntTimeRangePickerProps,
+} from 'antd/es/time-picker'
 import type { NamePath } from 'antd/es/form/interface'
 import type { ReactNode, TextareaHTMLAttributes } from 'react'
 
@@ -35,6 +39,8 @@ export type FormSchemaFieldComponent =
   | 'select'
   | 'number'
   | 'list'
+  | 'timePicker'
+  | 'timeRangePicker'
 export type FormSchemaFieldType = FormSchemaFieldComponent
 
 export interface FormSchemaOption {
@@ -155,12 +161,48 @@ export interface FormSchemaListField extends Omit<
   renderItemHeader?: (index: number) => ReactNode
 }
 
+export interface FormSchemaTimePickerField extends FormSchemaBaseField {
+  type?: 'timePicker'
+  component?: 'timePicker'
+  timePickerProps?: Pick<
+    AntTimePickerProps,
+    | 'format'
+    | 'hourStep'
+    | 'minuteStep'
+    | 'secondStep'
+    | 'use12Hours'
+    | 'disabled'
+    | 'placeholder'
+    | 'allowClear'
+    | 'showNow'
+  >
+}
+
+export interface FormSchemaTimeRangePickerField extends FormSchemaBaseField {
+  type?: 'timeRangePicker'
+  component?: 'timeRangePicker'
+  timeRangePickerProps?: Pick<
+    AntTimeRangePickerProps,
+    | 'format'
+    | 'hourStep'
+    | 'minuteStep'
+    | 'secondStep'
+    | 'use12Hours'
+    | 'disabled'
+    | 'placeholder'
+    | 'allowClear'
+    | 'order'
+  >
+}
+
 export type FormSchemaField =
   | FormSchemaInputField
   | FormSchemaTextareaField
   | FormSchemaSelectField
   | FormSchemaNumberField
   | FormSchemaListField
+  | FormSchemaTimePickerField
+  | FormSchemaTimeRangePickerField
 
 export interface FormSchemaDefinition {
   fields: readonly FormSchemaField[]
